@@ -1,0 +1,20 @@
+Consider an infinite string that consists of all positive integers in increasing order:
+
+12345678910111213141516171819202122232425...
+
+Your task is to process q queries of the form: what is the digit at position k in the string?
+
+Sol:
+
+Found a great explanation. The sequence is like a skyscraper with floors representing
+different lenghts of the numbers. We need to find the length of the number.
+To do that we substract the number of digits with a certain length until
+we get to a point where we know the number is on that floor:
+indexWeSubstractedFrom - nextFloorSize < 0
+Then we know the order of magnitude (power of 10) of the number;
+We start at the first one i.e. 100, 1000 etc...
+Then we need to find which one is it. We do that by taking the indexWeSubstractedFrom
+value since now it represents the position on that floor and divide by the floor number.
+This will give the actual number. Now we need to find the digit. We take the length of the number
+and take the remainder of that division. This will give the index of the digit inside the number.
+Then we print.
