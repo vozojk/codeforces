@@ -1,0 +1,46 @@
+Date: 12/02/2026
+
+There are 88418 paths in a 7 \times 7 grid from the upper-left square to the
+lower-left square. Each path corresponds to a 48-character description
+consisting of characters D (down), U (up), L (left) and R (right).
+For example description DRURRRRRDDDLUULDDDLDRRURDDLLLLLURULURRUULDLLDDDD.
+You are given a description of a path which may also contain characters ? (any direction).
+Your task is to calculate the number of paths that match the description.
+
+Input
+The only input line has a 48-character string of characters ?, D, U, L and R.
+
+Output
+Print one integer: the total number of paths.
+
+
+Example
+
+Input:
+??????R??????U??????????????????????????LD????D?
+
+Output:
+201
+
+So, this was a tough one. Not because it would be particularly hard but because I'm dumb as bricks.
+Got the main idea (DFS, backtracking) instantly, then got to the needed optimization.
+That took about 30-50 minutes to figure out with the don't go overboard and Manhattan distance
+ones being very easy. Then the island creation thing was a bit hard but fine at the end.
+Then i switched x,y coords for the checks and spent 3 hours straight trying to fix it.
+Very stupid.
+The implementation is as follows:
+Basic DFS backtracking boilerplate. Direction matrix, move in all possible directions (call move)
+The we check the Manhattan distance (the x distance + y distance), since each iteration we
+move by one and iteration target is always 48 since we need to visit all squares. If the distance
+is bigger than 48-currentItCount we know we can't reach there. Next check if we haven't already
+visited the (6,0) square since we can visit each only once.
+Lastly, an island is created (in relative directions) when i cannot go forward but I can go
+both left and right. This creates 2 separate regions (left and right one obv.) which are separated
+by the path I already took. Therefore disallowing me from finishing the path. We check this by
+saving the last (previous) x and y positions and determining the direction. After this we check
+if I am blocked in going forward and if that is true we check if I can go both left and right.
+If this is true we return. At every return we set board[x][y] = 0 since we set it to 1 at the
+start of the call. This is different from normal implementation but works and I was too lazy to
+make it nice and normal (changing right before and right after the call and not inside).
+
+Hope searching and sorting goes better :)
