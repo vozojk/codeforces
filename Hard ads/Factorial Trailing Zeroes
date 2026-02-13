@@ -1,0 +1,19 @@
+Date: 13/02/2026
+
+Goal: Find the number of trailing zeroes in n!.
+0<=n<=10^18
+
+This is a classic math problem. Find the equation and then it just works, few lines
+of actual implementation.
+
+The trick:
+The thing that adds zeroes to the multiplied number is factors of 5 and its powers.
+For each factor of five we get a zero, since 5 is the bottleneck. There are many more
+even numbers (2,4,8 etc...) that will make a multiple of 10 when multiplied with 5 but only 5
+from the odd numbers makes a 10 and even*even is never a 10 (from 1 to 9). Therefore is we
+find the number of factors of 5 of the factorial we find the number of zeroes.
+We just divide n by powers of 5 until the next power is bigger than n. This works since
+by dividing by 5 we take all the power 1 multiples of 5 but also by doing that we take a five
+from 25, 125 etc... this cascades further, for multiples of 25 we take a 5 from all the 25s but
+also 125s etc... therefore when we get to each power theres only 1 factor of 5 we haven't counted
+yet. We just print this aggregated count and it's done.
