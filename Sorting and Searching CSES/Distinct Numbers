@@ -1,0 +1,30 @@
+Date: 14/02/2026
+
+Goal: You are given a list of n integers, and your task is to calculate the number of distinct values in the list.
+
+      Input
+
+      The first input line has an integer n: the number of values.
+      The second line has n integers x_1,x_2,...,x_n.
+
+      Output
+
+      Print one integers: the number of distinct values.
+
+      Constraints:
+
+      1<=n<=10^5
+      1<=xi<=10^9
+
+      Solution: Very simple. Sort them and then just loop through the sorted array to find
+      where arr[i]!=arr[i+1], count++. 1st problem so expected. To be on track, i have
+      manually implemented merge sort. It takes a,b,&arr. Base case is (a==b-1) return arr[a];
+      Recursive case is finding mid=(a+b)/2 and calling merge_sort(a,mid,arr) and
+      merge_sort(mid,b,arr), effectivelly splitting it in half everytime. At the end of each
+      call there's a simple loop to merge the returns of the first and second call and return that.
+
+      Also there is a nice trick with std::bitset. We can use name.set(index_of_bit) to set that
+      bit to 1, since the CPU is optimized through POPCOUNT to count bits very efficiently we
+      can call name.count() and get the number of set bits instantly. This is useful because then
+      we can just loop through the whole buffer with the ints and just set the bits at index (num)
+      to 1. After that the number of distinct number is just bits.count()
