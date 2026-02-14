@@ -1,0 +1,39 @@
+Date: 14/02/2026
+
+Goal:
+
+There are n children who want to go to a Ferris wheel, and your task is to find a gondola for each child.
+Each gondola may have one or two children in it, and in addition, 
+the total weight in a gondola may not exceed x. You know the weight of every child.
+
+What is the minimum number of gondolas needed for the children?
+
+Input:
+The first input line contains two integers n and x: the number of children and the maximum allowed weight.
+The next line contains n integers p_1,p_2,...,p_n: the weight of each child.
+
+Output:
+Print one integer: the minimum number of gondolas.
+
+Constraints:
+
+1 <= n <= 2*10^5
+1 <= x <= 10^9
+1 <= p_i <= x
+
+Solution:
+This one is easy but i was stupid :). We sort this array first.
+Then, the idea is to go from the fattest child and check is a small one doesn't fit also.
+We keep a pointer for the heaviest unused and lightest unused. Then in a while loop for last>=first since
+that means we used all of them (the = because we do last-- at the end). If the child fits we first++,
+else we move on to the next gondola. This is possible since only 2 children always fit.
+
+I was really stupid here I tried to implement it for any number of children in 1 gondola and was mad why wasn't
+my thing working. I was also stupid for not noticing this obviously wouldn't work for 2 pointers since
+the matching would have to be much more complicated (we can't just use up all the small ones at the start
+because they might be needed elsewhere), for example:
+{9,2,2,2,2,3,4,2} for size 13
+For this, the right combinations are (9,4)(2,2,2,2,2,3) with the pointers
+
+we get: (9,2)(4,2,2,2,2)(3). Bin packing is apparently NP-Hard and very difficult to get right for large N (O(N^3))
+So I wouldn't be getting that for N = 200000 any time soon...
