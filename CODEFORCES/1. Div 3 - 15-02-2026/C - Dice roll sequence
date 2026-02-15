@@ -1,0 +1,57 @@
+Consider the following cube D where numbers x and 7−x lie on opposite sides:
+
+A sequence b of integers from 1 to 6 is called a dice roll sequence if it satisfies the following condition:
+
+All pairs of adjacent elements lie on adjacent sides of the cube.
+For example, [1,4,2] is a dice roll sequence, while [3,4,6,3] is not because 3 and 4 are
+not on adjacent sides of the dice. Additionally, [2,2,4] is not a dice roll sequence because
+2 and 2 are on the same (not adjacent) side of the dice.
+
+Given a sequence a of n integers from 1 to 6, you can perform the following operation
+any number of times (possibly zero).
+
+Select an index 1≤i≤n and an integer 1≤x≤6. Then, change the value of ai to x.
+Please determine the minimum number of operations required to make a a dice roll sequence.
+
+
+Two sides of the cube S and T are called adjacent if they share exactly one edge of the cube.
+Do note that this condition implies S≠T as well.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104).
+The description of the test cases follows.
+
+The first line of each test case contains a single integer n (1≤n≤3⋅10^5).
+
+The second line of each test case contains n integers a1,a2,…,an (1≤ai≤6).
+
+It is guaranteed that the sum of n over all test cases does not exceed 3⋅10^5.
+
+Output:
+For each test case, output the minimum number of operations required to make a a dice roll sequence.
+
+This one was also something. Again upsolved, my intro to Dynamic Programming, didn't even know what it means
+when I saw this. The point is simple, we give up some memory to be more time effective. This allows us to
+save values of some calculations and reuse them instead of calculating everything from scratch.
+In this problem, we made use of exactly that. The key is in reading the instructions (did not, again :))
+Since the operation is not swapping as usual but putting any other number (1 to 6 here) to the spot we need.
+The flow is easy. We create an vector of vectors, basically a 2D matrix. But we cannot create a matrix
+because that's on the stack and N<=3*10^5, the size would be 2,1*10^6*4 which is likely bigger than the stack.
+Therefore we make a vector of vectors which stores data on the heap (including the vectors inside).
+We make it sized(n, 7), 7 because it's nice to not have to do -1 for 1-6. For each number in the sequence, we save
+how much it would cost to get it replaced with the other number (1 for num1!=num2 and 0 if they are equal).
+After this we can iterate through the whole sequence and build our array. For each number the main point is
+finding the lowest cost of getting through. We need to check if the number is adjacent. For this we use
+that only the opposite side and the number itself is not adjacent to itself. There we take an if statement and
+if it's not the opposite one or the number itself (we do nothing if it is, the default val is MAX_VAL-20, -20
+since since we overflow otherwise because of other math), we just set arr[currentIndex][number1_to_6] to 1 if
+we need to do a change to get to it and 0 if it already is that number. But this is where it gets interesting,
+we use a min(arr[index][1to6], arr[index-1][1to6 but different], the but different part is there
+because there is a 3 nested for loop, 1 to n, 1 to 7 and 1 to 7, we try to set array 36 times in total,
+everytime it either gets smaller or stays the same and with this we check all the change at i-1 change at i
+combinations and take the one with the smallest cost. This cost builds up and to get the final minimum, we just
+take the minimal number at arr[lastindex] vector.
+
+There is also an interesting trick, since we only care about arr[n] and arr[n-1] we can have a vectors of 2
+vectors of 7 and just update prev and current. This severely reduces the space complexity O(1) from O(n) and
+gives us the ability to make it an array and save it on the stack which makes it faster and reduces cache misses.
