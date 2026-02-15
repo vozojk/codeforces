@@ -1,0 +1,30 @@
+There are n concert tickets available, each with a certain price. Then, m customers arrive, one after another.
+Each customer announces the maximum price they are willing to pay for a ticket, and after this,
+they will get a ticket with the nearest possible price such that it does not exceed the maximum price.
+
+Input:
+The first input line contains integers n and m: the number of tickets and the number of customers.
+The next line contains n integers h_1,h_2,...,h_n: the price of each ticket.
+The last line contains m integers t_1,t_2,...,t_m: the maximum price for each customer in the order they arrive.
+Output
+Print, for each customer, the price that they will pay for their ticket. After this, the ticket cannot be purchased again.
+If a customer cannot get any ticket, print -1.
+
+Constraints:
+
+1 <= n, m <= 2*10^5
+1 <= h_i, t_i <= 10^9
+
+This one was also very much something new. I tried my own approach even though it was pretty obvious there's
+no way I have enough time to do it. I took the numbers, put them in a vector, sorted. Then for each desired ticket
+price, I checked if a ticket is available, made that price really high, resorted. I had the right idea but it
+was way too slow. The answer is a Red-Black Tree. The tree that has O(N log(N)) access, deletion, insertion.
+It is a sub thing of a BST (Binary Search Tree) therefore it is very fast to find values in it.
+We can use the RB Tree for the ticket prices and then for each price we use the upper_bound method (O(log(n)))
+to find the first number in the tree bigger than the desired price. Since we get an iterator we can just do -1.
+And get the biggest allowed value for the customer. We check if the upper_bound output isn't at the start
+of the tree, if it was we know there is no lower value and we print -1 for that customer. Then we do rbtree.erase(it)
+We use the iterator because by doing .erase(val) we erase all values that match, for the iterator we delete only one.
+Cool thing, the iterator is smart and when i do it-- here, it runs an algo to find the next bigger value instead
+of working with addresses. It either goes one down if there is a right child since right is bigger. If there is not
+it goes up until it finds a number bigger (means comes from the left).
