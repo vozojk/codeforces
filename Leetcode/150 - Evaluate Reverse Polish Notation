@@ -1,0 +1,16 @@
+You are given an array of strings tokens that represents an arithmetic expression in a Reverse Polish Notation.
+
+Evaluate the expression. Return an integer that represents the value of the expression.
+
+Note that:
+
+The valid operators are '+', '-', '*', and '/'.
+Each operand may be an integer or another expression.
+The division between two integers always truncates toward zero.
+There will not be any division by zero.
+The input represents a valid arithmetic expression in a reverse polish notation.
+The answer and all the intermediate calculations can be represented in a 32-bit integer.
+
+Strategy: This is where it started to get tricky. The key was utilizing the Stack correctly. We go through the whole string and scan through the characters. The goal is to match numbers with their operator. This goes as follows: Since the point of postfix notation is that the operator is after the numbers and not between them we need to identify the last 2 numbers before an operator, but there can be multiple operators in a row operating on a number before the 2 numbers and an operator and the result of the 2 numbers. Therefore we need a way to store the order and also access the last seen numbers first. This is a stack. If character (c) is a number (we arrive to the conclusion by exhausting all other possibilities and using stoi(n) to convert to a number), we push it into the stack, if it is an operator we need something to operate on so we pop 2 numbers from the stack, recognize the operator through a switch and push the result back onto the stack to be used later. Like this we iterate through the whole string and if the numbers of operators is correct for the numbers of digits we will end up with a single number, which is the result of the operations.
+
+Note: Since the division operator and the substraction operator care about order we need to make sure we do the operations for these in the correct order, therefore we have to always have the second number be first in the operation since it was first in the string.
