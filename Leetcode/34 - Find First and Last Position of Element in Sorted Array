@@ -1,0 +1,8 @@
+Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.
+
+If target is not found in the array, return [-1, -1].
+
+You must write an algorithm with O(log n) runtime complexity.
+
+
+Strategy: This makes use of the concepts of lower and higher bounds in binary search. The lower bound find the first element in the sequence for which val >= target. Higher bound finds the first element for which val > target. We can use this to find the indices of the start and end of the target value in O(logn) by finding the lower bound for the start and then finding the higher bound-1 to get the last number with the target. We check if the number at lower bound is the target, if not output {-1,-1}. C++ does have std::lower_bound and std::higher_bound but we implemented this manually here. It is a binary search but instead of stopping when mid==target we continue. We have a variable ans which gets updated by min(ans, mid) for the lower bound and max(ans, mid) for the higher bound. In case of finding a number == target we just go search in the smaller half (basically restarting the search for target again in that smaller subarray) for a lower bound and then have another while loop, to do the same binary search but search for the upper bound by looking in the upper half and then repeating the process until it reaches the bottom of the tree (left==right)
