@@ -1,0 +1,9 @@
+There is an integer array nums sorted in ascending order (with distinct values).
+
+Prior to being passed to your function, nums is possibly left rotated at an unknown index k (1 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,5,6,7] might be left rotated by 3 indices and become [4,5,6,7,0,1,2].
+
+Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.
+
+You must write an algorithm with O(log n) runtime complexity.
+
+Strategy: The key insight in this is that we can use normal binary search, we just need to only make conclusions from the part of the array that is fully sorted. Since the only place where the array is not sorted is on the left of the previous first number (previous start), we can be sure that at least one half of the array will always be fully sorted. This presents an opportunity. We can check which half is sorted by checking if the leftmost element of the half < rightmost element. If it is the function must be sorted since previously all the numbers were sorted and if the pivot was there, the numbers after it must be smaller than the leftmost number since the array wraps. So, we identify the sorted half and then we check if the number we are searching for is there. If it is not, it must be in the other half. So we pick the other half (by adjusting the pointers, left = mid+1 || right = mid-1, the ones because we check mid==target) and then just repeat, we do this in a while loop until left>right and at that point we know the number is not there. This achieves O(logn) time complexity in a problem that would normally be O(n).
