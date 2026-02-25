@@ -1,0 +1,11 @@
+Given an integer array nums, handle multiple queries of the following type:
+
+Calculate the sum of the elements of nums between indices left and right inclusive where left <= right.
+Implement the NumArray class:
+
+NumArray(int[] nums) Initializes the object with the integer array nums.
+
+int sumRange(int left, int right) Returns the sum of the elements of nums between indices left and right inclusive (i.e. nums[left] + nums[left + 1] + ... + nums[right]).
+
+Strategy: This is an optimization problem. It requires to not calculate the sum every time, but to have the sums upto certain number and then use them to get the final result in O(1). Since sum_x_y = sum_(y)-sum_(x-1) we can just take the sum at the bigger index and subtract the one at the smaller index. We return the result of this operation. In the constructor we just initialize the global array with the sum of all number upto that index at each index.
+
