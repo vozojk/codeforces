@@ -1,0 +1,5 @@
+Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
+
+A subarray is a contiguous non-empty sequence of elements within an array.
+
+Strategy: This is the combination of prefix sums and a hashmap. We need to use thing; big_prefix_sum - small_prefix_sum = k. We can rearrange this to big_prefix_sum - k = small_prefix_sum. This creates an opportunity. We can create a hashmap which keys are the small sums and the values are it's indices. Then for each sum in the array we first check if the sum-k is not already there, if it is we increase the counter by the value. After that we do hashmap[big_sum]++; because of this, it will couple all the combinations that create the same sum into the same box and the only thing we need to do is to increase the counter by 1 for each since it is the complement big_sum needs to create k (target sum). Checking the hashmap first and then updating it is important because if we did it the opposite way, the sum is always gonna be there since we just added it.
