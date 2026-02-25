@@ -1,0 +1,9 @@
+Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. Let these two numbers be numbers[index1] and numbers[index2] where 1 <= index1 < index2 <= numbers.length.
+
+Return the indices of the two numbers index1 and index2, each incremented by one, as an integer array [index1, index2] of length 2.
+
+The tests are generated such that there is exactly one solution. You may not use the same element twice.
+
+Your solution must use only constant extra space.
+
+Strategy: Two pointers. We can have one pointer at the biggest number (right end) and smallest number (left end), this will give us the ability to make the sum num[ptr1]+num[ptr2] increase or decrease by the smallest amount possible since the numbers are sorted, therefore we take these 2 pointers with while loop if sum>target right--; if sum<target left++; if sum==target return {left+1, right+1}(1-indexed). This way, we are sure to go through all that could possibly be close to target including the sum that is equal since we only increase if we are smaller and decrease if we are bigger. This seemed unintuitive so the basic proof is as follows. For each sum, if it is > target it already has the smallest possible left number it could have so pairing it with a bigger right number wouldn't help, therefore all number >= right are eliminated. It works for left the same way, by having a very small left and the sum is too small, we wouldn't help ourselves if we made the number smaller. We work our way through the whole array this way until we find the numbers that exactly match. We couldn't magically go with the left pointer from the middle of the array back to the start because we have already proven that that number would be too small even with a bigger right number. Therefore it could never be big enough when the right number decreased.
