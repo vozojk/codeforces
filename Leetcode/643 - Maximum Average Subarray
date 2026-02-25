@@ -1,0 +1,5 @@
+You are given an integer array nums consisting of n elements, and an integer k.
+
+Find a contiguous subarray whose length is equal to k that has the maximum average value and return this value. Any answer with a calculation error less than 10-5 will be accepted.
+
+Strategy: This is just simplified normal sliding window. We loop through the array starting at index k-1, while updating the sum of the past k elements by doing sum-=nums[k]; k++; sum+=nums[k]; calculate the average at the end by dividing by k since they are proportional.
