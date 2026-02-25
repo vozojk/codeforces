@@ -1,0 +1,16 @@
+You are given the arrival and leaving times of n customers in a restaurant.
+What was the maximum number of customers in the restaurant at any time?
+
+Input:
+The first input line has an integer n: the number of customers.
+After this, there are n lines that describe the customers. Each line has two integers a and b: the arrival and leaving times of a customer.
+You may assume that all arrival and leaving times are distinct.
+
+Output:
+Print one integer: the maximum number of customers.
+
+Constraints:
+1 <= n <= 2*10^5
+1 <= a < b <= 10^9
+
+Strategy: The key to this problem is sorting. We take the customer leaves and comes in, but not as pairs but as separate entries, which have the form {time, (-1 for leave, 1 for entry)}, from this we get an array of times with 1s and -1s for leaves and entries, since the times are unique we can just sort it by them and then do an O(n) traverse while keeping count (by doing count += array[i].second) and doing result = max(result, count) to update the maximum value so far. This works because of unique times, if they were not unique, we would need to decide how to handle customers that come at the same time. If we want to make them come in and leave first we would do something like having a 2 instead of -1 for leave and have an if statement to handle that to a -1 difference for the count. First leave and them come gets sorted by default since the comparator will do .first and if they are the same it will check .second, since it's ascending and -1<1 it would put the leaving people first.
