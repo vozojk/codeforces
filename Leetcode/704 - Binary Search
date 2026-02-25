@@ -1,0 +1,6 @@
+Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.
+
+You must write an algorithm with O(log n) runtime complexity.
+
+
+Strategy: Basic binary search. Take bounds of array. While loop left <= right, calculate mid, if target > mid, take right half (left = mid+1) otherwise take left half (right = mid - 1). The structure needs to be sorted for this to work. Every iteration check mid == target, if it does, return.
