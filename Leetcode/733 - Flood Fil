@@ -1,0 +1,11 @@
+You are given an image represented by an m x n grid of integers image, where image[i][j] represents the pixel value of the image. You are also given three integers sr, sc, and color. Your task is to perform a flood fill on the image starting from the pixel image[sr][sc].
+
+To perform a flood fill:
+
+Begin with the starting pixel and change its color to color.
+Perform the same process for each pixel that is directly adjacent (pixels that share a side with the original pixel, either horizontally or vertically) and shares the same color as the starting pixel.
+Keep repeating this process by checking neighboring pixels of the updated pixels and modifying their color if it matches the original color of the starting pixel.
+The process stops when there are no more adjacent pixels of the original color to update.
+Return the modified image after performing the flood fill.
+
+Strategy: This is a classic DFS. I also successfully tried BFS with a while loop but the DFS is much cleaner since the only thing we need to check for is the boundaries (x and y not outside of the matrix) and that the square has the correct color (starting one, not target, not other), we just call dfs on all 4 sides from a square and check if the conditions are met after calling, if not return, if they are call dfs on all 4 sides and repeat. This marks all the squares of the right color.
