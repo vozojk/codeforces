@@ -1,0 +1,5 @@
+You are given the root of a binary search tree (BST) and an integer val.
+
+Find the node in the BST that the node's value equals val and return the subtree rooted with that node. If such a node does not exist, return null.
+
+Strategy: Since the goal is to find a node in a binary search tree. We just go left if the target is smaller than current node and right if it is bigger. We check the number inside the node, if it matches we return the node. If we reach a point where we get a nullptr, we return -1.
