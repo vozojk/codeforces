@@ -1,0 +1,9 @@
+Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.
+
+Koko can decide her bananas-per-hour eating speed of k. Each hour, she chooses some pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any more bananas during this hour.
+
+Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.
+
+Return the minimum integer k such that she can eat all the bananas within h hours.
+
+Strategy: Binary search. We can create an array with all the possible values that k could have ([1,maxInArray]) and just do a binary search which finds the lowest possible k. We achieve O(nlogn) time with this since it takes O(logn) to find the correct number and finding the number of hours for each number is O(n) since we have to go through the whole list, this takes the time from O(n^2) which is a great improvement. The concept after realizing this is simple. Just take a value, calculate the number of hours it will take and compare to h (limit), if h is bigger make k smaller and therefore the number of hours to eat the bananas a bit bigger. We search for numbers until we get to the top of the tree. This is better since we are only doing one O(n) search on each level of the tree instead of doing it for all the nodes beforehand.
