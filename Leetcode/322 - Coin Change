@@ -1,0 +1,9 @@
+You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+
+Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+
+You may assume that you have an infinite number of each kind of coin.
+
+Strategy: DP, again. This problem requires us to calculate the smallest amount of coins so the sum is == target. We can use dp to calculate sums for all the amounts from the coins until we get to the target. We can reuse the coins. We tak a double for loop, the outside for loop will loop through all of the target values until target and the inside loop go check all the coins. We will keep an array that will have the number of coins for each value. Therefore, for each coin we just take arr[currentTarget-coinValue] to get the amount of coins needed for this target. Since this tries all the coins we can be sure it will find the absolute minimum. We can then return arr[target].
+
+Note: The array will be initialized to amount+1 since the coins have positive values and the worst case scenario is value 1 coins all the way. We handle the nonexistent cases by checking if dp[target]==target+1. If it does, we know we did not find any value.
