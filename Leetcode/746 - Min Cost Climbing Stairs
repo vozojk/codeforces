@@ -1,0 +1,7 @@
+You are given an integer array cost where cost[i] is the cost of ith step on a staircase. Once you pay the cost, you can either climb one or two steps.
+
+You can either start from the step with index 0, or the step with index 1.
+
+Return the minimum cost to reach the top of the floor.
+
+Strategy: This is just a different version of "70 - Climbing Stairs". DP. We calculate the minimum possible cost reach all heights. Base cases are dp[0]=cost[0] dp[1]=cost[1]. The we use that the person can make either one or two steps from each step. Therefore we will need to check 2 values from which he could've gotten there. So, dp[i]=min(dp[i-2]+cost[i], dp[i-1]+cost[i]). This ensures the minimum cost possible since it checks the entrypoints and picks the lower one. We return min(dp[i-1], dp[i-2]).
