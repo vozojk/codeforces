@@ -1,0 +1,5 @@
+Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
+
+You must implement a solution with a linear runtime complexity and use only constant extra space.
+
+Strategy: This one has a simple trick. XOR. Since x^x=0 and order doesn't matter in it (commutative?), we can just xor the whole array one by one and whats left if the final number since all the pairs did x^x=0 and y^0=y.
