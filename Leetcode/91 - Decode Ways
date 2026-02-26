@@ -1,0 +1,28 @@
+You have intercepted a secret message encoded as a string of numbers. The message is decoded via the following mapping:
+
+"1" -> 'A'
+
+"2" -> 'B'
+
+...
+
+"25" -> 'Y'
+
+"26" -> 'Z'
+
+However, while decoding the message, you realize that there are many different ways you can decode the message because some codes are contained in other codes ("2" and "5" vs "25").
+
+For example, "11106" can be decoded into:
+
+"AAJF" with the grouping (1, 1, 10, 6)
+"KJF" with the grouping (11, 10, 6)
+The grouping (1, 11, 06) is invalid because "06" is not a valid code (only "6" is valid).
+Note: there may be strings that are impossible to decode.
+
+Given a string s containing only digits, return the number of ways to decode it. If the entire string cannot be decoded in any valid way, return 0.
+
+The test cases are generated so that the answer fits in a 32-bit integer.
+
+Strategy: This was a really tough one. But the logic is not that bad after solving it. So, we need to count the number of combinations of letters we could creat from this. For that we use DP, we keep track of the number of combinations until each letter and then we manipulate for the next one based off of that. The key is this: we need to check i-1 and i-2, if theres not a 0 that would make creating a new combination impossible and also if there is a good configuration for a 2 digit letter (under 27). This way we can check for both and then add the amount of ways together. Just adding a nonzero number to the sequence will not add any combination, but it will make the number of combinations for that position the same as for i-1, then, if there was a possibility to append to a 2 digit letter, we can also add the number of ways from i-2, since there are now 2 distinct possible ways the number can be appended. One to the 1 digit letter sum from i-1 and the second one from the 2 digit leter sum from i-1 and i-2 combined. Since each of those sequence (i-1 and i-2) have some amount of variations, we add them all together. For the final result, we return dp[string.length()].
+
+Note: To clarify and make sure I understand this correctly. dp[i] has the number of ways upto ith letter excluding. That is why we do the i-2 and i-1 check, because for i-1, i-1st letter wasn't there yet so we couldn't have known if it created a 2 digit numbers or not.
