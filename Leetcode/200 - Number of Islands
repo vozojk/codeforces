@@ -1,0 +1,5 @@
+Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+
+An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+
+Strategy: This is a classic problem for DFS we just keep mutate the matrix until all numbers are 0, everytime we do the highest level call of dfs we increase a counter. Dfs will just call itself on all 4 sides of that square if bounds permit, if not we return, then if sets grid[x][y] to 0. Also returns when grid[x][y] already is 0. This way is will change the whole island to zeroes and then stop. We loop like this through all the squares in the matrix. Since each high level dfs call removes one whole island, the number of calls to that is the answer.
