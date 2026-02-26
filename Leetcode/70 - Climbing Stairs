@@ -1,0 +1,5 @@
+You are climbing a staircase. It takes n steps to reach the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+Strategy: DP intro problem. We save the ways to to reach all heights and reuse them. The equation is dp[i]=dp[i-1]+dp[i-2]. Since we can get to height i from heights i-1 and i-2, we just add the distances. The base cases are dp[0]=1 dp[1]=1;
