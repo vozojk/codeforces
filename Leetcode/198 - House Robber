@@ -1,0 +1,5 @@
+You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
+
+Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.
+
+Strategy: This was my first DP problem. The idea is as follows: We traverse the array and always save the maximum amount of money we could possibly have at that point. Since we can not rob adjacent houses and not robbing 3 houses in a row would be a waste, we can have base cases robbing house 0 and house 1. After that we use max(dp[i-1], dp[i-2]+rob[i]), this if robbing the house will get us to a new maximum, we will do it. If it doesn't, we don't, since we would end up with less by robbing a house that we had before which violates the rule. The we can output the last value in dp since it can only increase.
