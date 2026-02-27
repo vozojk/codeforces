@@ -1,0 +1,5 @@
+You are given an integer array nums. The unique elements of an array are the elements that appear exactly once in the array.
+
+Return the sum of all the unique elements of nums.
+
+ Strategy: I used a hashmap. We just save the counter for all the numbers in the map and then loop through again, if the hashmap gives 1, we increase the counter. Return that.
