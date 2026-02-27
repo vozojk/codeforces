@@ -1,0 +1,7 @@
+A 3 x 3 magic square is a 3 x 3 grid filled with distinct numbers from 1 to 9 such that each row, column, and both diagonals all have the same sum.
+
+Given a row x col grid of integers, how many 3 x 3 magic square subgrids are there?
+
+Note: while a magic square can only contain numbers from 1 to 9, grid may contain numbers up to 15.
+
+Strategy: Since the bounds for the matrix size are 10. We can just bruteforce it. Take all the inner squares in the grid (x,y>1 && x<grid.size()-1 && y<grid[0].size()-1) and just write a helper to check the constraints. This helper will check if there are all numbers between 1 and 9, this is done with a vector where the number is the key. We set to one. At the end we sum the entries in the vector, it is sized 9 so if there weren't all nine numbers we return false. If any of the number are > 9 we also return false. Then, since we need to keep track of all the sums, we take the sum of one of the diagonals and save it. Then cross-check it with the other diagonal and all the horizontal and vertical lines (checked by 2 for loops) if all this passes we return yes. Is the helper for a certain square returns yes we increase a counter and return the result.
