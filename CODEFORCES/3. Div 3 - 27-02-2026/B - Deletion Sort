@@ -1,0 +1,17 @@
+AksLolCoding is playing a game on an array a of n positive integers. During each turn:
+
+If a is non-decreasing∗, the game ends.
+Otherwise, AksLolCoding can choose any single element and remove it from the array.
+Determine the minimum possible number of elements that can be remaining in the array after the game ends.
+
+∗a is non-decreasing if ai≤ai+1 for all 1≤i≤m−1, where m is the length of a.
+
+Input
+The first line contains an integer t (1≤t≤1000), the number of test cases.
+
+The first line of each test case contains an integer n (1≤n≤10).
+
+The second line of each test case contains n integers, the elements of a (1≤ai≤100).
+
+Strategy: This was probably the hardest problem for me I attempted in this contest. But that was becuase I tried to simulate it with dfs when there is a simple math trick. I was able to actually make it get accepted even with dfs, failed 2 times on TLE though. It's a classic dfs where I scan the array and remove an element, then go further, i wrote an isSorted() helper that checks if the removal triggered it being non-descending at which point the dfs returns, it tracks the max depth reached, while the optimization is the minimum amount of numbers left is always 1, since we are counting the letters removed, which probably also wasnt that smart. We take depth+currentArraySize(which is original size)-1==max, if it does we know we have removed arraySize-1 letters and we can return this number and stop the recursion early.
+But to the trick. The key is that if there is any number that triggers the array being non-descending, we can isolate it in a pair and remove all the numbers around it, since the pair will be non-descending, removing any other number cannot make it descending so we will be able to remove all numbers but 1 number from the pair, therefore everytime the array is not non-descending at the start the answer is 1. If the array is non-descending, the game end and the answer is arr.size().
