@@ -1,0 +1,23 @@
+You are given a permutation p of length n.
+There are also two portals located at positions x and y (x < y). A portal at position i is initially located between the i-th and (i+1)-th elements of the array.
+Specifically, if i=0, then the portal is located before the first element of the array, and if i=n, then the portal is located after the last element.
+You may perform either of the following two operations as many times as you like: Remove the element to the immediate left of one portal and insert it to the immediate right of the other portal.
+Remove the element to the immediate right of one portal and insert it to the immediate left of the other portal.
+
+Let O denote a portal. For example, if p is [3,O,2,4,O,1]:
+Using operation 1 on the left and right portals respectively results in the arrays [O,2,4,O,3,1] and [3,O,4,2,O,1].
+Using operation 2 on the left and right portals respectively results in the arrays [3,O,4,2,O,1] and [3,1,O,2,4,O].
+
+Find the lexicographically smallest permutation you can obtain using these operations. Note that portals do not affect the lexicographical comparison of permutations.
+A permutation of length n is an array of length n containing each integer from 1 to n exactly once. A permutation a is lexicographically smaller than permutation b if there exists an index i such that a[j]=b[j] for all indices 1 <= j < i and a[i] < b[i].
+
+Input: The first line contains an integer t (1 <= t <= 20000), the number of test cases.
+For each test case, the first line contains three integers n, x, and y (1 <= n <= 200000, 0 <= x < y <= n).
+The second line of each test case contains n integers p1, p2, ..., pn, a permutation of length n.
+The sum of n over all test cases does not exceed 200000.
+
+Output: For each test case, output a line with n integers, the lexicographically smallest permutation you can obtain.
+
+Strategy: This one was pretty difficult but the picture at the end showing the inner array rotating through the portals helped a lot. The key is realizing that the portals effectivelly split the big array into 2 parts that can interact with eachother. The first part is the subarray between the two portals and then second part is the rest. The only thing we need to maintain is the adjacency of the numbers in the subarrays. Since the goal is to find a lexicographically smallest array. We will make use of the mechanics of the portals to achieve this. The left and right parts of the outer array (in between which is the inner one) can jump over the inner array and move either left or right. The inner array can rotate. Therefore to achieve the lexicographically smallest configuration, we find the rotation of the inner array that is lexicographically smallest (by rotating, saving with if (best > current) best = current. Since the comparison operators compare vectors lexicographically. For the outer array, we need it to keep only the numbers that make it possible to use the configuration of the inner array, since in numbers like 1211111 and 11999999 the numbers after the one thats different dont matter, we shift the outer array right getting rid of big numbers on the left (starting at index 0, since going from the other end doesn't make sense), until the number we check next is bigger than the first number in the inner array, here, we place all the values from that and then just append the rest. Since we made use of all the numbers better than the start of the inner array from the left one, we are guaranteed to have the best possible configuration.
+
+Note: Since it is a permutation all the elements are distinct and therefore the best rotation will always be the one starting with the smallest element, this can be found just by scanning through the array once in O(n) time. My approach is O(n^2) since the comparison operator is worst case O(n), but this doesn't matter that much since the elements are distinct the operator take O(n) only if the elements are the same.
