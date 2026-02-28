@@ -1,0 +1,11 @@
+You are given an array of integers stones where stones[i] is the weight of the ith stone.
+
+We are playing a game with the stones. On each turn, we choose the heaviest two stones and smash them together. Suppose the heaviest two stones have weights x and y with x <= y. The result of this smash is:
+
+If x == y, both stones are destroyed, and
+If x != y, the stone of weight x is destroyed, and the stone of weight y has new weight y - x.
+At the end of the game, there is at most one stone left.
+
+Return the weight of the last remaining stone. If there are no stones left, return 0.
+
+Strategy: We use a priority queue. A max heap. We always pop the 2 elements on top. If they are the same we continue, if they are different we push first-second (since the first is always bigger) we do this in a while loop with queue.size()>1. Then we check the queue size, if its zero we return 0 else we return the top of the queue.
