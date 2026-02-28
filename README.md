@@ -1,0 +1,1 @@
+This is my personal log for competitive programming and algorithmic problem-solving. It is completely unpolished. It contains raw problem statements and my unfiltered thought processes. I use this to track my progression and solidify patterns.
