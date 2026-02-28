@@ -1,0 +1,9 @@
+You are given an m x n binary matrix mat of 1's (representing soldiers) and 0's (representing civilians). The soldiers are positioned in front of the civilians. That is, all the 1's will appear to the left of all the 0's in each row.
+
+A row i is weaker than a row j if one of the following is true:
+
+The number of soldiers in row i is less than the number of soldiers in row j.
+Both rows have the same number of soldiers and i < j.
+Return the indices of the k weakest rows in the matrix ordered from weakest to strongest.
+
+Strategy: This is a sorting problem. We need to find the rows with the least 1's and if they are the same then we sort by index. The only thing we need to do is create row,index pairs and then sort. After that we just put the first k rows in an array. The more effective way (since sort takes O(NlogN) is to create a priority queue and add the pairs (this time not vector,index but count of 1s, index for maximum efficiency), when we reach size K we use the classic "pop top if the new one fits more" rule. We loop like this through the whole vector and return the contents of the queue. We can also break everytime there are no more ones left since we don't have anything to count and the rows are sorted. We could also use binary search (lower bound of the 0 and then go it-- to find the last 1 whichs index will be the count) but i haven't done that.
