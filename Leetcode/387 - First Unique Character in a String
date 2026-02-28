@@ -1,0 +1,3 @@
+Given a string s, find the first non-repeating character in it and return its index. If it does not exist, return -1.
+
+Strategy: We save a variable with the current character, we also make a boolean with setNow. We check arr[i]!=arr[i-1], everytime it is true, change the current character and set setNow to true, in all arr[i]!=arr[i-1] checks we also check if setNow==true, if it does it means that we have just set a new character and it changed again, therefore it must be alone, so we return i;
