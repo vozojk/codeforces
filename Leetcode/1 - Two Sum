@@ -1,0 +1,7 @@
+Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+You can return the answer in any order.
+
+Strategy: Managed to forget 2 pointer logic so I had to bring it back. The goal is to find the indices of 2 numbers so they add up to a certain number. First, we sort the array. For this to work and us still have the indices we need to traverse the whole array and create <num, index> pairs and sort that. Then we create a pointer for the first pair and the last pair. The logic is that increasing the left pointer will always increase the sum by as less as possible since it's the next bigger number and decreasing the right pointer will always decrease it by as less as possible. Therefore we can't miss since we couldn't have been any more accurate. So, we do while(left < right) and move the right pointer left if the target is too big and left pointer right if it is too small. If the sum is the target we return. At the end we return the {left, right}. I have done 2 sum this way so I am prepared for 3Sum which requires this logic.
