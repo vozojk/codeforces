@@ -1,0 +1,14 @@
+Date: 13/03/2026
+
+Given an array of n integers, your task is to find the maximum sum of values in a contiguous, nonempty subarray.
+Input
+The first input line has an integer n: the size of the array.
+The second line has n integers x_1,x_2,...,x_n: the array values.
+Output
+Print one integer: the maximum subarray sum.
+Constraints
+
+1 <= n <= 2*10^5
+-10^9 <= x_i <= 10^9
+
+Strat: The trick for this is keeping the count and resetting only when the value gets below the so far reached maximum. We set a total varible under -10^9 and make a current variable then for each number we add it to current. If current>total we set total to current, if it is < 0 we reset the counter to 0. This way, when we go below 0 (being below would just add a negative number to the numbers after the subarray representing this sum) we reset back to 0 and start again. We either reach a new maximum or the maximum will be the old value.
