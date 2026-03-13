@@ -1,0 +1,19 @@
+Date: 13/03/2026
+
+There are n sticks with some lengths. Your task is to modify the sticks so that each stick has the same length.
+You can either lengthen and shorten each stick. Both operations cost x where x is the difference between the new and original length.
+What is the minimum total cost?
+
+Input:
+The first input line contains an integer n: the number of sticks.
+Then there are n integers: p_1,p_2,...,p_n: the lengths of the sticks.
+
+Output:
+Print one integer: the minimum total cost.
+
+Constraints:
+
+1 <= n <= 2*10^5
+1 <= p_i <= 10^9
+
+Strat: The key is realizing that to achieve the smallest cost, we need to find the median of the array. I imagine this is finding a point on a line to which the combined distance from all the other points is the shortest. My reasoning is that the point must be in the middle since by moving it to the side we add the distance moved to all the points opposite of the distance but also to the middle point itself, since the middle point is the middle, the number of points on the side of our point +1 for the middle point will be always larger than the number of points we are moving closer to and therefore the overall distance must be increasing. This works the same way to the other side. By this logic, is there is an even amount of points, choosing any of them is fine since it doesn't add extra points that would make the balance shift to one side.
