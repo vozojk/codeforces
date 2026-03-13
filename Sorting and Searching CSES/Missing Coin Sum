@@ -1,0 +1,14 @@
+Date: 13/03/2026
+
+You have n coins with positive integer values. What is the smallest sum you cannot create using a subset of the coins?
+Input
+The first line has an integer n: the number of coins.
+The second line has n integers x_1,x_2,...,x_n: the value of each coin.
+Output
+Print one integer: the smallest coin sum.
+Constraints
+
+1 <= n <= 2*10^5
+1 <= x_i <= 10^9
+
+Strat: We sort the array. The problem boils down to finding a number that cannot be made by the combination of the numbers before it. We can check this by searching for a gap between the numbers. This can be done by tracking the total sum and checking if the next number is bigger or not. If nextNum>total+1 we know that we cannot possibly create total+1 since all of the numbers before nextNum add to total and nextNum is too big. If we find this number, we return it. If we manage to iterate through the whole array we just print total+1 since thats the smallest numbers not achievable by summing the whole array.
