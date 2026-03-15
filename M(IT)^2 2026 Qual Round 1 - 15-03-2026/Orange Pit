@@ -1,0 +1,16 @@
+Busy Beaver has filled a pit with N labeled oranges. The i-th orange is labeled a_i.
+Busy Beaver is playing a game with these oranges. They start with a score of 0. Then, until there is only one orange left, Busy Beaver will select two oranges i and j, gain |a_i - a_j| points, discard one of these oranges, and return the other to the pit.
+Find the maximum number of points Busy Beaver can score.
+
+Input Format:
+Each test contains multiple test cases. The first line contains a single integer T (1 <= T <= 10^4) — the number of test cases. The description of the test cases follows.
+The first line of each test case contains a single integer N (1 <= N <= 2 * 10^5).
+The second line of each test case contains N integers a_1, ..., a_N (1 <= a_i <= 10^9).
+The sum of N across all test cases does not exceed 2 * 10^5.
+
+Output Format:
+For each test case, print the maximum number of points Busy Beaver can score.
+
+Strat:
+
+This was an absolute nightmare. I got stuck for 2 hours straight. I thought there is some easy way to simulate it but it just got bloated and it didn't even work. My first approach was using dequeue and always using the biggest available "distance". This would work but I did not realize it doesn't work at all. After we sort the array, the problem can be mapped on finding the point to which there is maximum distance from another point in the array. After a bit of thinking, it is obvious that for any point in the array, the furthest point will always be one of the edges. Therefore, the correct solution is to iterate through all the "inner" points and check if they are further away from the left or right edge and just removing them. This way, we maximize the distance. Since the easiest implementation is just having a for loop and adding max(abs(leftE-points[i], abs(rightE-points[i]) we need to account for the edge only addition being counted twice (once at i=0 and second time at i=points.size()-1). Therefore we deduct points[size()-1]-points[0] from the final total and return.
