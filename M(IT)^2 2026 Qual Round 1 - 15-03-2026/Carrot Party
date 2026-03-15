@@ -1,0 +1,20 @@
+Baker Beaver has prepared a long fruit tart. This tart is decorated with a sequence of 2N + 1 toppings: N pieces of Indigo berries, N pieces of Tangerine slices, and exactly one Marzipan star. Baker Beaver will be happy if the toppings are arranged in the form MITIT...IT. That is, the first topping should be M, and then I and T should alternate, beginning with I (N times).
+
+However, in the morning rush, the toppings were placed in a scrambled order, represented by a string s of length 2N + 1 consisting of the characters M, I, and T. To fix the tart without ruining the crust, you may perform the following operation any number of times (possibly zero):
+
+Choose an index i (1 <= i < |s|), split the string into two parts s[1...i] and s[i + 1...|s|], and then swap the two parts to obtain the new string s[i + 1...|s|] + s[1...i].
+
+Find the minimum number of operations needed to make Baker Beaver happy. If it is impossible, output -1.
+
+Input Format:
+Each test contains multiple test cases. The first line contains a single integer T (1 <= T <= 10^4) — the number of test cases. The description of the test cases follows.
+The first line of each test case contains a single integer N (1 <= N <= 10^5).
+The second line of each test case contains a string s of length 2N + 1, consisting of N occurrences of I, N occurrences of T, and exactly one occurrence of M.
+The sum of N across all test cases does not exceed 2 * 10^5.
+
+Output Format:
+For each test case, print a single integer — the minimum number of operations required to make Baker Beaver happy.
+If it is impossible, print -1 instead.
+
+Strat:
+The key is that M has always be at the start. Therefore we can really only do one swap and that is the swap to put M in the first place, any other swap would move M and moving it back would require reversing the operation. Therefore the problem boils down to doing a swap so that M is at idx 0 which is the same as just loading the part after M (including) first and then the letters before it. After that we check for each adjacent pair of characters starting from idx=1 if they are different. If they are not the MITITIT... pattern is not being met. This eliminates all the impossible inputs. For the possible ones the answer can be only 1 or 0. If M was at idx=0 at the start the string was already in the correct position. If it wasn't we do one swap to put it there.
