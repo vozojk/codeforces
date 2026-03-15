@@ -1,0 +1,23 @@
+Bob likes to play an interesting tower defense game on his mobile phone. In the game, he must play cards to defeat his opponents!
+
+There are n cards placed in a queue called a deck. At any moment, Bob is only able to play the cards that are currently placed in the first k positions in the deck. In each turn, Bob selects a card placed in the first k positions, removes it from the deck, plays it, and then places the same card back at the bottom of the deck. In other words, in each turn an element from the first k elements in the queue is selected, moved to the end of the queue, and all elements placed after it are moved one index to the front.
+
+One card is called the win-condition, and Bob wants to play it as many times as possible. However, each card also has a cost needed to play. The i-th card (initially placed at the i-th position) costs Bob ai energy every time it is played. The total cost of cards played must not exceed m. Initially, the win-condition card is placed at the p-th place in the queue.
+
+You need to find out the maximum number of times the win-condition card can be played, ensuring that the total cost does not exceed m.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤5000). The description of the test cases follows.
+
+The first line of each test case contains four integers n,k,p,m (1≤k,p≤n≤5000, 1≤m≤5000), denoting the number of cards, the number of cards that are playable at a time, the initial position of the win-condition, and the total energy available.
+
+The second line of each test case contains n integers a1,a2,…,an (1≤ai≤m) denoting the cost of each card.
+
+It is guaranteed that the sum of n over all test cases does not exceed 5000.
+
+Output:
+For each test case, output one integer in one line, denoting the maximum times the win-condition can be played.
+
+Strategy:
+
+This is basically just a simulation. We need to track the position of the winning card and all the other cards based on their cost and then implement logic for using the card and moving it to the end. This can be done by creating an array of costs. We then loop until our money is insufficient or reaches 0 and everytime we check the current window (k). If the winning card is there we play it, since the goal is to play it as many times as possible and it doesn't get any cheaper if we don't play it. If it's not there yet the only way to get it there is to play a card so the whole queue shifts. Since regardless of which card we play the queue shifts by 1, we just play the cheapest card, we can use std::min_element to find it. Everytime when we play a card we push it to the back of the array and call erase on the original position with arr.begin()+pos. We also deduct money since we just used it. Everytime we play the winning card we increase a counter, we output that when the while loop breaks.
