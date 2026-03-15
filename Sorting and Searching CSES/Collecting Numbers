@@ -1,0 +1,18 @@
+Date: 14/03/2026
+
+You are given an array that contains each number between 1...n exactly once. Your task is to collect the numbers from 1 to n in increasing order.
+On each round, you go through the array from left to right and collect as many numbers as possible. What will be the total number of rounds?
+
+Input:
+The first line has an integer n: the array size.
+The next line has n integers x_1,x_2,...,x_n: the numbers in the array.
+
+Output:
+Print one integer: the number of rounds.
+Constraints
+
+1 <= n <= 2*10^5
+
+Strategy:
+
+The key is thinking about positions of numbers and not the actual numbers. We save them in an array. Then we iterate through the array and check for position[i]<position[i-1], we do this because if it is true it means that we have already skipped a number we now need and therefore we need to start again. Since this is local and independent of our counting or anything we can loop through the array just once increasing a counter everytime this condition is satisfied.
