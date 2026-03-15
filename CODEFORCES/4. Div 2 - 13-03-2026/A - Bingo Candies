@@ -1,0 +1,25 @@
+Alice has a magic board. The board is described as a n×n grid; each tile has a colored candy in it. The color of the candy in the i-th row, j-th column is ai,j.
+
+Bob wants to know if he can rearrange the board in some way so that no row or column consists of n
+ candies of the same color.
+
+Your task is to determine whether such a rearrangement exists.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤500). The description of the test cases follows.
+
+The first line of each test case contains an integer n (1≤n≤100), denoting the size of the board.
+
+The following n lines contain n integers each; the j-th integer on the i-th line is ai,j (1≤ai,j≤n2), denoting the color of candies on the board.
+
+It is guaranteed that the sum of n over all test cases does not exceed 500.
+
+Output:
+
+For each test case, print "YES" if a valid rearrangement exists, and "NO" otherwise.
+
+You can output the answer in any case (upper or lower). For example, the strings "yEs", "yes", "Yes", and "YES" will be recognized as positive responses.
+
+Strategy:
+
+We need to realize that the only way to guarantee no full rows or columns being created is to have enough numbers to put at least one different number in each row and column. We need the different numbers to "see" to whole grid. The most effective way of reaching this is placing them on the diagonal (or any other arrangment where each column and row has 1 number). Therefore this problem boils down to putting the counts in a hashmap, taking the biggest count and then checking if it is bigger than n*n-n (number of squares in the grid minus the diagonal). If it is we cannot place a different number in each square and row and therefore there must be a row or column with all same numbers. We output based on this.
