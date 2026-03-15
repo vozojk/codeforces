@@ -1,0 +1,21 @@
+Date: 15/03/2026
+
+This is the hard version of the problem. The difference between the versions is that in this version, the constraint on n is higher. You can hack only if you solved all versions of this problem.
+You once had an undirected tree with n nodes. To make the tree look more interesting, you decided to assign an arbitary direction to each of the n−1 edges.
+As time goes by, you forgot the structure of your tree. However, you found a note which recorded after the direction of the edges have been assigned, whether u can reach v∗ for all ordered pairs of (u,v) which satisfies 1≤u,v≤n.
+You want to find out the structure of the tree and the direction of the edges from the information given by the note. Determine if there is possible solution and construct one. If there are multiple solutions, you only need to find one of them.
+∗
+For a directed graph, we say that x can reach y if and only if there exists a sequence of nodes u1,u2,…,uk such that u1=x,uk=y and for all i from 2 to k, the directed edge ui−1→ui exists. In particular, a node can always reach itself.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The first line of each test cases contain an integer n (2≤n≤8000) denoting the number of nodes your tree have.
+The following n lines contain a string si. si is of length n and consists only of 0 and 1. The j-th character of si is 1 if and only if i can reach j after the edges are directed.
+It is guaranteed that the sum of n2 over all test cases does not exceed 80002.
+
+Output:
+For each testcase, output Yes if a solution exists, otherwise print No. If the answer is Yes, on the following lines output a description of the edges constructed.
+Output n−1 lines denoting the directed edges. Each line should contain two integers x and y, denoting that after the edges are directed, the directed edge x→y exists. If there are multiple solutions, print any of them.
+You can output the answer in any case (upper or lower). For example, the strings "yEs", "yes", "Yes", and "YES" will be recognized as positive responses.
+
+Strategy: so, first we load up the numbers of connections of different nodes and also the matrix. then, for each node, we check the node that has the biggest numbers of connections and is connected to that node, we do that through the connected array which is created by just traversing line i of the reachability matrix. the checking for the bigger node is being done and while doing it we mark all the paths of the previously checked nodes and their children, since it is a tree and there is one unique path from 1 node to another we know that if the node got already marked is was covered by some of the previous direct children and therefore cannot be a direct child. if the node didn't get covered, we save it as a direct edge. this works because the list of connected nodes is sorted by number of connections. when we find an edge we push it to the edge vector and then to 2 vectors, one tracking undirected edges meaning we add both a->b and b->a and a directed vector to which we add just a->b. this is the part that finds the edges if it is possible. then we need to check for 3 things. number of edges, cycles and that the structure of the tree created by our edges matches the actual tree. for edge numbers we know the number of edges is nodes-1 so we check n-1==edges.size(). for the cycles we do a bfs, marking visited nodes and if we ever reach a visited node we know there is a cycle. for the structure check we do a bfs. for each node, we find all the nodes it is connected to and check it with the original reachability matrix. if they agree we continue, if we ever find a disagreement we print no.
