@@ -1,0 +1,18 @@
+time limit per test: 2 seconds
+memory limit per test: 512 megabytes
+
+Alice, Bob, and Carol visit a spring to collect water. Alice visits every a days (on days a, 2a, 3a, ...), Bob visits every b days (on days b, 2b, 3b, ...), and Carol visits every c days (on days c, 2c, 3c, ...).
+
+When only one person visits, they collect 6 liters of water. If multiple people visit, the water is divided equally: two people take 3 liters each, and three people take 2 liters each.
+
+Your task is to calculate how much water Alice, Bob, and Carol collect over m days, starting from day 1.
+
+Input
+The first line contains a single integer t (1 <= t <= 10^4) — the number of test cases.
+The only line of each test case contains four integers a, b, c, and m (1 <= a, b, c <= 10^6; 1 <= m <= 10^17).
+
+Output
+For each test case, print three integers — the number of liters of water that Alice, Bob, and Carol collect over m days.
+
+Strategy:
+This problem boils down to finding the number of times there's all people, then any 2 and then a single one. We can do this by using the lowest common multiple of the numbers and then dividing m with it to find the intersection of all 3 and then lcm of any 2 people with deducting the count for all of them since they do overlap. For the times theres only one we just divide m with their frequency and then deduct all the times we count where they are there with someone else. Then we output the corresponding amounts of liters for the counts all summed up for each of them. The lcm works since it finds the multiple at which the 2 or 3 numbers times some constant are all divisible by the same number into a clean integer. For example if a goes every 3 days and there are 30 days he will go 10 times. If we add b going every 5 days they will intersect every 15 days since lcm(10,3)=15, this is an inherent property of the lcm, it literally is the lowest number that can be divided by both a and b with nothing remaining.
