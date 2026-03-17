@@ -1,0 +1,20 @@
+You are given an undirected graph with n vertices and m edges. Let us orient each edge of the graph (i.e. for each edge {u, v}, let us choose its direction: u to v or v to u).
+
+A path v1, v2, ..., vk in the oriented graph is called alternating if for each i (1 < i < k), either v_i-1 to v_i and v_i+1 to v_i, or v_i to v_i-1 and v_i to v_i+1. In other words, every two adjacent edges on the path have different directions (the first pointing towards v_i and the second pointing from v_i, or vice versa).
+
+A vertex v is called beautiful if every path starting at v in the undirected graph is alternating in the oriented graph. Note that the vertex v must be the first vertex of the path, and the first edge of the path must be directed from v (i.e., v to v2).
+
+Find the maximum possible number of beautiful vertices among all possible orientations of the edges.
+
+Input:
+The first line contains an integer t (1 <= t <= 10000) - the number of test cases.
+The first line of each test case contains two integers n and m (1 <= n <= 300000, 0 <= m <= 300000) - the number of vertices and edges.
+The next m lines each contain two integers u and v (1 <= u, v <= n, u != v) - the vertices connected by an edge.
+It is guaranteed that the sum of n and the sum of m over all test cases do not exceed 300000.
+
+Output:
+For each test case, output a single integer - the maximum possible number of beautiful vertices.
+
+Strategy:
+
+so, to make it simple, this problem requires us to give directions to edges in a graph and then identify beautiful paths which are those which have alternating edge directions starting with outwards. the key is careful consideration of the wording, the problem is saying that the vertex is beautiful iff the all paths from it in the original graph are beautiful in the directed graph. this tells us that these are not only paths that we create by giving directions but every single path in the graph that is achievable from the vertex. therefore this problem boils down to identifying islands since this gives us the scope for the paths in them and then using a concept called bipartite graphs which means that we create 2 groups and the rule is that all nodes from group 1 can connect only to nodes from group 2 and vice-versa. This is analogical to the graph having all paths being beautiful possible since if we can create it the path is literally just going from group 1 -> group 2 -> group 1 etc... while having all nodes in one group have only incoming nodes and all the nodes in the other group only outgoing nodes. we can mark this state by "coloring" since just a boolean wouldn't be enough because we have 3 states; group 1, group 2 and uncolor we just assign numbers. so now we just need to identify bipartite graphs in islands. we can do this by running a simple bfs from each node. we start the first island at one and keep going while there are still uncolored nodes connected to the current node. at the start we have create an adjancency vector storing all connections so we just use that and we bfs through every single node in that island coloring them by using color[current]=1-color[prev], since we chose colors as 1 and 0 this will just flip the color. We do this only for nodes that are uncolored (marked by -1 in the vector) for the colored ones we check if color[current]==color[prev], if it does we have reached a node we have already color and it is not the right color, therefore the graph cannot be bipartite. if this happens we mark with a bool that it is not bipartite but we finish the island since we still need to color rest of the nodes. at the end of each bfs we check the bool and if it didnt get triggered the graph is bipartite. while doing the bfs we have kept counters of members in group 1 and group 2, since we can start at whichever node we want but it needs to have an outgoing edge we just pick the bigger group and add that to the total. at the end of the for loop going through all the nodes we output the total. this works very well since once we color the edges we dont do the bfs on them therefore there is no double counting or any special edge cases.
