@@ -1,0 +1,12 @@
+You are given n cubes in a certain order, and your task is to build towers using them. Whenever two cubes are one on top of the other, the upper cube must be smaller than the lower cube.
+You must process the cubes in the given order. You can always either place the cube on top of an existing tower, or begin a new tower. What is the minimum possible number of towers?
+
+Input:
+The first input line contains an integer n: the number of cubes.
+The next line contains n integers k_1,k_2,...,k_n: the sizes of the cubes.
+
+Output:
+Print one integer: the minimum number of towers.
+
+Strategy:
+For this one there is one key realization. If we keep an array which track the tops of the towers we can always have it sorting without actually sorting by using upper bound to find the first position that would fit the new number (meaning the lowest top that is bigger). If that returns .end() we just push it into the array as a new base. This works since the top bigger than this must still be bigger since lower bound didn't return it as the first available one and we couldn't have put it into something before since the tops were too small which means they have to be smaller than this one. We just keep pushing numbers into this scheme and we increase a counter everytime we push a new base. We return that.
