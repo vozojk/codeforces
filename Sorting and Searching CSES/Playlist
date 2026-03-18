@@ -1,0 +1,12 @@
+You are given a playlist of a radio station since its establishment. The playlist has a total of n songs.
+What is the longest sequence of successive songs where each song is unique?
+
+Input:
+The first input line contains an integer n: the number of songs.
+The next line has n integers k_1,k_2,...,k_n: the id number of each song.
+
+Output:
+Print the length of the longest sequence of unique songs.
+
+Strategy:
+This was a classic sliding window. For this, we keep a hashmap having the counts for each song number and iterate the array with a for loop. In each iteration we increase a counter for that number and increase the size, after that we have a while loop at will spin everytime the count for that number is bigger than 1 (there is a duplicate) this spins and moves the left side of the window more left descreasing the counter for map[numbers[left]] until map[numbers[i]]==1 while also decreasing the length counter. We keep track of the biggest int which is updated always at the end of the for iteration with max(biggest, current).
