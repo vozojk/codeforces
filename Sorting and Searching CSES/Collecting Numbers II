@@ -1,0 +1,14 @@
+You are given an array that contains each number between 1...n exactly once. Your task is to collect the numbers from 1 to n in increasing order.
+On each round, you go through the array from left to right and collect as many numbers as possible.
+Given m operations that swap two numbers in the array, your task is to report the number of rounds after each operation.
+
+Input:
+The first line has two integers n and m: the array size and the number of operations.
+The next line has n integers x_1,x_2,...,x_n: the numbers in the array.
+Finally, there are m lines that describe the operations. Each line has two integers a and b: the numbers at positions a and b are swapped.
+
+Output:
+Print m integers: the number of rounds after each swap.
+
+Strategy:
+This is a direct optimization of Collecting Numbers, we use the fact that the amount of rounds is the number of times some number x is before x-1 in the array and then try to localize this and change the amount of rounds based on the change on the underlying array. We can do this by realizing that the only parts of the array that can be affected are for the numbers (not indices) that are 1 off from the affected number. Since we are swapping x and y the pairs affected can be only (x-1,x),(x,x+1),(y,y+1,(y-1,y). Therefore, we just need to check if any of these pairs (x being in the array after x+1) added a round. We save those. Then, we check the pairs again with the values swapped. We do this by having a separate array that saves indices for all numbers and we check positions[numbers[a]-1]>positions[numbers[a]]. If this is true we know that the position for number at index a is lower than the position of the number one lower than the number at index a therefore requiring a round. We do this for all pairs. The we increment or decrement the round count based on the matches between previous and current values. Since the numbers in the swap can be adjacent we also need to check for duplicates since if numbers[a]=5 and numbers[b]=6 we have (4,5),(5,6),(5,6),(6,7) creating a duplicate. We add a check for that. Then we just cout the rounds counter at the end of each iteration.
