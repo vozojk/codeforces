@@ -1,0 +1,13 @@
+Consider a game where there are n children (numbered 1,2,...,n) in a circle. During the game, every other child is removed from the circle until there are no children left. In which order will the children be removed?
+
+Input:
+The only input line has an integer n.
+
+Output:
+Print n integers: the removal order.
+
+Constraints:
+1 <= n <= 2*10^5
+
+Strategy:
+For this problem, since there are no insane constraints or sizes we can just simulate it in O(n). We make a queue with all the numbers and then we just loop until it's empty with removing two numbers, printing the second and putting the first back (at the end). This way we always skip one.
