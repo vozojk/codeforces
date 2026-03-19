@@ -1,0 +1,16 @@
+Given an array of n integers, count the number of subarrays where each element is distinct.
+
+Input:
+The first line has an integer n: the array size.
+The second line has n integers x_1,x_2,...,x_n: the array contents.
+
+Output:
+Print the number of subarrays with distinct elements.
+
+Constraints:
+
+1 <= n <= 2*10^5
+1 <= x_i <= 10^9
+
+Strategy:
+For this problem we need to figure out how to find the answer in <O(nlogn) since O(n^2) times out. The immediate candidate for a solution is a sliding window since we are doing subarrays. We only need to map it to this problem. The key is realizing that by adding an element into the subarray we increase the amount of total subarrays creatable from it by the current size of the subarray since we can create subarrays ranging from size all the way to only the new element that couldn't have been created before. Therefore we do a for loop for the right pointer and inside make a classic sliding window while loop to move the left pointer. In this case we keep a hashmap of the counts of the numbers and we trigger the while for counts[nums[i]]>1, we move the left pointer and decrease the counts for counts[nums[i]]. At the end of each for iteration we update the total count with right-left+1 (the +1 since 1 element is still 1 subarray). We output that count. We use ll for the count since it could be above INT_MAX.
