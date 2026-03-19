@@ -1,0 +1,17 @@
+Given an array of n integers, count the number of subsequences where each element is distinct.
+A subsequence is a sequence of array elements from left to right that may have gaps.
+
+Input:
+The first line has an integer n: the array size.
+The second line has n integers x_1,x_2,...,x_n: the array contents.
+
+Output:
+Print the number of subsequences with distinct elements. The answer can be large, so print it modulo 10^9+7.
+
+Constraints:
+
+1 <= n <= 2*10^5
+1 <= x_i <= 10^9
+
+Strategy:
+This problem is different from the previous one since order does not matter. Therefore the goal finding all possible subsequences from numbers at any positions. Since the sequences can repeat we are basically trying to find total permutations of any length - permutations of any length with duplicates. This can be solved by using a clever trick to manage the length. Since normally we would be counting occurrences of each number to know how many picks for each one we have to manage the duplicate subsequences we just add 1 to each count for not picking. Therefore the our counts will be x for x numbers of this value existing in the array and then 1 for not picking anything, skipping that number. From then it is simple combinatorics. To find the subarrays we just iterate through the numbers in the hashmap that counted them and multiply all of them since for the first number we can pick from x distinct copies of it, for the second one from y distinct copies (for both +1 for not picking it at all). Since we iterate through the counts of the number we can never count an array with a duplicate. The product of all counts adjusted for not picking anything is the total amount of subsequences. When doing the products we always save the result mod 10^9+7 so we don't overflow. We return that -1 since we need to account for the case where all the numbers get skipped which we have counted but is not a valid subsequence.
