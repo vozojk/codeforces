@@ -1,0 +1,16 @@
+There are n books, and Kotivalo and Justiina are going to read them all. For each book, you know the time it takes to read it.
+They both read each book from beginning to end, and they cannot read a book at the same time. What is the minimum total time required?
+
+Input:
+The first input line has an integer n: the number of books.
+The second line has n integers t_1,t_2,...,t_n: the time required to read each book.
+
+Output:
+Print one integer: the minimum total time.
+
+Constraints:
+1<=n<=2*10^5
+1<=t_i<=10^9
+
+Strategy:
+We need to divide this problem into two cases based on the bottleneck. We are either going to be constrained by one book being longer than all the other books are we just need to correctly divide the two sets of books so each person can be reading at almost all times. Therefore we take the sum of all books and the longest book. The first possible value is longest*2 and the other one is just the sum of the lengths since it always will be possible to give the other girl a book to read but she still does need to read all of them.
