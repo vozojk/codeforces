@@ -1,0 +1,18 @@
+A factory has n machines which can be used to make products. Your goal is to make a total of t products.
+For each machine, you know the number of seconds it needs to make a single product. The machines can work simultaneously, and you can freely decide their schedule.
+What is the shortest time needed to make t products?
+
+Input:
+The first input line has two integers n and t: the number of machines and products.
+The next line has n integers k_1,k_2,...,k_n: the time needed to make a product using each machine.
+
+Output:
+Print one integer: the minimum time needed to make t products.
+
+Constraints:
+1<=n<=2*10^5
+1<=t<=10^9
+1<=k_i<=10^9
+
+Strategy:
+For this one we need to somehow cook up the time for the amount of products. This is difficult since the production times are different and we can't just average them since that is very likely to give us time where the machines have on average t products but have not actually finished them yet. (5 machines with 1 product per 5 seconds doesn't mean there's a product outputted each second). Therefore we just make educated guesses. We use a binary search on these guesses. Since the absolute maximum time we could have is n=1 t=1e9 k=10e9 which would require 10e18 time, we use a long long (2^63~=1.8*10^19) for the upper boundary and 1 for the lower boundary since we need at least 1 unit of time to produce anything. Then we write a helper that will take our guess and compute the number of products made. The we just binary search on the output, if it is too small we do left = mid+1 if it is too big we do right=mid-1 and update mid as a possible answer. (we do this with min(ans,mid) since we want the smallest possible that fits). We do not exit when we get the exact number since because of the reality that if a machine makes 1 product every 1000t it will have made the same amount on t=1000 as on t=1500. Therefore we just search until left<=right and the output ans. We also keep a condition in the helper which automatically outputs LONG_LONG_MAX anytime the total would overflow. This is done by using LONG_LONG_MAX - total < x/time, this is effectively the same as using total+x/time<total which can't be true but we need to write it like this because the compiler will automatically optimize out any instruction which have an addition of a positive number checking if the result is bigger than that number, in the eyes of the compiler there is no overflow like this so we rearrange the terms a bit so it doesn't edit it out.
