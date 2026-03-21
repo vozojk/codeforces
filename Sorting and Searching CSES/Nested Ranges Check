@@ -1,0 +1,14 @@
+Given n ranges, your task is to determine for each range if it contains some other range and if some other range contains it.
+Range [a,b] contains range [c,d] if a <= c and d <= b.
+
+Input:
+The first input line has an integer n: the number of ranges.
+After this, there are n lines that describe the ranges. Each line has two integers x and y: the range is [x,y].
+You may assume that no range appears more than once in the input.
+
+Output:
+First print a line that describes for each range (in the input order) if it contains some other range (1) or not (0).
+Then print a line that describes for each range (in the input order) if some other range contains it (1) or not (0).
+
+Strategy:
+The key is realizing that if we sort the array in the correct order and traverse the first range of a certain starting value will hold properties compared to the rest of the values. We can sort the array by starting value and if they are equal we sort by end value descending. This way, we can then traverse the array left to right and since the starts of the range will be only getting bigger we can just keep track of the maximum end of the range. If the current range end is smaller than the biggest end we know it is definitely contained in some other array, otherwise it is not. We can use this to find all the ranges that are contained in something. Then we can use the same sorted array of ranges but going left to right and keep track of the smallest end. If the end we see in our current range is bigger than the maximum we have found so far, we know the range definitely contains something.
