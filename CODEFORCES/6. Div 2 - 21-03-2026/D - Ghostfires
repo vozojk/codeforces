@@ -1,0 +1,40 @@
+D. Ghostfires
+time limit per test: 2 seconds
+memory limit per test: 256 megabytes
+
+OtterZ decided to make a weapon using ghostfires. He collected several ghostfires in colors red, green, and blue. He will put some of the ghostfires in a row to build the weapon. To make the weapon more powerful, OtterZ will use as many ghostfires as possible, but the weapon will be out of control if there are two ghostfires of the same color adjacent or separated by exactly two ghostfires in the row.
+Formally, OtterZ collected r red ghostfires, g green ghostfires, and b blue ghostfires. He wants to construct a string s consisting of the characters 'R', 'G', and 'B' that satisfies the following conditions:
+
+The number of occurrences of 'R', 'G', and 'B' in s does not exceed r, g, and b, respectively.
+
+For all 1 <= i <= |s| - 1, si != si+1.
+
+For all 1 <= i <= |s| - 3, si != si+3.
+
+The length of s is the maximum possible.
+Help OtterZ to construct the row. Although there may be several possible rows, OtterZ just requires one of them.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The only line of each test case contains three integers r, g, and b (0 <= r, g, b <= 10^6, r + g + b > 0), representing the number of red, green, and blue ghostfires, respectively.
+It is guaranteed that the sum of r + g + b over all test cases does not exceed 10^6.
+
+Output:
+For each query, output a string s consisting of the characters 'R', 'G', and 'B', where si equals 'R', 'G' or 'B' indicates that the i-th ghostfire is colored red, green, or blue, respectively.
+If there are multiple answers, output any.
+
+Strategy:
+I thought this one would be easy but it was a nightmare. I have correctly figured out that we need to divide into 2 cases, one where the most frequent letter is so frequent that it will exhaust both the 2 others, this can be formalized by sorting the frequencies and checking sorted[0]+sorted[1]<sorted[2]. If this is true we know sorted[2] is the bottleneck and we can just drop sorted[2] and pad it in between with sorted[0] and then sorted[1] until we exhaust both the smaller letters. This is the easy part though, the rest of the problem requires carefully dividing the numbers basically creating a bipartite graph and stitching it together. Since we know that sorted[2]<=sorted[1]+sorted[0] we can guarantee we can use up all the numbers. Therefore we can get a total and divide it in 2 halves which will be the partitions of our graph. Then we just need to arrange the letters carefully. This will be done by using the least frequent number as a kind of a buffer and then the 2 other will be owning its own partitions. For the first one we take one of the 2 biggest numbers and push all of the letters (frequency times) onto the array, the we fill up the rest by the least frequent letter, this will be one half, therefore the size is total/2. Then for the second one we first calculate the number of most frequent letters that will be put in the second one, this is (total+1)/2-mid2Freq (total+1 to account for if the total was odd). We first push the big number exhausting all of them and then push all the letters that "own" this partition. We have created a beautiful buffer since now we have something like this:
+
+Take A as the least frequent letters and B and C own the partitions.
+ABB
+CCA
+
+AAAAAABBB
+BBBCCCCCC
+
+
+
+
+
+These are the two partitions, since A+C>=B we can guarantee they will never overlap (reaching C->C) and we also satisfy all the rules since we are just going to have pairs of letters which are different and then 2 points where things change but always changing only one letter so it can't break anything too. The genius of this method is in choosing the smallest number as the buffer therefore there will always be a delay from the change from one letter into another and another change. We then just iterate interleaving these letters by doing arr1[0],arr2[0] etc... until we exhaust all of them. This is also why we have the sorted[2]<=sorted[1]+sorted[0] since we couldn't make a partition for the biggest one if this wasn't true. A very important thing is to start with the array which has the least frequent letter at the start. This is important to not break the s+3 rule since otherwise we would get something like ...ABABCACA... which breaks the rule.
