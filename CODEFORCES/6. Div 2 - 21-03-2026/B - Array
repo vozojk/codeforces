@@ -1,0 +1,18 @@
+B. Array
+time limit per test: 1.5 seconds
+memory limit per test: 256 megabytes
+
+You are given an integer array a of length n.
+For each index i, find the maximum number of indices j such that j > i and |ai - k| > |aj - k|, over all possible integer values of k.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 100). The description of the test cases follows.
+The first line of each test case contains an integer n (1 <= n <= 5000).
+The second line contains n integers a1, a2, ..., an (-10^9 <= ai <= 10^9).
+It is guaranteed that the sum of n over all test cases does not exceed 5000.
+
+Output:
+For each test case, output n integers denoting the answer.
+
+Strategy:
+Here the problem boils down to finding the maximum amount of points that are either left or right on the number line from the current index. This works since the equation we need to satisfy is just a distance equation. Therefore we just need to traverse the array and then always check all the number later then i for which I wrote a helper that will traverse it and increase a count for all number that have a bigger distance to some number than the main number. Since the maximum amount of numbers that can be closer to k than the main number is either all the numbers left of it or all the numbers right of it we can call max(helper(INT_MAX), helper(INT_MIN)). We print that out for each index. We use long longs so the bounds arent a problem.
