@@ -1,0 +1,142 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#include <climits>
+#include <string>
+#include <cmath>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+
+// 2. Define the Ordered Set (this is standard CP template boilerplate)
+typedef tree<pair<int,int>, null_type, less<>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
+typedef long long ll;
+
+using ll = long long;
+using vi = vector<int>;
+using vll = vector<ll>;
+using pii = pair<int, int>;
+
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x).size()
+
+#ifdef LOCAL
+#define dbg(x) cerr << #x << " = " << (x) << "\n"
+#else
+#define dbg(x)
+#endif
+
+// Counts the number of 1s in the binary representation of x
+#define popcount(x) __builtin_popcountll(x)
+
+// Returns the index of the lowest set bit (trailing zeros)
+#define lsb(x) __builtin_ctzll(x)
+
+// --- Constants ---
+const int MOD = 1e9 + 7;
+const ll INF = 1e18;
+const int dx[4] = {1, 0, -1, 0};
+const int dy[4] = {0, 1, 0, -1};
+// For 8-directional movement (Kings/Queens):
+// const int dx8[8] = {1, 1, 0, -1, -1, -1, 0, 1}, dy8[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+
+// Fast modulo
+void add(int &a, int b) { a += b; if (a >= MOD) a -= MOD; }
+void sub(int &a, int b) { a -= b; if (a < 0) a += MOD; }
+
+// --- Custom hash ---
+struct custom_hash {
+    static uint64_t splitmix64(uint64_t x) {
+        // http://xorshift.di.unimi.it/splitmix64.c
+        x += 0x9e3779b97f4a7c15;
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
+        return x ^ (x >> 31);
+    }
+
+    size_t operator()(uint64_t x) const {
+        static const uint64_t FIXED_RANDOM = std::chrono::steady_clock::now().time_since_epoch().count();
+        return splitmix64(x + FIXED_RANDOM);
+    }
+};
+
+void solve() {
+    ll n, r, g, b;
+    cin >> r >> g >> b;
+    //j > i, distance k to i bigger than distance a to j
+    vector<pair<ll, char>> sorted = {{r, 'R'},{g, 'G'},{b, 'B'}};
+    sort(sorted.rbegin(), sorted.rend());
+
+    ll ff = sorted[0].first;
+    char fs = sorted[0].second;
+    ll sf = sorted[1].first;
+    char ss = sorted[1].second;
+    ll tf = sorted[2].first;
+    char tt = sorted[2].second;
+
+    if (sorted[1].first+sorted[2].first>sorted[0].first) {//nospam
+        int total = ff+sf+tf;
+        int c2 = total/2;
+        int c1 = (total+1)/2;
+        vector<char> one;
+        vector<char> two;
+
+        for (int i = 0; i < c1-ff; i++) {
+            one.push_back(tt);
+        }
+        for (int i = 0; i < ff; i++) {
+            one.push_back(fs);
+        }
+
+        for (int i = 0; i < sf; i++) {
+            two.push_back(ss);
+        }
+        for (int i = 0; i < c2-sf; i++) {
+            two.push_back(tt);
+        }
+
+
+        for (int i = 0; i < total; i++) {
+            if (i % 2 == 0) cout << one[i/2];
+            else cout << two[i/2];
+        }
+    }else {//spam
+        while (sorted[1].first--) {
+            sorted[0].first--;
+            cout << sorted[0].second << sorted[1].second;
+        }
+        while (sorted[2].first--) {
+            sorted[0].first--;
+            cout << sorted[0].second << sorted[2].second;
+        }
+        if (sorted[0].first>0) {
+            cout << sorted[0].second;
+        }
+    }
+    cout << "\n";
+
+
+
+
+
+
+
+}
+
+int main() {
+
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+
+    int t = 1;
+    cin >> t;
+
+    while(t--) {
+        solve();
+    }
+
+    return 0;
+
+
+}
