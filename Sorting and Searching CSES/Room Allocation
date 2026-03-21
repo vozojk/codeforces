@@ -1,0 +1,14 @@
+There is a large hotel, and n customers will arrive soon. Each customer wants to have a single room.
+You know each customer's arrival and departure day. Two customers can stay in the same room if the departure day of the first customer is earlier than the arrival day of the second customer.
+What is the minimum number of rooms that are needed to accommodate all customers? And how can the rooms be allocated?
+
+Input:
+The first input line contains an integer n: the number of customers.
+Then there are n lines, each of which describes one customer. Each line has two integers a and b: the arrival and departure day.
+
+Output:
+Print first an integer k: the minimum number of rooms required.
+After that, print a line that contains the room number of each customer in the same order as in the input. The rooms are numbered 1,2,...,k. You can print any valid solution.
+
+Strategy:
+The requirements for this boil down to keeping a sorted data structure supporting O(logN) insertions and updating for all values. Classic RBT. We will keep track of the times each room gets empty while having its index as a second thing in a pair. This way we can output the numbers into an array as we allocate them to keep track of the nth customers room number. The key here is realizing that we dont really care about the rooms except for always taking the one that is the likeliest to be empty which is the one with the lowest end time. Therefore we just have a loop through the ranges (we sort them before that because we need to go chronologically, otherwise taking the earliest room wouldn't make sense), check the top of the RBT for the earliest end room, if the end is smaller we push a new {newEnd, indexOfOldRoom} pair to the RBT and erase the top. If even this room isn't open for us, we just push a new room with a new index, we just keep a counter for the biggestRoom and update it everytime we push a new one. The room numbers are logged in an array everytime we get a new customer. At the end we ouput the biggestRoom counter and then print out the roomNumber array. We can also use a minheap for this since we dont care about the inside of the tree anyway, but theyre both O(NlogN) with the RBT just having a higher constant.
