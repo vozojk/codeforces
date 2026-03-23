@@ -1,0 +1,15 @@
+Given an array of n integers, your task is to count the number of subarrays having sum x.
+
+Input:
+The first input line has two integers n and x: the size of the array and the target sum x.
+The next line has n integers a_1, a_2, ..., a_n: the contents of the array.
+
+Output:
+Print one integer: the required number of subarrays.
+
+Constraints:
+1 <= n <= 2 * 10^5
+-10^9 <= x, a_i <= 10^9
+
+Strategy:
+This one doesn't work with the window right away since the numbers can be negative. The logic with right++ == bigger and left-- == smaller breaks here. Therefore we borrow a concept of prefix sums. We keep track of the sum up until all indices. We know that target=sum[rightIdx]-sum[leftIdx] (meaning sum[rightIdx=target+sum[rightIdx], we can use the hashmap approach from 2Sum and these sums to find the complements to get the solution in O(n). We take a hashmap and check for sum[i]-target. If it is there we increase the count by the number saved there. This is because there can be duplicates in the array and therefore duplicate complements. After checking at every iteration we do map[sum[i]]++. This entry will become the left part of the prefix sum for some other pair. At the end we output count. There is also an optimization. Since we save all the used sums in the hashmap anyway we can just keep a running sum and always save that to the hashmap and check for runningSum-x. This saves us a bit of memory and therefore allows better cache optimization.
