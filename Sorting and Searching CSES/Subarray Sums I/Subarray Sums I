@@ -1,0 +1,15 @@
+Given an array of n positive integers, your task is to count the number of subarrays having sum x.
+
+Input:
+The first input line has two integers n and x: the size of the array and the target sum x.
+The next line has n integers a_1, a_2, ..., a_n: the contents of the array.
+
+Output:
+Print one integer: the required number of subarrays.
+
+Constraints:
+1 <= n <= 2 * 10^5
+1 <= x, a_i <= 10^9
+
+Strategy:
+Here we can just use a sliding window. Since adding a number will always increase the sum and removing it will decrease it we just set left and right to the start and run a for loop that increments the right pointer every time. We have a while loop inside to check if the sum is not too big and if it is we move the left pointer. In each iteration we check sum==target and if so we increment a counter.
