@@ -1,0 +1,15 @@
+Given an array of n integers, your task is to find for each array position the nearest position to its left having a smaller value.
+
+Input:
+The first input line has an integer n: the size of the array.
+The second line has n integers x_1, x_2, ..., x_n: the array values.
+
+Output:
+Print n integers: for each array position the nearest position with a smaller value. If there is no such position, print 0.
+
+Constraints:
+1 <= n <= 2 * 10^5
+1 <= x_i <= 10^9
+
+Strategy:
+The key is realizing that since we are finding the nearest position with a smaller value, we will always want to check backwards and then add a new thing to the end. This resembles how a stack works. The most important rule is that when we add a new number, all the numbers in the stack that are >= than the new one will become irrelevant since they could never be closer then the new one. Therefore the strategy is to save the numbers with their indices in pairs and then traverse the array of pairs. In each iteration we check the stack, we need to find a smaller number. So we just throw all the >= numbers out and when we find a < one we just print its index. We repeat until the end.
