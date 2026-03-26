@@ -1,0 +1,12 @@
+In a movie festival, n movies will be shown. Syrjälä's movie club consists of k members, who will be all attending the festival.
+You know the starting and ending time of each movie. Your task is to determine the maximum total number of movies the club members can watch entirely if they act optimally.
+
+Input:
+The first input line has two integers n and k: the number of movies and club members.
+After this, there are n lines that describe the movies. Each line has two integers a and b: the starting and ending time of a movie.
+
+Output:
+Print one integer: the maximum total number of movies.
+
+Strategy:
+For this we need to realize that we need to store the movies and sort them in now a pretty classic way. To achieve the most movies watched we need to always pick the movie that ends the earliest and if theres more than 1 ending at the same time we choose the earliest start time. Then, since we have k people we can deploy to watch them we need to assign and reassign them correctly. For this we create a multiset (rbt) which will keep the end times of the current deployed members watching movies so we can deploy them again. Since the most efficient strategy is to always deploy the people so that they are idle the shortest amount of time we need to find the person ending the latest but <= than the current movie starting time. For this we can use upper bound which will binary search the rbt to find the first value bigger than what we need. We just decrement the iterator (--it, prefix so it saves the new value and not the before) and that will give us the first value we can use. We then erase this value and insert the new end time. Before that we also check if the iterator isn't set.begin(), if it was we cannot decrement and it means that there are no members available to deploy. For this we check if the current numbers of deployed members is smaller than k and if it is we just insert the end time. If it's not we skip. For the condition to find the upper bound we also check that the multiset is not empty. Each time we insert something to a set we increment a counter and return that at the end.
