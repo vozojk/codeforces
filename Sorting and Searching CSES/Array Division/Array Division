@@ -1,0 +1,11 @@
+You are given an array containing n positive integers. Your task is to divide the array into k subarrays so that the maximum sum in a subarray is as small as possible.
+
+Input:
+The first input line contains two integers n and k: the size of the array and the number of subarrays in the division.
+The next line contains n integers x_1, x_2, ..., x_n: the contents of the array.
+
+Output:
+Print one integer: the maximum sum in a subarray in the optimal division.
+
+Strategy:
+The key idea here is that we do not try to find the solution by being greedy or traversing the array in any way. We guess and check if the guess is possible. Since the number line will be divided in two parts one of which contains all the numbers for which division into k subarrays for a certain target is possible and the other one will not. We just have to try to get as close to the minimum. We can use binary search on answer for this. We fill the array and write a helper which will run through it starting a new subarray everytime we would be over the target maximum sum until reaching the end. If the number of subarrays is bigger than k then it is not possible to create k subarrays with max sum target for this target and we need to make it bigger. We choose the interval [1,10e15] as the search space and then just calculate the middle, call the helper and if it returns a sum higher than the target we set left to mid+1 since we need a bigger target to fit into. If it returns a sum lower than the target we set right to mid-1. We also rewrite max sum by using min(currentSum, maxSum) to keep track of the lowest possible sum while doing the search. We loop until left<=right and return.
