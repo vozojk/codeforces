@@ -1,0 +1,16 @@
+Given an array of n integers, your task is to find the maximum sum of values in a contiguous subarray with length between a and b.
+
+Input:
+The first input line has three integers n, a and b: the size of the array and the minimum and maximum subarray length.
+The second line has n integers x_1,x_2,...,x_n: the array values.
+
+Output:
+Print one integer: the maximum subarray sum.
+
+Constraints:
+1<=n<=2*10^5
+1<=a<=b<=n
+-10^9<=x_i<=10^9
+
+Strategy:
+This problem boils down to finding windows (length [a,b] which could create our sum and then finding the best possible subwindow for our goal (highest sum). We use two things for this. Prefix sums to easily find the sub of a subarray and then a priority queue or a stack to find the best point in the window to start the subwindow. The O(n) solution with a deque will create an array of sums for the prefix sums and then traverse the array left to right. We will use a monotonic queue to keep track of the smallest element in the current subwindow. We do this by looping starting at a in the sums since the window cannot be smaller and also 1 indexing them to have the 0 sum for the subwindow starting at the absolute start. Then at each iteration we add sums[i-a] to the deque but, and this is the trick, we store it with its index and while storing it (to the back) we delete any elements that are either bigger or have an index that is not applicable anymore (>i-b). Since we always remove anything bigger going from the back the first element must always be the smallest and since we always remove everything too old it must fit. We also check if the element is not too old when taking the front of the deque to get the smallest number. If it is we throw it out. Then we just traverse the whole array like this and update a maxSum = max(maxSum, sums[i]-deque.top()). We return maxSum.
