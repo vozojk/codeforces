@@ -1,0 +1,14 @@
+You are given an n x m map of a building, and your task is to count the number of its connected rooms formed by floor squares where you can walk left, right, up, and down.
+
+Input:
+The first input line has two integers n and m: the height and width of the map.
+The next n lines have m characters describing the map: '.' (floor) or '#' (wall).
+
+Output:
+Print one integer: the number of rooms.
+
+Constraints:
+1<=n, m<=1000
+
+Strategy:
+This is classic intro bfs island finder. We run a loop through all the point and start a bfs wherever theres a '.'. We then spread in all directions and end when there's a '#' while changing the dots into '#' states so they're marked visited. Everytime we start the bfs we increase a counter, the count is the number of islands which is the number of rooms.
