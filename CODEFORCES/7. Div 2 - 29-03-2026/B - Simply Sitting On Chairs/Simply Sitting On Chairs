@@ -1,0 +1,26 @@
+There are n chairs in a row, initially all unmarked. You are given a permutation p of length n. You play a game where you visit each chair sequentially, starting from the 1st chair. At the i-th chair, you can do the following:
+
+If the i-th chair is already marked, you end the game immediately without sitting on it.
+
+Otherwise, you can choose to sit on the chair or skip it and move to the next chair.
+
+If you choose to sit on the chair, then after standing up, you mark the pi-th chair and move to the next chair.
+
+If all n chairs are visited, the game ends. Your task is to determine the maximum number of chairs that you can sit on.
+
+Input:
+The first line contains the number of test cases t.
+The first line of each test case contains a single integer n—the number of chairs.
+The second line of each test case contains n distinct integers p1, p2, ..., pn—the permutation p.
+
+Output:
+Print one integer: the maximum number of chairs you can sit on.
+
+Constraints:
+1 <= t <= 10,000
+1 <= n <= 200,000
+1 <= pi <= n
+The sum of n over all test cases does not exceed 200,000.
+
+Strategy:
+For this one there is also a trick. We need to realize that choosing to sit on a chair that marks a chair after us can never achieve any gain since best case scenario it will make us stop early by reaching the marked chair and not being able to sit on it. Therefore we need to mark chairs before us including the one that we are at now if it points to itself. For this just marking all of them is optimal since we need to maximize the return and it's not like we can ever come back so there are no consequences.
