@@ -1,0 +1,24 @@
+You are given two arrays a and b of length n, where bi = ai for all i. For each index i, you can perform the following operation at most once: choose an arbitrary integer m (m != ai) such that 1 <= m <= bi, and set ai := m.
+
+Let the array after performing all operations be a'. You can only perform operations such that for all 1 <= l < r <= n, gcd(al, al+1, ..., ar) = gcd(a'l, a'l+1, ..., a'r). Determine the maximum number of operations that can be performed.
+
+Input:
+The first line contains the number of test cases t.
+The first line of each test case contains an integer n.
+The second line contains n space-separated integers a1, a2, ..., an.
+The third line contains n space-separated integers b1, b2, ..., bn.
+
+Output:
+Print one integer: the maximum number of operations that can be done.
+
+Constraints:
+1 <= t <= 10,000
+2 <= n <= 200,000
+1 <= ai, bi <= 1,000,000,000
+The sum of n over all test cases does not exceed 200,000.
+
+Strategy:
+This problem makes use of an introductory concept to combinatorics. The lowest common multiple (LCM) which is the lowest number that we can get by multiplying the numbers is question by some integer constant; and greatest common denominator (GCD). The key to the intuition here is realizing that the key to everything are prime factors and they connect everything so beautifully. GCD of two numbers is just taking the prime factors they have in common and multiplying them. That's pretty intuitive. The hardest part for me was to realize that for LCM of two numbers. We take the maximum power for each prime factor between the two numbers. This is because the final number needs to be divisible by both numbers without a remainder. If there weren't enough prime factors for each this wouldn't be possible.
+This connects to the problem because we need to realize that the numbers that can be changed can be fully "encapsulated" prime factor-wise by a number next to them. Since we are running on the principle of the numbers having matching prime factors to have the same GCD, if there are 2 prime numbers one of which has all the prime factors of the other one plus some more and it also doesn't conflict with the number on the other side of the said number (since otherwise it could ruin the subarray which has only a pair) we can safely remove the extra factor from that number. This is possible since ai=bi and we can change the number to anything 1<=l<=bi which means just lowering ai upto to 1. Therefore we just lower it so it shares factors with the other prime.
+The abstracts we use for this are the GCD and LCM of the numbers. With the GCD we can get the minimum powers of 2 numbers giving us a basis which needs to be kept so we don't break the rule. We do this for pairs {i-1,i} and {i,i+1} so we get the factors needed to not break the rule. The we take the pairs and take their lcm. This will give us the maximum powers of all factors in them. This way we condense the 2 pairs into a singular number which contains all the prime factors that we need to keep the relationship with the numbers around. Therefore, if our middle number i is bigger than this result. We can safely reduce it to the lcm of the gcds. The locality of this is very powerful and it works exactly because we are taking subarrays. The adjacent numbers are acting as walls and will reduce any gcd create by outer numbers to at most their prime factors therefore the factors inside the 2 walls which are the factors of i get lost and are unnecessary.
+In short, this problem wants us to find the numbers that have the extra factors but are also fully compatible with their walls so they don't add anything extra and count them. We return the count.
