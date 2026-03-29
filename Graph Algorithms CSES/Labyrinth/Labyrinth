@@ -1,0 +1,14 @@
+You are given an n x m map of a labyrinth, and your task is to find the shortest path from the start (A) to the end (B) by walking left, right, up, and down through floor squares.
+
+Input:
+The first input line has two integers n and m: the height and width of the map.
+The next n lines have m characters describing the labyrinth: '.' (floor), '#' (wall), 'A' (start), or 'B' (end).
+
+Output:
+First print "YES" if there is a path, and "NO" otherwise. If there is a path, print the length of the shortest path on the second line, and on the third line print its description as a string consisting of characters 'L' (left), 'R' (right), 'U' (up), and 'D' (down).
+
+Constraints:
+1<=n, m<=1000
+
+Strategy:
+This takes the BFS from Counting Rooms and changes it to a pathfinding algorithm. We can use BFS to find the shortest path and prove path existence very easily so the main challenge here is to know what path we took which gives us the directions and its length. My strategy was to just assign to each node in the array i have visited the direction i took to visit it. Just making the things a pair of visited/unvisited state numbers and directions. Therefore when i found the path i have set a boolean broke the bfs and for loop and ran an if statement which went back on the path. Since the endpoint is set we know where to start and just move in the opposite direction. We append the letters to a string and at the end we print its length reverse the string and print it.
