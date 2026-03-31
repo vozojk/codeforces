@@ -1,0 +1,18 @@
+Byteland has n cities, and m roads between them. The goal is to construct new roads so that there is a route between any two cities. Your task is to find out the minimum number of roads required, and also determine which roads should be built.
+
+Input
+The first input line has two integers n and m: the number of cities and roads. The cities are numbered 1, 2, ..., n.
+After that, there are m lines describing the roads. Each line has two integers a and b: there is a road between those cities.
+A road always connects two different cities, and there is at most one road between any two cities.
+
+Output
+First print an integer k: the number of required roads.
+Then, print k lines that describe the new roads. You can print any valid solution.
+
+Constraints
+1 <= n <= 10^5
+1 <= m <= 2 * 10^5
+1 <= a, b <= n
+
+Strategy:
+This problem is basically asking us to identify islands or disconnected pieces of the graph and connect them with the minimum amount of edges. We can do this by running a bfs with a visited array and, except at the first node, if we end the current bfs and start a new one while not being out of nodes completely we know we have just reached an island since the next node has not been visited yet but it is the next one in the count. Since all the nodes before it must have been visited, we can just connect this node to the previous one. We do this for all the nodes (cities) until n and everytime we start a new dfs except the first one we save i and i-1 which is the new road. We output that at the end and the length of the vector containing them. An important note is that we save the roads by saving pairs {start, end} for each city (number 1 to n) in a vector. Since the roads are bidirectional we save both {start, end} and {end, start}.
