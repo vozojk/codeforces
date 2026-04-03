@@ -1,0 +1,13 @@
+Byteland has n cities and m roads between them. Your task is to design a round trip that begins in a city, goes through two or more other cities, and finally returns to the starting city. Every intermediate city on the route has to be distinct.
+
+Input:
+The first input line has two integers n and m: the number of cities and roads. The cities are numbered 1,2,...,n.
+Then, there are m lines describing the roads. Each line has two integers a and b: there is a road between those cities.
+Every road is between two different cities, and there is at most one road between any two cities.
+
+Output:
+First print an integer k: the number of cities on the route. Then print k cities in the order they will be visited. You can print any valid solution.
+If there are no solutions, print "IMPOSSIBLE".
+
+Strategy:
+This is a cycle detection problem. We need to find a cycle in the graph and print it out. Therefore we search through all the possible paths in the graph with a dfs while pruning with marking visited nodes and if we ever reach a marked node we know there must be a cycle. This works since the edges are undirected so we either explore a whole connected segment of the graph or not get to it at all. In the visited array instead of booleans we save the node that we visited the new node from. This way we can then backtrack to list out the nodes in the cycle. For this, we also create start and end variables which will give IDs of the start and end nodes of the cycle. Since it is a cycle these will also be next to each other. Therefore, when we find a cycle we can just mark the current node as the end and the node identified as visited twice as the start since we will then be going back from the end node until we get to the start, we are guaranteed to get to it since we have marked it before and it must be in this iteration of the dfs because of the reasoning about connected segment exploration. At the end we have a loop to which we push indices of nodes until we get to start. Since the cycle is supposed to have the "cutoff" point twice we then push the endpoint and also then startpoint again. We reverse the vector, print its size and the its elements.
