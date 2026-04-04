@@ -1,0 +1,16 @@
+You and some monsters are in a labyrinth. When taking a step to some direction in the labyrinth, each monster may simultaneously take one as well. Your goal is to reach one of the boundary squares without ever sharing a square with a monster.
+Your task is to find out if your goal is possible, and if it is, print a path that you can follow. Your plan has to work in any situation; even if the monsters know your path beforehand.
+
+Input:
+The first input line has two integers n and m: the height and width of the map.
+After this there are n lines of m characters describing the map. Each character is . (floor), # (wall), A (start), or M (monster). There is exactly one A in the input.
+
+Output:
+First print "YES" if your goal is possible, and "NO" otherwise.
+If your goal is possible, also print an example of a valid path (the length of the path and its description using characters D, U, L, and R). You can print any path, as long as its length is at most n \cdot m steps.
+
+Constraints:
+1<=n,m<=1000
+
+Strategy:
+This is basically bfs but like M times. I take the starting map and since i cannot get eaten and the monsters can go anywhere they spread like a disease. I just run a bfs on each of them and make them eat everything except the walls. To do that we will make a big while loop and inside of that there will be a for loop running through a queue of all monster positions i need to do something with. This will make the monsters spread and then we move to me. All the positions i could be at at this point will have an 'A' since i'm running a bfs on that too and all the positions i could be at but a monsters will be there will get eaten by M's. Therefore I can just run a bfs on the As that are left too and go only there where are dots. If I ever manage to reach an edge position (x||y==0 or x||y==max x or y). We know i can escape. Otherwise (if there are no A's left) i output impossible. For the part where i need to print the path. I can just keep a separate array and for each A in the grid i can write the direction it was written there from. Then i backtrack from the edge all the way back and print that while also printing the size of that vector. Note: i run one big while loop and inside are two for loops that loop by saving the size of the bfs queue at the start and then proces that amount of items. This way i always process the correct layer in full but only that one.
