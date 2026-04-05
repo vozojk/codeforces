@@ -1,0 +1,19 @@
+There are n cities and m flight connections between them. Your task is to determine the length of the shortest route from Syrjälä to every city.
+
+Input:
+The first input line has two integers n and m: the number of cities and flight connections. The cities are numbered 1,2,...,n, and city 1 is Syrjälä.
+After that, there are m lines describing the flight connections. Each line has three integers a, b and c: a flight begins at city a, ends at city b, and its length is c. Each flight is a one-way flight.
+You can assume that it is possible to travel from Syrjälä to all other cities.
+
+Output:
+Print n integers: the shortest route lengths from Syrjälä to cities 1,2,...,n.
+
+Constraints:
+1<=n<=10^5
+1<=m<=2*10^5
+1<=a,b<=n
+1<=c<=10^9
+
+Strategy:
+We need to find shortest distances between a city and the others with variable edge lengths. This is djikstra. We will save all the edges into a vector of vectors and then we will run through all the edges and find the shortest distance to node 1. We will use a priority queue for that. We will push the first node with distance 0 at the start. We will also keep a dist array with answers and start everything except node 1, which has 0 at INF to keep track of intermediate and final results. Then we run a while loop and in it we take the closest thing from the pq and try to find the closest path to it's neighbours by checking the distance to the node pulled from the queue plus the distance to the neighbor compared to the distance saved straight to the node. This way for each node, which should at that point in the queue have a non-INF calculated distance to the start, we will find the shortest route to it's neighbours. We reset the length if we find a shorter path and then we push that into the queue since it's a potential new closest node. We iterate like this through the edges at which point we have looked through all the nodes and it's neighbors and saved all the shortest paths to the dist array. We output the dist array results which have the shortest paths to node 1.
+Technicals: We need to use ll for distances, we need to check the nodes only if the distance to it by the pq is < the distance i have saved in the dist array, if not it's old and we skip. Lastly, we use std<greater> for the pq to get a min-heap.
