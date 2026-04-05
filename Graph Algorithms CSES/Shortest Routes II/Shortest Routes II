@@ -1,0 +1,19 @@
+There are n cities and m roads between them. Your task is to process q queries where you have to determine the length of the shortest route between two given cities.
+
+Input:
+The first input line has three integers n, m and q: the number of cities, roads, and queries.
+Then, there are m lines describing the roads. Each line has three integers a, b and c: there is a road between cities a and b whose length is c. All roads are two-way roads.
+Finally, there are q lines describing the queries. Each line has two integers a and b: determine the length of the shortest route between cities a and b.
+
+Output:
+Print the length of the shortest route for each query. If there is no route, print -1 instead.
+
+Constraints:
+1<=n<=500
+1<=m<=n^2
+1<=q<=10^5
+1<=a,b<=n
+1<=c<=10^9
+
+Strategy:
+My first thought was just running a djikstra for everything and maybe doing some optimization but djikstra is O(E*VlogV)(E-edge, V-vertex) and we need to run it for upto 500 times so in the worst case (E=V^2) we have V^2*VlogV=V^3logV which for V=500 is over 1 billion operations and way over the limit. Therefore this was not it. Djikstra is very slow for dense graphs because of the edge number in the complexity. Therefore we use floyd-warshalls algorithm. Instead of using the actual graph topology like djikstra and just trying the paths and traversing, this uses DP cheatcodes and the characteristics of paths to find it. Djikstra is an algorithm which basically tries paths involving a node with all the edges connected to it and then runs again and reiterates all the paths that could be influenced by that node. This makes it very slow when the number of edges is big compared to the number of vertices. Floyd-Warshalls is completely different. This goes through all the potential nodes that could be involved in some path, but each of them only once and then uses DP to reuse all the previous combinations. We basically run paths from i=0 to i=n having a->i->b. The DP comes in because by trying all the paths involving i=1, we will have precomputed the path for a->1 and need to figure out only how to get from that point to b. This eliminates a lot of options. We iterate like this through all the possible intermediate nodes and try all the start and end nodes until we traverse all possible options. Since we have middle, end and start and everything can be everything the complexity is O(V^3) which is better for dense graphs and V here is limited to 500 so we're fine sience 500^3 is 125M. We save this into a 2D matrix which has all the reaches for all the possible paths from a node to another node and then just output whatever the queries want.
