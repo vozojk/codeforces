@@ -1,0 +1,19 @@
+You play a game consisting of n rooms and m tunnels. Your initial score is 0, and each tunnel increases your score by x where x may be both positive or negative. You may go through a tunnel several times.
+Your task is to walk from room 1 to room n. What is the maximum score you can get?
+
+Input:
+The first input line has two integers n and m: the number of rooms and tunnels. The rooms are numbered 1,2,...,n.
+Then, there are m lines describing the tunnels. Each line has three integers a, b and x: the tunnel starts at room a, ends at room b, and it increases your score by x. All tunnels are one-way tunnels.
+You can assume that it is possible to get from room 1 to room n.
+
+Output:
+Print one integer: the maximum score you can get. However, if you can get an arbitrarily large score, print -1.
+
+Constraints:
+1<=n<=2500
+1<=m<=5000
+1<=a,b<=n
+-10^9<=x<=10^9
+
+Strategy:
+This is another new algorithm. Bellman-Ford. This, unlike dijkstra will not be greedy and literally just takes all the nodes and each node it will check all edges for which it will ask if this edge could've somehow made the path from 1 to curNode shorter. This works since we literally just exhaust all options but there is a limited amount of choices since we take each path and work with each node once. We just always look through the path that has that node and that edge and calculate if it helps. If it did we update our distance calculation. The cool math is in the cycle detection property of what we have done. Since we exhaust all options for simple paths since we have literally crosschecked all edges in all path variations we know that if there is not a cycle we must have the optimal paths to everything after we finish the outer loop. Since the problem allows cycles and asks us to print -1 if we could reach an arbitrarily high score we need to check for cycles. With this algorithm, that is very easy, we can just do another double for loop and if there is ever any update in the distance we are guaranteed to have found a cycle because all simple paths have been found the last double loop. Also, since we are taking only paths that make the way longer, the cycle has to be positive because we would never even go there if it decreased length. Therefore if there is an update we just set dist[nodeId] = INF and let that propagate (possibly) all the way to n (just letting the outer loop of all vertices and inner loop of all edges finish). At the end we just output dist[n] if it isnt ==INF, if it is we output -1.
