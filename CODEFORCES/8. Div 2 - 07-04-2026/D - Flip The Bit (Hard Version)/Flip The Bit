@@ -1,0 +1,23 @@
+D. Flip the Bit (Hard Version)
+Time limit: 1.5 seconds
+Memory limit: 256 megabytes
+
+This is the hard version of the problem. The difference between the versions is that in this version, there can be multiple special indices (1 <= k <= n).
+
+You are given a binary array a of length n and k special indices p1, p2, ..., pk (1 <= pi <= n). It is given that the values ai of all elements at special indices are the same.
+
+In one operation, you can choose a range [l, r] (1 <= l <= r <= n) such that the range contains at least one special index (l <= pi <= r) and flip all bits aj for l <= j <= r. Flipping a bit changes 0 to 1 and 1 to 0.
+
+Let x denote the value at special indices before any operations are applied. Find the minimum number of operations required to make all elements of the array equal to x.
+
+Input:
+The first line contains the number of test cases t (1 <= t <= 10000).
+The first line of each test case contains two integers n and k (1 <= k <= n <= 200000) - the length of the array and the number of special indices.
+The second line contains n integers a1, a2, ..., an (0 <= ai <= 1) - the elements of the array.
+The third line contains k integers p1, p2, ..., pk (1 <= p1 < p2 < ... < pk <= n) - the special indices.
+
+Output:
+For each test case, output a single integer - the minimum number of operations required.
+
+Strategy:
+This directly continues the chain of though from B, the easy version of this problem. So, we now have a number of anchors instead of one. But the cool part is it didn't make the problem that much harder since there's a nice geometry trick. We need to realize that we can operate on any two blocks (blocks are created by the special indices) in the array and not the ones just next to each other since the operation number anywhere will always be even to keep the special indices at correct values and therefore we can just have a huge subarray with many blocks but actually change only the ones at the boundaries. The first step we have already explained is how to count the number of operations in a subarray. So we do that for all of them and then we need to figure out how to optimize the best to do the most operations at once possible. Since we can only ever do 2 parallel changes the problem boils down to finding pairs of blocks we can change at once until we have nothing to do. Since the only way this doesn't happen for everything is if there such a big block we could pair it with everything and still have things left we have 2 options. Either there is a block which's size is bigger than half of the total size. At which point the answer is the number of operations for that block. Or there is not such big of a block and since we can do operations freely on any set of boxes in any window in any order we will always be able to perfectly pair everything and the answer will be total sum of operations for all blocks /2. Since if the biggest block is bigger than half it will have more operations than total/2 we can just print max(totalOp, biggestBlockOp). In the program, basically the only thing done is going through the blocks defined by special indices and getting counts of changes in values in the clouds of same values and then adding the counts to the total sum and also updating the max count. Cool thing also is that we don't even need to do an even check like in the easy version since by using padding at the sides of the special index array (just putting special indices at the complete end and start, this doesn't affect the operations in any way since they can just be skipped) we will have a special index (same value) on both sides of all blocks which guarantees all the blocks having an even number of operations since otherwise the sides would've switched to the wrong value. That's it.
