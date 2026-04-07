@@ -1,0 +1,20 @@
+A. The Equalizer
+Time limit: 1 second
+Memory limit: 256 megabytes
+
+To settle a long-time feud, Shaunak and Yash decided to play a game on an array a of n integers, with Shaunak going first. The players take turns, and the last player to make a move wins. On a player's turn, he chooses some ai > 0 and decrements it by 1.
+
+To make things interesting, Shaunak is allowed to use a special move at most once during the game. This move replaces his normal turn. When used, all elements ai (1 <= i <= n) are set to a special value k that is given initially.
+
+Assuming that both players play optimally, determine if Shaunak can always win.
+
+Input:
+The first line contains the number of test cases t (1 <= t <= 500).
+The first line of each test case contains two integers n and k (1 <= n <= 100, 1 <= k <= 500), denoting the size of the array and the special value.
+The second line contains n integers a1, a2, ..., an (1 <= ai <= 1000).
+
+Output:
+For each test case, print "YES" if Shaunak can always win, and "NO" otherwise.
+
+Strategy:
+We only need to realize here the there needs to be an odd number of moves happpening total for Shaunak to have the last move since he is starting. Therefore we first check for the sum of the numbers to be odd, if they are, Shaunak wins. If they are not we need to check if he can make them odd, but he uses up a move changing the number and therefore needs to actually make them even since he lost one -1 move by changing them up. Therefore the second one is (n*k)%2==0 since we need to account for how changing everything to k would effect the sum. The goal is for the sum to be odd everytime Shaunak plays. If any of this is true we print YES otherwise it's a NO.
