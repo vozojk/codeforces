@@ -1,0 +1,25 @@
+C. Grid Covering
+Time limit: 2 seconds
+Memory limit: 256 megabytes
+
+Prakul has been working hard setting problems for Codecraft. When he's deep in thought, he likes jumping around his room in weird but specific ways. After some time, he wonders if jumping in this manner can cover all the tiles of his room.
+
+Prakul's room can be considered as a grid A consisting of n rows and m columns. He starts walking from A1,1. If he is currently at Ai,j he can do either of the following moves:
+
+Jump b steps right to Ai, ((j+b-1) mod m) + 1, or
+
+Jump a steps down to A((i+a-1) mod n) + 1, j
+
+A special restriction is that he can start with either move, but must alternate between them. Note that his room is quite special as it wraps around itself. Moving one step right from the m-th column places him in the 1-st column. Similarly, moving one step down from the n-th row places him in the 1-st row.
+
+Determine if he can visit all tiles in A in a finite number of jumps.
+
+Input:
+The first line contains the number of test cases t (1 <= t <= 10000).
+The only line of each test case contains four integers n, m, a, b (1 <= n, m, a, b <= 1000000000).
+
+Output:
+For each test case, print "YES" if Prakul can cover all the tiles of his room, and "NO" otherwise.
+
+Strategy:
+Much easier than B. Just a math trick. The proof is pretty cool though. Since the constraints are so big we know it will be an equation or easy calculation. The key is this; the numbers {a,n} and {b,m} need to be coprime. This is because we need to be able to reach all tiles before every visiting a tile twice since if we visit a tile twice there's a loop and we will never finish all of them. If the numbers are comprime it means that they do not share any common factors and since what we are doing here is basically taking a,2a,3a,...ka; if a and the total size n are coprime we will have k*a mod n == 0 only for k being a multiple of n since the whole point of modulo is to give a remainder and a remainder will always exist except for the case where the numbers are multiples of each other but that is possible only if k==cn here because for number to be multiples of each other they need to share prime factors. Which by the definition of being coprime a and n don't. Since we increase k sequentially, by this logic we can guarantee that the first time we will loop back onto a visited tile is in n moves visiting n+1 tiles since we start at k=0. Since we have visited n+1 tiles and looped back for the first time it means we have visited all the tiles in the row or column (for b and m). The argument that we are not guaranteed to not visit any tile twice before visiting the 0 tile twice is flawed since the k*a mod n == 0 argument can be shifted to any number on the right of the == sign which proves it for all numbers because shifting on the right would also mean shifting on the left, it just adjusts the starting position of the cycle. So this is the rows and columns. Then, since we are forced for the moves to alternate we also need to check if a cycle is not there before visiting all the tiles. We can apply the exact same logic to this just in 2D. We need to visit n*m tiles before looping and we do some amount of pairs of moves where one is for the x and other for the y axis. Since the only way for us to loop back to 0,0 (or 1,1) is for the move number we are at now to be a multiple of both n and m since thats the only we get x-axis mod n == 0 and y-axis mod m == 0 at the same time. This is just taking their prime factors erasing duplicates and taking the leftovers  that don't have a pair in the second number and multiplying them all together (also called the lowest common multiple). So, in summary we check if the numbers are coprime (this is checked by gcd(a,n)==1 since that means the only factor they share is 1) and then we check if 2*lcm(n,m) >= n*m (we do 2* since we care about the number of moves made and these are pairs), if it is it means that we will first visit n*m+ unique tiles before every visiting something twice and since n*m is the whole grid it proves we visit everything. If any of these conditions fail we output NO, otherwise, it's a YES.
