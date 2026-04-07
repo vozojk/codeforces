@@ -1,0 +1,17 @@
+You are given a directed graph, and your task is to find out if it contains a negative cycle, and also give an example of such a cycle.
+
+Input:
+The first input line has two integers n and m: the number of nodes and edges. The nodes are numbered 1,2,...,n.
+After this, the input has m lines describing the edges. Each line has three integers a, b, and c: there is an edge from node a to node b whose length is c.
+
+Output:
+If the graph contains a negative cycle, print first "YES", and then the nodes in the cycle in their correct order. If there are several negative cycles, you can print any of them. If there are no negative cycles, print "NO".
+
+Constraints:
+1n2500
+1m5000
+1a,bn
+-10^9c10^9
+
+Strategy:
+This is a cycle finding problem as the name hints. The problem is the tracking of the nodes in the cycle. For cycle tracking in a weighted graph we can just run a normal bellman-ford. This will find the shortest simple paths to all the nodes. This can also be used (as in High Score), to find cycles since if we find all the shortest simple paths and then iterate more and there is still a shortening the new path must have a cycle. Therefore we run the loop n-1 times for simple and then one more time (go through all the edges again and relax them) to get the cycle. We save the node at the end of that edge since that one is guaranteed to be in a cycle. But the overall path will probably not be only a cycle but it will also have a tail. Since the maximum length of any path is n-1 we can guarantee to be in the actual cycle by moving n times. This whole backtracking will be done by tracking the parent of each node. This gets updated everytime the shortest path will get updated both in the first n-1 iterations and  also the nth one. After that, we either print NO if the nth iteration hasn't found a cycle or YES and backtrack n times and then go once through the loop with the help of the parent array to enumerate the whole cycle.
