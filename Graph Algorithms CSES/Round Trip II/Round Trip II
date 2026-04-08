@@ -1,0 +1,17 @@
+Byteland has n cities and m flight connections. Your task is to design a round trip that begins in a city, goes through one or more other cities, and finally returns to the starting city. Every intermediate city on the route has to be distinct.
+
+Input:
+The first input line has two integers n and m: the number of cities and flights. The cities are numbered 1,2,...,n.
+Then, there are m lines describing the flights. Each line has two integers a and b: there is a flight connection from city a to city b. All connections are one-way flights from a city to another city.
+
+Output:
+First print an integer k: the number of cities on the route. Then print k cities in the order they will be visited. You can print any valid solution.
+If there are no solutions, print "IMPOSSIBLE".
+
+Constraints:
+1<=n<=10^5
+1<=m<=2*10^5
+1<=a,b<=n
+
+Strategy:
+This is a cycle finding problem. I need to find a cycle anywhere in the graph and then return it. Not sure why it is there since there was a hard problem about this already but we can just do a dfs with more advanced state tracking. For the time complexity not to explode we need to prune paths we know don't contain a cycle. Therefore we will track the paths as currently in this path (1) not visited (0) and visited in the past (2). If the node has 2 we stop the dfs and return, if it has one we have visited it 2 times on the same path and therefore there's a cycle. Also, since we need to return the nodes in the cycle we keep a parents array. When we find a cycle we push the twice visited node go back from node before the twice visited node by repeatedly doing node = parent[node] until we get to node==cycleNode. At that point we push the cycleNode once more since we need to have one of them twice and the reverse the vector, print its size and print it element by element. Since the graph doesn't have to be fully connected, in main we run the dfs for all nodes (only if visited[node]!=2), we also set a boolean found to true if we find a cycle and add it to the return condition at the start of the dfs so it immediately collapses.
