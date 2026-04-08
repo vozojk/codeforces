@@ -1,0 +1,20 @@
+Your task is to find the k shortest flight routes from Syrjälä to Metsälä. A route can visit the same city several times.
+Note that there can be several routes with the same price and each of them should be considered (see the example).
+
+Input:
+The first input line has three integers n, m, and k: the number of cities, the number of flights, and the parameter k. The cities are numbered 1,2,...,n. City 1 is Syrjälä, and city n is Metsälä.
+After this, the input has m lines describing the flights. Each line has three integers a, b, and c: a flight begins at city a, ends at city b, and its price is c. All flights are one-way flights.
+You may assume that there are at least k distinct routes from Syrjälä to Metsälä.
+
+Output:
+Print k integers: the prices of the k cheapest routes sorted according to their prices.
+
+Constraints:
+2<=n<=10^5
+1<=m<=2*10^5
+1<=a,b<=n
+1<=c<=10^9
+1<=k<=10
+
+Strategy:
+We need to find k cheapest routes. Since the algorithm to find the cheapest right would be dijkstra, we start there and then try to augment the architecture to make it work. We can just keep track of k shortest paths to each node instead of only the shortest one, we do this by putting a vector for each index in the dist array instead of just numbers. Then we loop like for normal dijkstra but inside the loop we check for the last element in the array (we initialize everything to INF), if it is bigger than the distance we calculate we overwrite it. The key is keeping the vectors inside dist sorted. This way the last element is always the biggest. We always resort after editing the array and also push that number along with its node id. Since we supposed to find k shortest paths we initialize dist as vector(n+1) of vectors(k) and then just do normal dijkstra with this augmentation and output the dist array for the nth node at the end. We could also use a pq for the inner vectors or traverse the arrays in O(k) but since k is only upto 10 O(10log10) is acceptable.
