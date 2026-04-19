@@ -1,0 +1,16 @@
+You are going to travel from Syrjala to Lehmala by plane. You would like to find answers to the following questions: what is the minimum price of such a route? how many minimum-price routes are there? (modulo 10^9 + 7) what is the minimum number of flights in a minimum-price route? what is the maximum number of flights in a minimum-price route?
+
+Input:
+The first input line contains two integers n and m: the number of cities and the number of flights. The cities are numbered 1, 2, ..., n. City 1 is Syrjala, and city n is Lehmala. After this, there are m lines describing the flights. Each line has three integers a, b, and c: there is a flight from city a to city b with price c. All flights are one-way flights. You may assume that there is a route from Syrjala to Lehmala.
+
+Output:
+Print four integers according to the problem statement.
+
+Constraints:
+1 <= n <= 10^5
+1 <= m <= 2 * 10^5
+1 <= a, b <= n
+1 <= c <= 10^9
+
+Strategy:
+We are required to find 1. the cheapest (shortest by edge weights) routes and calculate the price, 2. the amount of the routes with that price. And the routes with the 3. maximum and 4. minimum amount of flights in them. This is dijkstra. Classic dijkstra would give us 1. To get 2. we use the strategy from game routes and track the paths to each node. The repeating notion in this problem is that we need to keep track of multiple things but only count in the minimum price path. Therefore the neighbour loop has and if-if else statement. If we find a new cheaper path, we reset the state tracking since the previous numbers are for a longer path and therefore invalid. If we find a path of the same length we update the state tracking. We track distance (classic dijkstra), minimum flights (by doing min(curFlight, minFlights)), the same for maximum and also the path array the same as game routes. If we find a shorter path we set minimum and maximum to the new path since they have nothing to compare to and the path number for that id to the number of paths to the parent. If it is the same path length, we use min, max and add the routes. We initialize to min,max[1]=0, dist[1]=0 and paths[1]=1. We output dist[n], paths[n], min[n], max[n]. We update paths with the mod logic right in the addition to avoid overflow and the dist array needs to be long long. Also the if block to update the state for a path of same length does not push back into the queue. We only push when the state is new. If we pushed the non-shorter path nodes also, we would be counting duplicates and the code would also TLE since i would be processing these nodes many times. This whole algorithm works since dijkstra guarantees that when a node is popped from the priority queue, all the shortest paths to it have been found. This makes the state tracking guaranteed to be accurate and therefore we can let it propagate to the next node.
