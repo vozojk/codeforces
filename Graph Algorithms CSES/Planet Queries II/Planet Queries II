@@ -1,0 +1,17 @@
+You are playing a game consisting of n planets. Each planet has a teleporter to another planet (or the planet itself).
+You have to process q queries of the form: You are now on planet a and want to reach planet b. What is the minimum number of teleportations?
+
+Input:
+The first input line contains two integers n and q: the number of planets and queries. The planets are numbered 1,2,...,n.
+The second line contains n integers t_1,t_2,...,t_n: for each planet, the destination of the teleporter.
+Finally, there are q lines describing the queries. Each line has two integers a and b: you are now on planet a and want to reach planet b.
+
+Output:
+For each query, print the minimum number of teleportations. If it is not possible to reach the destination, print -1.
+
+Constraints:
+1<=n, q<=2*10^5
+1<=a,b<=n
+
+Strategy:
+This one was very complicated. The first realization is that since there is only one teleporter at each node the problem converts into a graph where the out-degree of each node is always one. This creates a graph with trees and cycles where the cycles are made of the roots of the trees. The problem deconstructs into having 4 cases we need to handle. Since we are checking a path from A to B we have (in format {from, to}) {Cycle, Cycle}, {Cycle, Tree}, {Tree, Cycle}, {Tree, Tree}. This requires us to have many state tracking arrays. For each node we need to track: the id of the cycle it is in, the position in a cycle, the root of the tree it is in, the depth inside that tree and the size of the cycle. We also need the jump array from planet queries one. First we initialize the jump array as in PQ 1, load in edges and create a reverseEdges array. Then we need to populate the state trackers. We do this by running a topo sort on the graph, a topo sort will guarantee that any nodes that will not get processed (end with indegree >0) are in a cycle. So we run that and then for all nodes with indegree>0 we run a loop that will loop until it loops back on the starting node and assign the cycle_id, cycleSize, cyclePos to all nodes in there. We do that for all the nodes. Then we push all the cycle nodes to a queue and run a bfs that will allocate the depth and roots of the tree node (root of a cycle node is itself and depth is 0). This is done with the reverse edges since all the nodes point inside the cycles (they cannot have >1 children since then there would be >1 teleporters, therefore the tree has opposite edges and we need to switch them back). With this we initialize the whole state engine. Then we get back to the 4 cases. For {Cycle,Cycle} there are 2 options. They either are in the same cycle or not. We check this by checking the cycle id, if it matches we output the difference in cyclePos of the nodes, if it doesn't we output -1. For {Cycle,Tree} we know we can never escape a cycle so we output -1. For {Tree, Cycle} we check the cycle_id of the roots roots of the nodes, if they match we know they are in the same cycle and output the depth of the node + the position difference between the roots. If they dont match we output -1. For {Tree, Tree} we need to check if they are in the same tree we can be done by comparing the roots. If they match we check the depth of the start<end. Then we also need to check if they are in the same branch. We do this by using the jump array and jump moving the number of steps which is the depth limit. If this gives the B node we output the difference otherwise we output -1.
