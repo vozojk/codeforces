@@ -1,0 +1,15 @@
+You have to complete n courses. There are m requirements of the form course a has to be completed before course b. Your task is to find an order in which you can complete the courses.
+
+Input:
+The first input line has two integers n and m: the number of courses and requirements. The courses are numbered 1, 2, ..., n. After this, there are m lines describing the requirements. Each line has two integers a and b: course a has to be completed before course b.
+
+Output:
+Print an order in which you can complete the courses. You can print any valid order that includes all the courses. If there are no solutions, print IMPOSSIBLE.
+
+Constraints:
+1 <= n <= 10^5
+1 <= m <= 2 * 10^5
+1 <= a, b <= n
+
+Strategy:
+The courses and their prerequisites can be converted to a directed graph where the prerequisite points to the successor course. This problem can be solved by doing a topological sort on that graph. This will guarantee all prerequisites get outputted before the successor. We can do a topological sort by saving all the edges and calculating all the indegrees of the nodes. The we put the nodes with indegree 0 in a queue, go to their neighbours and decrease the neighbours' indegree by 1, if it becomes 0 we push them to the queue. We repeat until the queue is empty. We check if the size of the output == the number of nodes in the graph since if not the topo sort failed and there are no solutions.
