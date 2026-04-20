@@ -1,0 +1,17 @@
+You are playing a game consisting of n planets. Each planet has a teleporter to another planet (or the planet itself).
+You start on a planet and then travel through teleporters until you reach a planet that you have already visited before.
+Your task is to calculate for each planet the number of teleportations there would be if you started on that planet.
+
+Input:
+The first input line has an integer n: the number of planets. The planets are numbered 1,2,...,n.
+The second line has n integers t_1,t_2,...,t`_n: for each planet, the destination of the teleporter. It is possible that t_i=i.
+
+Output:
+Print n integers according to the problem statement.
+
+Constraints:
+1<=n<=2 \cdot 10^5
+1<=t_i<=n
+
+Strategy:
+This was pretty easy since it gets solved fully by the algorithm in Planet Queries II. Since the resulting graphs will be cycles nodes of which are roots of trees and all the nodes point inside the cycles, we can just go to the cycle for the tree of each node and take the size since then it's guaranteed to reach a visited node. Since the other parts are trees all the paths to the cycles will not have any nodes twice. Therefore track cycleSize, root, depth and cycle_id for each node. Then we output cycleSize of the node if it is in a cycle and depth[node]+cycleSize[root[node]] if it is not. This can be further simplified to track only cycleSizes and not care about cycle ids but it is not necessary since the overhead of the array allocation is minimal. A state based dfs can also be used.
