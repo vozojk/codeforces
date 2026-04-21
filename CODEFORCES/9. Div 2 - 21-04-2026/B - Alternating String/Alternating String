@@ -1,0 +1,25 @@
+Let us call a string t alternating if for every i from 1 to n - 1, the condition t_i != t_{i+1} holds.
+You are given a string s consisting only of the letters "a" and/or "b". You may perform the following operation on it at most once:
+choose a substring s_l s_{l+1} ... s_r consisting of at least one character;
+after choosing the substring, you may invert all letters in it, that is, change every "a" to "b" and every "b" to "a" (you are allowed to do it, but you don't have to do it);
+reverse the chosen substring, that is, transform the string s_1 s_2 ... s_{l-1} s_l s_{l+1} ... s_r s_{r+1} ... s_n into s_1 s_2 ... s_{l-1} s_r s_{r-1} ... s_l s_{r+1} ... s_n.
+Note that when performing such an operation, you are not required to do the second step. For example, for the string s = "ababbab", after one operation you can obtain "abababa" by choosing the substring s_5 s_6 s_7 and doing the second step, or "bababab" by choosing the substring s_1 s_2 s_3 s_4 and not doing the second step. However, you always have to perform the third step of the operation.
+Your task is to determine whether it is possible to obtain any alternating string from the string s.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t. The description of the test cases follows.
+Each test case consists of one line containing one string s. The string consists only of lowercase Latin letters "a" and/or "b".
+
+Output:
+For each test case, output one of the following:
+YES, if it is possible to obtain an alternating string from s;
+NO otherwise.
+You may output each letter in any case.
+
+Constraints:
+1 <= t <= 10^4L=
+2 <= |s| <= 2 * 10^5
+The sum of string lengths over all test cases does not exceed 2 * 10^5.
+
+Strategy:
+This problem boils down to realizing that the only way we could ever have an alternating string is if the subsequence we pick is also alternating. This means there can be at most 2 pairs of adjacent letters which have the same letter (we make those the sides of the substring to switch up). By switching all the letters we get an alternating string. Reversing the string does not do anything in combination with the inversion but it can be used instead of it. Since we are not required to do anything else but output "YES" or "NO" we just count then number of adjacent pairs that have the same letters. If the count is bigger than 2 we output "NO" otherwise "YES".
