@@ -1,0 +1,20 @@
+You are given two integers n and x.
+Consider the sequence [1, 2, 3, ..., n]. You need to find the number of its subsegments that contain x and have XOR equal to 0. In other words, you need to count the number of pairs (l, r) such that 1 <= l <= x <= r <= n and l XOR (l + 1) XOR ... XOR r = 0, where XOR denotes the bitwise exclusive OR.
+For example, if n = 7 and x = 6, then the following segments are suitable:
+(4, 7), because x lies in this segment and 4 XOR 5 XOR 6 XOR 7 = 0;
+(1, 7), because x lies in this segment and 1 XOR 2 XOR 3 XOR 4 XOR 5 XOR 6 XOR 7 = 0.
+Since the answer can be very large, output it modulo 998244353.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t. The description of the test cases follows.
+The only line of each test case contains two integers n and x.
+
+Output:
+For each test case, output one integer — the number of suitable segments modulo 998244353.
+
+Constraints:
+1 <= t <= 2 * 10^5
+1 <= x <= n <= 10^18
+
+Strategy:
+Bitwise XOR. We need to find out the subsegments with x that give out xor zero over all the elements. We need to notice a pattern in how the xor of elements plays out. We get a repetition every 4 additional elements. For pref(i) we get i if i mod 4 = 0, 1 if i mod 4 = 1, i+1 if i mod 4 = 2 and 0 if i mod 4 = 3. Since a^a for any a is 0 we can use the ones and zeroes with prefix XORs to find the total number of elements. We calculate the prefix until x-1 since thats the number on the left and then the numbers from x to n which we can do by taking the count to n and substracting the count to x-1. We can achieve the count by doing algebra on the a mod b = remainder equation which gives us (a-remainder+b)/b being the total number of elements up until a satisfying the condition. For 0 we also need to include the case where a=0 since that does give the xor result 0 but is not counted sice 0 mod b != 3. Therefore we take (zeroes upto x-1)+1 and zeroes upto n - zeroes upto x-1 to get the left and right sides of the subsequence. These are independent of eachother in the sense that we can change them to any other variations and it doesn't make a difference. We do the same thing for ones but we dont add 1 to the left count since 0 mod b != 1 but 0. We get the left and right sides and then we need to take all the combinations of doing things on the left and on the right for both zeroes and ones so we do left_0*right_0 and left_1*right_1 applying MOD in every step to ensure there's no overflow. Then we sum these up, apply mod and thats the final answer.
