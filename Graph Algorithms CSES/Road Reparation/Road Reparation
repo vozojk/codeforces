@@ -1,0 +1,19 @@
+There are n cities and m roads between them. Unfortunately, the condition of the roads is so poor that they cannot be used. Your task is to repair some of the roads so that there will be a decent route between any two cities.
+For each road, you know its reparation cost, and you should find a solution where the total cost is as small as possible.
+
+Input:
+The first input line has two integers n and m: the number of cities and roads. The cities are numbered 1,2,...,n.
+Then, there are m lines describing the roads. Each line has three integers a, b and c: there is a road between cities a and b, and its reparation cost is c. All roads are two-way roads.
+Every road is between two different cities, and there is at most one road between two cities.
+
+Output:
+Print one integer: the minimum total reparation cost. However, if there are no solutions, print "IMPOSSIBLE".
+
+Constraints:
+1<=n<=10^5
+1<=m<=2 \cdot 10^5
+1<=a,b<=n
+1<=c<=10^9
+
+Strategy:
+This is an intro problem to DSU and Kruskal's algorithm. We can use a Disjoint Set Union data structure which works on the principle of merging a forest into one tree by appending roots of smaller trees as children of the root of the main tree. This guarantees that the tree will have rank bound by log(N) since we could only increase the height of a subtree by one and do so by at least doubling the size since otherwise the smaller tree would get appended to the bigger one. This makes access to any node log(N) and allows us to merge trees if we know the roots in O(1). This is what the unite(int x, int y) function does. The other part is the find(int x) function which will find the root of the tree in which x is. This is done by just going up to parents (through a parent array) until we reach a node which is the root of itself. Since the bound for path length is O(log N) we can always find the root in that time but we can further simplify this to O(a(n)) where a(n) is the inverse ackermann function. This can be done by path compression. In summary, for each node we run the method recursive and not only save its root but also of all the nodes on the way. The proof for the ackermann function being the upper (and actually even lower bound) for this is beautiful but pretty long. Now when we have the structure for merging correctly we can run kruskals algorithm. This takes all the nodes without edges at the start, takes the edges which we sort by their length and then applies the unite operation to all of them. Since unite doesn't do anything and returns false is the nodes are already in one tree this automatically applies the shortest possible edges to merge trees and creates a minimum spanning tree. For this exercise, we just keep track of the total weights of added nodes and output that, we also keep track of the edges added and if they are not n-1 we output impossible since we didn't create a tree spanning the whole graph. Note: Cost gets saved as ll due to overflow possibilities.
