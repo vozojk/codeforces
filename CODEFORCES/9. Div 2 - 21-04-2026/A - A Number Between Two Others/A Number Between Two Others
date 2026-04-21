@@ -1,0 +1,20 @@
+You are given two integers x and y such that y > x and y mod x = 0 (that is, y is divisible by x).
+Your task is to determine whether there exists an integer z such that
+z lies between x and y (that is, x < z < y);
+z is divisible by x (that is, z mod x = 0);
+y is not divisible by z (that is, y mod z != 0).
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t. The description of the test cases follows.
+Each test case consists of a single line containing two integers x and y.
+
+Output:
+For each test case, print the answer as follows: if the required number z exists, print YES; otherwise, print NO. You may print each letter in any case.
+
+Constraints:
+1 <= t <= 10^4
+1 <= x < y <= 10^18
+y mod x = 0
+
+Strategy:
+We need to find a number between x and y that is divisible by x but not divisible by z. Since ymodx=0 implies x*a=y for some a, we have x*a=z and x*b=y and we need to make sure z*c=y is not true for any c. Since a!=b!=c the only way this get satisfied is if x*a*c!=y since the constants are arbitrary (just a!=b!=c and a,b,c>1). and we need just one z this is almost always true. The only time when this doesn't work is when y/x<=2 since at that point we have 2*x=y which means there cannot be any z which is going to be smaller than y and bigger than x since 1*x=x and 2*x=y. Therefore, if this is fulfilled, we output false, otherwise true.
