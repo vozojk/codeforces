@@ -1,0 +1,20 @@
+There is a table of n x 2 cells. Each cell of the table is colored either red or black. You want to repaint some cells of this table so that there exists at least one way to partition all cells into n pairs such that the following conditions hold:
+the cells in each pair have the same color;
+the cells in each pair share a side.
+What is the minimum number of cells that need to be repainted?
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t. The description of the test cases follows.
+The first line of each test case contains one integer n.
+The second and third lines of each test case describe the colors of the cells. Each line contains a string consisting of exactly n letters "R" and/or "B".
+
+Output:
+For each test case, output one integer — the minimum number of cells that need to be repainted.
+
+Constraints:
+1 <= t <= 10^4
+1 <= n <= 2 * 10^5
+The sum of n over all test cases does not exceed 2 * 10^5.
+
+Strategy:
+Here we need to create pairs of adjacent cells in the table. Since it is just n*2 we can only ever have one horizontal pair at 1 level or 2 vertical pairs spanning a 2x2 square. We can solve this with a greedy approach. This is possible since by taking all of the pairs that are already correct we are guaranteed to reach the minimum amount of pairs we need to fix and since there are only 2 types of letters, each pair will cost 1 change since they do not overlap. Therefore we take 2 for loops, find all the horizontal pairs in sweep 1, count them and then in sweep 2 we find all the vertical pairs. When we find a pair we mark the cells with a -1 so we don't double count. The count gives us the total number of correct pairs. Since the total number of pairs is n we can output n-count (this works since we need to fix 1 cell per pair). This doesn't leave any lonely cells or miscounts since by taking all the horizontal pairs first i leave 2 columns of which the remaining letters are perfect inverses of each-other. Therefore anytime my algo will find a vertical pair in column 1 it will also find it in column 2. This guarantees that pairs are left as they should be.
