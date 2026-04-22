@@ -1,0 +1,16 @@
+There are n cities and m flight connections. Your task is to check if you can travel from any city to any other city using the available flights.
+
+Input:
+The first input line has two integers n and m: the number of cities and flights. The cities are numbered 1,2,...,n.
+After this, there are m lines describing the flights. Each line has two integers a and b: there is a flight from city a to city b. All flights are one-way flights.
+
+Output:
+Print "YES" if all routes are possible, and "NO" otherwise. In the latter case also print two cities a and b such that you cannot travel from city a to city b. If there are several possible solutions, you can print any of them.
+
+Constraints:
+1<=n<=10^5
+1<=m<=2*10^5
+1<=a,b<=n
+
+Strategy:
+We need to guarantee that all nodes are reachable from all other nodes. Since the edges are directional we cannot use DSU. We can use a double pass BFS/DFS concept though. The key is that for every node we can run a bfs to check if it can reach all other nodes. Then, we can reverse the edges and run a bfs from that same node again. If this visits all edges we know all the nodes can reach our start node. Since the edges are transitive if we can reach all the nodes from a and from all nodes to a we can use a as a midpoint and reach any node from any other node. Therefore we can run the double bfs and if we visit all nodes in both directions we output yes. We do this by keeping a visited and rVisited array (we set elements to 1 if visited and 0 if not). Then we sum the numbers for elements inside the arrays and if they are 2n we know we visited everything. If they are not we just traverse the arrays and when we find 0, if it is in the visited array we know the path startnode notvisitednode is not possible and if we find a 0 in the rVisited array we know the path notvisitednode startnode is not possible, so we just output no and then that and return.
