@@ -1,0 +1,17 @@
+Uolevi's family is going to order a large pizza and eat it together. A total of n family members will join the order, and there are m possible toppings. The pizza may have any number of toppings.
+Each family member gives two wishes concerning the toppings of the pizza. The wishes are of the form "topping x is good/bad". Your task is to choose the toppings so that at least one wish from everybody becomes true (a good topping is included in the pizza or a bad topping is not included).
+
+Input:
+The first input line has two integers n and m: the number of family members and toppings. The toppings are numbered 1,2,...,m.
+After this, there are n lines describing the wishes. Each line has two wishes of the form "+ x" (topping x is good) or "- x" (topping x is bad).
+
+Output:
+Print a line with m symbols: for each topping "+" if it is included and "-" if it is not included. You can print any valid solution.
+If there are no valid solutions, print "IMPOSSIBLE".
+
+Constraints:
+1<=n,m<=10^5
+1<=x<=m
+
+Strategy:
+Here we need to assert a certain logical condition created by the implications which we are given since getting x+/y- for each is basically saying if x is not there y is not and if y is there x is. Therefore we create a graph by using these implications as egdes and the node numbers are positive for is and negative for isnt. We save them by using the range 1-m for positive and m+1 to 2m for negative. Then after we get the graph we need to find connected components. These are the parts where everything has a path to everything and therefore is dependent and therefore the place where we could have a contradiction by not x and x existing in the same SCC. To find the SCCs we just run kosaraju and then, since we give each elements an SCC index we check for each element if its complement (+m or -m in the index) has the same complement id. If it does the toppings are impossible. To create a valid solution we basically run a topological ordering on the components with the toppings. This is done so nothing in a component could point backwards and therefore create a dependency we would need to fix. Since kosaraju gives a topo sort by default when we id the components. Normally we would use exactly this to eliminate dependencies but this is a graph of implications meaning we need to make sure we dont create a dependency by not making a start of it true not the end. Therefore we need to run the exact opposite order. By running a reverse topo order we basically make all the right sides of the implications true or at least resolved which doesn't affect anything and only then move onto the left ones which could have actual effect. Because of this we compare component ids and fo whatever the bigger id says (+ is its in 1-m and - if in m+1-2m)
