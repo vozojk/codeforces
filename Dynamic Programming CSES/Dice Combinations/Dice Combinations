@@ -1,0 +1,16 @@
+Your task is to count the number of ways to construct sum n by throwing a dice one or more times. Each throw produces an outcome between 1 and  6.
+For example, if n=3, there are 4 ways:
+1+1+1
+1+2
+2+1
+3
+
+Input:
+The only input line has an integer n.
+Output
+Print the number of ways modulo 10^9+7.
+Constraints:
+1<=n<=10^6
+
+Strategy:
+This is very introductory DP. We create an array and populate dp[1] through dp[6] with ones since thats the numbers on a dice. Then we run a for loop 1 through n to go through all the possible sums inside of which we run a loop 1 to 6 to simulate all possible throws. Then we just run dp[i+j]=(dp[i+j]+dp[i])%MOD. For all the nodes and output dp[n].
