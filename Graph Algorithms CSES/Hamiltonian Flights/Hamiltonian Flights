@@ -1,0 +1,16 @@
+There are n cities and m flight connections between them. You want to travel from Syrjälä to Lehmälä so that you visit each city exactly once. How many possible routes are there?
+
+Input:
+The first input line has two integers n and m: the number of cities and flights. The cities are numbered 1,2,...,n. City 1 is Syrjälä, and city n is Lehmälä.
+Then, there are m lines describing the flights. Each line has two integers a and b: there is a flight from city a to city b. All flights are one-way flights.
+
+Output:
+Print one integer: the number of routes modulo 10^9+7.
+
+Constraints:
+2<=n<=20
+1<=m<=n^2
+1<=a,b<=n
+
+Strategy:
+We use bitmask DP. They point is that we will have a 2D array of which the outer one will hold bitmasks. These masks will be represented by a number the bits of which mark visited/not visited for the node id at the index of that bit. With this we can save unique visited combinations and therefore correctly count the paths. The inner vector will house the node id. So each of the vectors in the 2d matrix represent the number of paths to a node to which we got through a path represented by the bitmask. The main idea then is to just use DP to save states and build the count of paths. We need to do this since if did not save the state we wouldn't have any way to guarantee that the node we are visiting now was not already visited before on this path. We basically save visited arrays for each node and use them to make sure we are not overcounting. So then we loop through all the possible masks which are just all possible visited nodes combinations. Inside that loop we have a for loop to go through all current nodes for each of the masks. If the mask doesn't have the node as visited we skip. If it does we extract a previous mask from the mask (by just turning 1 into 0 on the current node id). The with this previous mask we use an array of reversed edges (which we initialized and populated at the start) to get the parents of the current node. We then check if the parent is in the bitmask to make sure it could have been included in this path and if it was we add its path (mod 1e9+7) to the paths to the current node. We go like this through the whole array until we get to the mask where there are all 1s at which point all the path counts from all the bitmasks will converge there and when we get to node n we will have the total paths there. Note: dp init as dp[1][0]=1 since theres 1 way to be at 0 from 0. To ensure we have node n as the last path we also need to skip any masks that have node n-1 (last adjusted for 0 indexed) if they dont have everything visited since all those paths are invalid.
