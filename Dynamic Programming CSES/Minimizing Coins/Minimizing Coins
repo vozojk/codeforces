@@ -1,0 +1,17 @@
+Consider a money system consisting of n coins. Each coin has a positive integer value. Your task is to produce a sum of money x using the available coins in such a way that the number of coins is minimal.
+For example, if the coins are {1,5,7} and the desired sum is 11, an optimal solution is 5+5+1 which requires 3 coins.
+
+Input:
+The first input line has two integers n and x: the number of coins and the desired sum of money.
+The second line has n distinct integers c_1,c_2,...,c_n: the value of each coin.
+
+Output:
+Print one integer: the minimum number of coins. If it is not possible to produce the desired sum, print -1.
+
+Constraints:
+1<=n<=100
+1<=x<=10^6
+1<=c_i<=10^6
+
+Strategy:
+This is another intro DP. Basically the same as with dice but the throws are of arbitrary size and we need to optimize for the lowest count instead of for all paths. From the last problem i have optimized by learning the best initialization is dp[0]=1 since there is 1 way to get to 0 (by not doing anything). Here it is different since we are looking for the shortest paths and the shortest path to get to the starting point is not moving so dp[0]=0. This saves the initialization of all the possible "start" states. I have also learnt to run a backward DP in the sense that i calculate for dp[i] and use the past and not use dp[i] to calculate dp[i+j]. So here we initialize the dp array with INF (very high value since we are going for the min we cannot do 0) upto x (this is fine since the max is 10^6 - 1MB). Then we run a for loop calculating dp[i]=min(dp[i-coinValue[j]+1, dp[i]). Because we are looking in the past we need to check if i-coinValue[j]>=0. If not, we skip. At the end we output dp[x].
