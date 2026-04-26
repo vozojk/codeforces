@@ -1,0 +1,20 @@
+Consider a money system consisting of n coins. Each coin has a positive integer value. Your task is to calculate the number of distinct ordered ways you can produce a money sum x using the available coins.
+For example, if the coins are {2,3,5} and the desired sum is 9, there are 3 ways:
+2+2+5
+3+3+3
+2+2+2+3
+
+Input:
+The first input line has two integers n and x: the number of coins and the desired sum of money.
+The second line has n distinct integers c_1,c_2,...,c_n: the value of each coin.
+
+Output:
+Print one integer: the number of ways modulo 10^9+7.
+
+Constraints:
+1<=n<=100
+1<=x<=10^6
+1<=c_i<=10^6
+
+Strategy:
+Here we need to only find sorted combinations. We can do this just by reversing the loop order from coin combinations I. We first run through all the possible coin denominations and for each we run through all possible values. This creates, on the first iteration, chains is value1 at any place where the sum matches and then the sum values get combined but the point is that the coins of the same denomination will be together which is analogical to them being sorted since not doing it in a sorted order does change the order in which we arrive to the numbers but it does not change the number of paths to get there. So we use the exact same thing and output dp[x] again.
