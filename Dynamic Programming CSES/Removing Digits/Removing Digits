@@ -1,0 +1,14 @@
+You are given an integer n. On each step, you may subtract one of the digits from the number.
+How many steps are required to make the number equal to 0?
+
+Input:
+The only input line has an integer n.
+
+Output:
+Print one integer: the minimum number of steps.
+
+Constraints:
+1<=n<=10^6
+
+Strategy:
+Here the main new thing is getting the digits out of a number. We can just take the number. Make a copy and then use num%10 to extract the last digit. Then, everytime we do num/=10 which removes the last digit. We can create a dp array sized n since each step we decrease by at least one. We initialize everything as 1e7 since we are finding a minimum and set dp[0]=0 since the number of steps to 0 from 0 is 0. Then we run a loop 1 to n and in each one use our digits extracting scheme as the inner loop and check dp[i]=min(dp[i-digit]+1,dp[i]). We output dp[n].
