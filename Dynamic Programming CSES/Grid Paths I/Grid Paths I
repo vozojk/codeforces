@@ -1,0 +1,15 @@
+Consider an n times n grid whose squares may have traps. It is not allowed to move to a square with a trap.
+Your task is to calculate the number of paths from the upper-left square to the lower-right square. You can only move right or down.
+
+Input:
+The first input line has an integer n: the size of the grid.
+After this, there are n lines that describe the grid. Each line has n characters: . denotes an empty cell, and * denotes a trap.
+
+Output:
+Print the number of paths modulo 10^9+7.
+
+Constraints:
+1<=n<=1000
+
+Strategy:
+Since we can go only right and down we cant really go back or get stuck in a loop. We can just load in the array and then run a double for loop. The dp array is initialized with all zeroes and is 2d in the sense that we a 1to1 copy of the grid it just saves possible paths to that spot taking into account the traps. For the double loop, if grip[i][j]=='*' we set that point in dp to 0 else we will have 2 numbers, top and left since thats the direction we could've come from. We check for bounds and take the ways from those directions adding them to the new point. This automatically handles if there was a trap since that set dp of that point to 0. We output dp[n-1][n-1]. The base case is dp[0][0]=1 and we apply %1e9+7 to everything to stay within bounds.
