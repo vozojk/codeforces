@@ -1,0 +1,17 @@
+You know that an array has n integers between 1 and  m, and the absolute difference between two adjacent values is at most 1.
+Given a description of the array where some values may be unknown, your task is to count the number of arrays that match the description.
+
+Input:
+The first input line has two integers n and m: the array size and the upper bound for each value.
+The next line has n integers x_1,x_2,...,x_n: the contents of the array. Value 0 denotes an unknown value.
+
+Output:
+Print one integer: the number of arrays modulo 10^9+7.
+
+Constraints:
+1<=n<=10^5
+1<=m<=100
+0<=x_i<=m
+
+Strategy:
+This is my first actual 2d dp problem. We need to track all the indices in the array and for them all the possible numbers that could be there saving the paths to get to them. The base case is i = 1 where we could either have a 0 or a !0. If theres a 0 we have dp[1][all values]=1 and if theres x != 0 we have dp[1][x]=1 and all others are 0. The dp 2d array will get initialized with all zeroes. Then, for each index of the array, if there is a nonzero number we just copy the paths dp[i-1][num-1]+dp[i-1][num]+dp[i-1][num+1] to dp[i][num] since all the others paths (to not num) are supposed to have zero. If there is a wild we explore. We have an inner for loop which goes 1 to upper bound included and calculates values for all dp[i][value] just as for when there's not a wild. At the end we output the sum of all numbers in dp[n]. We apply mod 1e9+7 to all additions. For calculations in the loops we check bounds for num-1 and num+1.
