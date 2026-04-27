@@ -1,0 +1,18 @@
+You are in a book shop which sells n different books. You know the price and number of pages of each book.
+You have decided that the total price of your purchases will be at most x. What is the maximum number of pages you can buy? You can buy each book at most once.
+
+Input:
+The first input line contains two integers n and x: the number of books and the maximum total price.
+The next line contains n integers h_1,h_2,...,h_n: the price of each book.
+The last line contains n integers s_1,s_2,...,s_n: the number of pages of each book.
+
+Output:
+Print one integer: the maximum number of pages.
+
+Constraints:
+1<=n<=1000
+1<=x<=10^5
+1<=h_i, s_i<=1000
+
+Strategy:
+Here we use 0/1 knapsack. This means that for each value we will either take it or not. Since the upper bound for x is 10^5 we cannot have a 2d array to track the picked books so we use a nice trick. In coin combinations II by reversing the order of the inner and outer for loop we could get out ordered combinations summing up to a value but we could reuse the coins. Here we need each coins to be used only once. This can be done by reversing inner dp loop to go from biggest capacity to smallest. The outer loop goes through all the possible books we could apply. This way we can still reuse the applied books from the smaller capacities but dont overcount some. What we are basically doing is using dp values from the books one book before while calculating the values for adding the next book. This needs to be done in reverse since if we dont dp[i-1] would be using the value that possibly already got updated. Knapsack 0/1 allows us to get the maximum since we always find the best possible book for that price by going through all the possible books that we could use. We output dp[x] since thats the maximum for our maximum price.
