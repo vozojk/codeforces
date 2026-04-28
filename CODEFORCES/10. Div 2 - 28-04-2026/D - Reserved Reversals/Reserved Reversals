@@ -1,0 +1,27 @@
+time limit per test: 2 seconds
+memory limit per test: 256 megabytes
+
+You are given an array a consisting of n positive integers.
+
+For any segment of the array starting at position l and ending at position r (1 <= l <= r <= n), let m(l, r) denote the minimum value in that segment, and M(l, r) denote the maximum value in that segment. Formally,
+m(l, r) = min(al, al+1, ..., ar),
+M(l, r) = max(al, al+1, ..., ar).
+
+You may perform the following operation any number of times (possibly zero):
+Select two indices l and r (1 <= l <= r <= n) such that m(l, r) + M(l, r) is odd;
+Reverse the entire segment al, al+1, ..., ar. In other words, for every i with l <= i <= r, set ai := al+r-i simultaneously.
+Determine whether you can make the array a non-decreasing* by performing a series of operations.
+*An array [b1, b2, ..., bk] is considered non-decreasing iff b1 <= b2 <= ... <= bk.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+
+The first line of each testcase contains a single integer n (1 <= n <= 2 * 10^5) — the length of the array a.
+The second line of each testcase contains n integers a1, a2, ..., an (1 <= ai <= n) — the elements of the array.
+It is guaranteed that the sum of n over all test cases does not exceed 2 * 10^5.
+
+Output:
+For each test case, print "YES" if you can make the array a non-decreasing, and "NO" otherwise.
+
+Strategy:
+The main key is that the sum must be odd. Since only odd+even=odd we know that the two numbers will have different parity. Because of this we can swap adjacent pairs of odd/even anyway we want, it is always possible to rearrange them. The problem is when we have 2 numbers of the same parity at the bounds of the subarray. Here we use that the numbers are minimum and maximum. This means that the only way to move them is to find a number than will be either smaller than the minimum or bigger than the maximum and will also have a different parity than the two. Therefore the only way we couldn't move the numbers is when all the numbers of the opposite parity would be in the range of this min and max. This way we could never reverse the order of them and make them correctly ordered. The problem simplifies to finding the biggest and smallest odd and even numbers and then checking. For all odd numbers we try to find a number that is bigger than the biggest even number, if we find it we mark a boolean, this is a number that cannot be used to do a swap with another odd number since it will always be one of the anchors in the swap. We continue to traverse and if we ever find a number that is smaller than the minimum and that flag is set we have just found 2 numbers which both need to be an anchor since they are outside of the range and they both have the same parity and they are reversed. They cannot be swapped in any way. If this happens we output no. We do this exact same thing for even numbers also. One edge case is when there are no numbers of different parities, everything has the same one, this means we can do no swaps so we check if the array is already sorted and if not we output no, otherwise yes. If the parity checks are without error we output yes.
