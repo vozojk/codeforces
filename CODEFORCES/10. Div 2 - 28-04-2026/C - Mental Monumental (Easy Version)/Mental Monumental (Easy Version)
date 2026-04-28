@@ -1,0 +1,22 @@
+time limit per test: 4 seconds
+memory limit per test: 256 megabytes
+
+This is the easy version of this problem. The difference between the versions is that in this version, you are required to find only the value of f(a).
+For any array [c1, c2, ..., cm], we define f(c) as the maximum possible mex(c)* that can be achieved by performing the following operation exactly once:
+Choose an integer array [b1, b2, ..., bm] such that bi >= 1 for all 1 <= i <= m;
+Set ci := ci mod bi for every 1 <= i <= m.
+You are given an array a consisting of n non-negative integers. Determine the value of f(a).
+*mex(c) denotes the minimum excluded (MEX) of the integers in c. For example, mex([2, 2, 1]) = 0 because 0 does not belong to the array, and mex([0, 3, 1, 2]) = 4 because 0, 1, 2, and 3 appear in the array, but 4 does not.
+u mod v denotes the remainder from dividing u by v.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each testcase contains a single integer n (1 <= n <= 2 * 10^5) — the length of the array a.
+The second line of each testcase contains n integers a1, a2, ..., an (0 <= ai <= 10^6) — the elements of the array a.
+It is guaranteed that the sum of n over all test cases does not exceed 2 * 10^5. It is guaranteed that the sum of max(a1, a2, ..., an) over all test cases does not exceed 10^6.
+
+Output:
+For each testcase, output a single integer — the value of f(a).
+
+Strategy:
+The description simplifies to needing to find the mex of an array after applying mod (any number) to each of the elements. The first piece is that each element can be reduced to any number (x-1)/2. This means that each number has a certain capacity till which it can transform to. So now we need to use the capacities to get as big of a number as possible. Since it always take more "effort" to get higher number than lower ones we should sort the array (which also sorts the capacities) to allocate optimally. Now the problem is we don't know what to transform the numbers to. Doing a pass and going 1-n doesn't work since some numbers will need not to be transformed at all and we would either waste capacity on them or transform them into something smaller and then couldn't go back. Not being able to get bigger numbers is also a problem. For n numbers we could theoretically have mex n but if we transformed all of them this gets down to (x-1)/2. Therefore leaving the numbers that are already the correct value is crucial. The strategy is basically to identify missing numbers in a sequence of unknown size and fill the out from the array of non decreasing capacities. Unknown size and non decreasing means binary search on answer. We create a function that will take the size of the wanted answer (mex) and the vector of numbers. We will keep an array of values we already have and values we are missing and an array of capacities. Since the initial input array was sorted the capacities are also sorted. After marking the numbers we already have we just go through the capacities and greedily transform corresponding numbers to the ones that are missing. If the capacity is too small we just skip it. We output true if we were able to allocate all the numbers. We run a classic binary search on this function, keep track of the max value that returned true and output that.
