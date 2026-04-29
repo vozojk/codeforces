@@ -1,0 +1,18 @@
+Given two arrays of integers, find their longest common subsequence.
+A subsequence is a sequence of array elements from left to right that can contain gaps. A common subsequence is a subsequence that appears in both arrays.
+
+Input:
+The first line has two integers n and m: the sizes of the arrays.
+The second line has n integers a_1,a_2,...,a_n: the contents of the first array.
+The third line has m integers b_1,b_2,...,b_m: the contents of the second array.
+
+Output:
+First print the length of the longest common subsequence.
+After that, print an example of such a sequence. If there are several solutions, you can print any of them.
+
+Constraints:
+1<=n,m<=1000
+1<=a_i, b_i<=10^9
+
+Strategy:
+We can use the same general idea as in edit distance. We look at prefixes. dp[i][j] holds the LCS(s1prefi, s2prefj). We can leverage this because if s1[i]==s2[j] we know the prefix is 1 longer than the value for dp[i-1][j-1] since thats the lcs of the 2 strings just with the one letter at the end missing. The other 2 possible moves are dp[i-1][j] which just adds another letter to s1 and dp[i][j-1] which adds another letter to s2. Therefore we are basically adding letters one by one to each substring and comparing all the possible index combinations and looking for matches. We look for each match only once and then reuse the result. The main double for loop loops through the 2d array (starting at n and m = 1 since 0 is the base case) and tries to find matching pairs, if they do it takes dp[i-1][j-1]+1=dp[i][j] if not then it takes the max of dp[i-1][j] and dp[i][j-1] since thats just taking the longest lcs available which we know is safe because we have confirmed that the letter at index i or j (depending on what we pick) doesn't immediately add anything and if it did down the line it can add only one and since we are choosing max the greedy approach will always work. We output dp[n][m]. The dp array gets initialized with 0s for the leftmost column and topmost row since these are base cases having one of the strings length 0 and therefore lcs 0. For the example we need to find we backtrack. Since we know that anytime we have went on the diagonal the letters match we can use this in reverse. We start at x=n, y=m and look at the letters at those indices. If they match we save that letter and do x--, y--. If they dont we look at dp[x-1][y] and dp[x][y-1], whichever is bigger is the one we chose when moving and therefore we move to it. We reverse the array with saved letters and output that. The backtracking works since the lcs must arrive at dp[n][m] and we can always save diagonal moves since everytime we increased the counter in the path forward we moved on the diagonal and therefore the number has to work. The greedy matching works even if the both values are the same since we aren't really throwing away any letters anyway since at the next step that has these values we will again evaluate both letters we just go further away from the main diagonal but if it is the right lcs it will get back to go to dp[n][m].
