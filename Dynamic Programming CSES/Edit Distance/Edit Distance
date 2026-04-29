@@ -1,0 +1,20 @@
+The edit distance between two strings is the minimum number of operations required to transform one string into the other.
+The allowed operations are:
+Add one character to the string.
+Remove one character from the string.
+Replace one character in the string.
+For example, the edit distance between LOVE and MOVIE is 2, because you can first replace L with M, and then add I.
+Your task is to calculate the edit distance between two strings.
+
+Input:
+The first input line has a string that contains n characters between A–Z.
+The second input line has a string that contains m characters between A–Z.
+
+Output:
+Print one integer: the edit distance between the strings.
+
+Constraints:
+1<=n,m<=5000
+
+Strategy:
+This is 2d dp. The trick is that at dp[i][j] we are measuring how hard is it to get the prefix of length i of string 1 into the prefix of string 2 of length j. This is useful since for the transitions we know that if s1[i]==s2[j] the letters for those prefixes match and the add is free. Otherwise we just take the lowest count possible which is applicable to this which is either dp[i-1][j]+1 for adding a letter to s1 to match s2 of length j or dp[i][j-1]+1 for adding a letter to s2 which amounts to removing from s1 since if i need to add a letter to the target i need to remove from the starting one. Or we have dp[i-1][j-1]+1 which is replacement. This signifies that both s1 and s2 have a letter at i and j but they dont match so we change the letter in s1 to the corresponding one in s2. Since i now have strings that match in the last letter i look at how much would it cost to get the rest of them. This is saved in dp[i-1][j-1] and the cost for dp[i][j] is this +1. We take the minimum of these operations. We iterate like this through the whole 2d array and output dp[n][m]. We initialize dp with INF everywhere except the topmost row and leftmost column. These will have dp[0][i]=i and dp[j][0]=j since the cost to create a string from nothing is all its letters and cost to make nothing from a string is the length of the string.
