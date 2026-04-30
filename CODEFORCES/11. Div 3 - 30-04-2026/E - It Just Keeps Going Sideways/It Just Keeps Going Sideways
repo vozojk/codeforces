@@ -1,0 +1,22 @@
+Yousef has n columns of cubes standing side by side. The i-th column contains ai identical unit cubes stacked vertically. Initially gravity pulls cubes downwards, so every column i contains exactly ai cubes at heights 1, 2, ..., ai.
+Suddenly, gravity shifts to the right. Each cube slides horizontally as far to the right as possible. A cube cannot pass through or overlap other cubes, and it must remain at its original height. The final configuration is uniquely determined by the initial heights.
+Before the gravity shift, Yousef may perform at most one operation: choose an index i and decrease ai by 1 (i.e. remove one cube from that column). He may also choose to do nothing.
+A cube is said to move if its column index after the gravity shift is different from its original column index.
+Find the maximum possible number of cubes that will move after the gravity shift, assuming Yousef applies the single decrease optimally (or chooses not to apply it).
+
+Input:
+The first line contains an integer t, the number of test cases. The description of the test cases follows.
+The first line of each test case contains a single integer n, the length of the array.
+The second line of each test case contains n integers a1, a2, ..., an, the elements of the array.
+
+Output:
+For each test case, output a single integer, the maximum possible number of cubes that will move after the gravity shift, assuming Yousef applies the single decrease optimally (or chooses not to apply it).
+
+Constraints:
+1<=t<=10^4
+1<=n<=210^5
+1<=ai<=n
+The sum of n over all test cases does not exceed 2*10^5.
+
+Strategy:
+So in this problem we have 2 mains things. Count the number of squares that will move when we change the gravity from down to right and then count the maximum number of squares we can make move that did not move before by removing a square from any of the tops of the columns. In this problem we use suffixes of the array to find the lowest point inside the suffix and then another array which will hold the next smaller column to the right. We can create these by (1) just traversing from the back and keeping track of the smallest thing we have found so far putting it inside the indices and for the second thing we can use a stack. Since the array is tracking the shorter column to the left it will be increasing. Therefore we can traverse the array forward and put everything in a stack, for each element we pop from the stack until we reach an element that is smaller than the current element which is the closest smaller element on the left to the current element. This is always true since the stack will always pop all the bigger elements leaving us either with nothing or with the nearest element on the left since the first popped element that is smaller will be the last pushed element that is smaller. This is great since it potentially leaves other even smaller elements for the next current elements. Therefore correctly allocating everything. This gives us a sort of a cascade thing. We can easily calculate the number of shifter blocks before removing anything by just taking the height - suffix for each column since thats the amount it must shift because theres a colunn of height suffix (small) somewhere on the right. Then we just the suffix and smallerLeft arrays to calculate the maximum possible gain. We loop over the whole array forward and for each element we check the suffix array to find the next smallest element since if this element is already smaller than our current we cant do anything to make it work. If it is <= however decreasing the height by 1 will make a change and for this we use the shorterLeft array. Taking shorterLeft[curr] will give us the index of the column that will not be affected since it has height <= height[curr]-1 anyway. Therefore current-shorterLeft[curr] is the number of affected blocks. We take the max of this with the other values and add the biggest one to the number of blocks that moved without a deletion. We output that minus 1 since we need to account for the deleted cube.
