@@ -1,0 +1,21 @@
+Yousef is at the coordinates (0, 0) and wants to reach a plate of Koshary at (x, y).
+To get there, Yousef takes long steps. From any point (a, b), a long step moves him to:
+(a + 2, b) or (a, b + 2)
+However, Yousef is allowed to take at most one short step during his entire journey. A short step moves him to:
+(a + 1, b) or (a, b + 1)
+Can Yousef reach the exact coordinates (x, y) of the Koshary plate?
+
+Input:
+The first line contains an integer t, the number of test cases.
+Each test case contains two integers x and y, the coordinates of the Koshary plate.
+
+Output:
+For each test case, output YES if Yousef can reach the Koshary plate and NO otherwise.
+You can output the answer in any case (upper or lower). For example, the strings yEs, yes, Yes, and YES will be recognized as positive responses.
+
+Constraints:
+1<=t<=100
+1<=x,y<=10
+
+Strategy:
+We we can only move by even numbers for the unlimited moves and then in one direction to make only one coordinate odd we can never reach a point (odd,odd). Therefore we check for the target and if it is (odd,odd) we output NO, otherwise we output YES.
