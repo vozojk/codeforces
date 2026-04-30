@@ -1,0 +1,25 @@
+Yousef has given you an array a of 2n integers. Every integer x in [0, n - 1] appears exactly twice in the array.
+Your task is to find a subarray al, al+1, ..., ar that is a palindrome such that its mex(al, al+1, ..., ar) is maximized. Output this maximum possible value.
+A palindrome is a string that reads the same backward as forward, for example strings "z", "aaa", "aba", "abccba" are palindromes, but strings "codeforces", "reality", "ab" are not.
+The mex (minimum excludant) of an array of integers is defined as the smallest non-negative integer which does not occur in the array. For example:
+The mex of [2, 2, 1] is 0, because 0 does not belong to the array.
+The mex of [3, 1, 0, 1] is 2, because 0 and 1 belong to the array, but 2 does not.
+The mex of [0, 3, 1, 2] is 4, because 0, 1, 2 and 3 belong to the array, but 4 does not.
+
+Input:
+The first line contains a single integer t, the number of test cases.
+The first line of each test case contains a single integer n.
+The second line of each test case contains 2n integers a1, a2, ..., a2n.
+
+Output:
+For each test case, output a single integer, the maximum mex of any palindromic subarray.
+
+Constraints:
+1<=t<=10^4
+1<=n<=10^5
+0<=ai<=n-1
+Every integer in the range [0, n - 1] appears exactly twice.
+The sum of 2n over all test cases does not exceed 2*10^5.
+
+Strategy:
+Here the main idea is to realize that we need to leverage that there is only 2 of each element. Therefore we can just track the position of each and then use that we are trying to find the mex of a palindrome subarray. The combination of the constraints gives us an opportunity to simplify a problem a lot. Since we know there absolutely must be a 0 in our subarray since otherwise the mex is just 0 which is just as bad as no subarray at all. We have 3 cases: 2 0s as a midpoint in the palidrome, a lone 0 in the middle of the palidrome and a pair of 0s at some distance from the middle on both sides. The solution is just checking for these. Since both assigning indices and then doing any of the checking is O(n) we can solve this in O(n), however i did use a sorting function to find the missing numbers in the palindrome easier which makes the complexity O(nlogn). That is within the limit of n<=10^5. We can check the individual cases by first checking if the 2 0s are next to eachother, if they are we know the palindrome must have them as the middle and we just advance pointers on both sides and save the seen numbers till they differ. For the second case we take the indices of both 0s and run separate loops to find the biggest palindrome possible with the 0 in the middle also saving the numbers and for the 0s being somewhere not in the middle we find the midpoint with (left+right)/2 which gets rounded to floor therefore we check if (right-left)%2==0 we set left to mid and right to mid+1 otherwise we set left and right both to mid. This is to account for the middle being 2 numbers. Then for each of the cases we run the loop to find the biggest palindrome and save the numbers. In each case we then take the saved numbers, sort them and then run a basic loop which checks if there are any missing numbers from 0 to size, if there are we output the last numbers thats not missing. For each of the cases we save that number + 1 as the mex and output the max of that.
