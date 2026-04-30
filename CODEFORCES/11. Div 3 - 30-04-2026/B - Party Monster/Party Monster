@@ -1,0 +1,24 @@
+Yousef has given you a sequence s of length n consisting only of characters '(' and ')'. You are allowed to perform the following operation at most once:
+Choose a substring of s and remove it. Then, you may reinsert the removed characters back into the remaining string one by one. Each character can be placed at any arbitrary position, independently of the others.
+Yousef wants you to determine whether it is possible to obtain a regular bracket sequence after performing the operation at most once.
+A substring is a contiguous subsegment of a string. For example, "acab" is a substring of "abacaba" (it starts in position 3 and ends in position 6), but "aa" or "d" aren't substrings of this string. So the substring of the string s from position l to position r is s[l,r] = sl sl+1 ... sr.
+A regular bracket sequence is a bracket sequence that can be transformed into a correct arithmetic expression by inserting the characters 1 and + between the original characters of the sequence. For example:
+bracket sequences ()() and (()) are regular (the resulting expressions are: (1)+(1) and ((1+1)+1));
+bracket sequences )(, ( and ) are not.
+
+Input:
+The first line contains an integer t, the number of test cases. The descriptions of the test cases follow.
+The first line of each test case contains a single integer n, the length of the string s.
+The second line of each test case contains a sequence s of length n consisting only of characters '(' and ')'.
+
+Output:
+For each test case, output YES if the sequence can be made regular, and NO otherwise.
+You can output the answer in any case (upper or lower). For example, the strings yEs, yes, Yes, and YES will be recognized as positive responses.
+
+Constraints:
+1<=t<=10^4
+1<=n<=210^5
+The sum of n over all test cases does not exceed 210^5.
+
+Strategy:
+Here the main idea is that we can put in the parenthesis that we took out back in in any order we want. Therefore we can always take out a whole array and then the only constraint is that we would have an uneven number of parenthesis since all closing ones need an opening one and vice-verse. Therefore we just take the input and count '(' vs ')'. If they are the same output YES, otherwise NO.
