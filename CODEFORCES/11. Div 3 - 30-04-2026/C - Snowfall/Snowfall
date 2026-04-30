@@ -1,0 +1,23 @@
+Yousef has given you an array a of n positive integers.
+Let f(a) denote the number of subarrays of a whose product is divisible by 6.
+More formally, for every pair of indices l and r such that 1<=l<=r<=n, consider the subarray al, al+1, ..., ar. This subarray is counted if the product of its elements is divisible by 6.
+For example, if a = [1, 6, 2], then the subarrays whose products are divisible by 6 are [6], [1, 6], [6, 2], and [1, 6, 2], so f(a) = 4.
+Your task is to reorder the elements of the array a so that f(a) is minimized. If there are multiple ways to do this, you may output any of them.
+An array b is a subarray of an array a if b can be obtained from a by deleting several (possibly zero or all) elements from the beginning and several (possibly zero or all) elements from the end.
+
+Input:
+The first line of the input contains an integer t, the number of test cases.
+The first line of each test case contains an integer n, the size of the array.
+The second line of each test case contains n integers a1, a2, ..., an, the elements of the array.
+
+Output:
+For each test case, output the array after reordering it in such a way that f(a) is minimized. If there are multiple answers, you may output any of them.
+
+Constraints:
+1<=t<=10^4
+1<=n<=210^5
+1<=ai<=10^9
+The sum of n over all test cases does not exceed 2*10^5.
+
+Strategy:
+Here the main idea is that we cannot have a lot of subarrays that will contain numbers the product of which will be a multiple of 6. Since the product of any set of numbers which will have prime factors (in any multiplicity) of 2 and 3 will be a multiple of 6 we need to separate them as much as possible. We get three categories of numbers in the array. Numbers which are divisible by 6, numbers which are not divisible by 6 but either by 2(1) or by 3(2) and then other numbers. Since the number of subarrays is proportional to the number of elements we can use to create them (upper and lower bound) the idea is to make the minimum subarray needed to have product%6 really big since then there is not a lot of elements we can extend it by and we cannot use any combinations of adding/removing things inside the base array. We can achieve this by separating the 2s and the 3s and putting them as far away from eachother as possible. Then, since the numbers directly divisible by 6 automatically create a subarray we need to put them in a place where they don't do a lot of damage which is together and appended either to the set of numbers %3 or numbers %2 since that will again make the number of combinations the smallest. By appending i mean either to the very end of the array or at the very start since then the average arrays we need to get to the 6s get the biggest. Therefore the solution has either (meaning divisible by, o==other) 62o3, 63o2, 3o26, 2o36. Any of these will give the correct result because of symmetry and no difference between the meaning of 2s and 3s in this problem. We output the array sorted in any of these 4 ways.
