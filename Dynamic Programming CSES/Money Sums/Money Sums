@@ -1,0 +1,15 @@
+You have n coins with certain values. Your task is to find all money sums you can create using these coins.
+
+Input:
+The first input line has an integer n: the number of coins.
+The next line has n integers x_1,x_2,...,x_n: the values of the coins.
+
+Output:
+First print an integer k: the number of distinct money sums. After this, print all possible sums in increasing order.
+
+Constraints:
+1 <=n <=100
+1 <=x_i <=1000
+
+Strategy:
+Here we know we can use each coin only once and we are finding unique sets. We combine strategies from previous problems. To use each coin only once we make the inner loop backwards and to find unique sets and not all permutations we reverse the order of the loops. The outer loop goes through all the coins and the inner one through all possible states. I define the maximum of the dp array as biggest coin * no_coins but now i realize i can just sum them up. Doesn't really matter though since 100k is well within the memory and time limits. So we setup this and then we setup the loop. For the dp array we will store if its possible or not to reach a number i at dp[i] through using some (possibly all) of the coins and will mark this with a 1 if possible and 0 if not. We loop through the dp array and coins in the described order and if dp[i-value[j]]=1 we mark dp[i]=1 then at the end we go through the dp array, count the numbers with a 1 (except 0) and output them after their count.
