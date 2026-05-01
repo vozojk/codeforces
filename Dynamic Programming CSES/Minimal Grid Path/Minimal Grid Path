@@ -1,0 +1,16 @@
+You are given an n*n grid whose each square contains a letter.
+You should move from the upper-left square to the lower-right square. You can only move right or down.
+What is the lexicographically minimal string you can construct?
+
+Input:
+The first line has an integer n: the size of the grid.
+After this, there are n lines that describe the grid. Each line has n letters between A and Z.
+
+Output:
+Print the lexicographically minimal string.
+
+Constraints:
+1<=n<=3000
+
+Strategy:
+This one seemed like more of a bfs than a dp. The main idea is that we can just be greedy. Since the order is lexicographically minimal we can just always choose the paths with the smallest available next character and heavily prune. Since the smallest available character must be by definition the same for all paths we actually take there is no heavy state tracking. We just spin up a queue and put {1,1} inside. We also initialize an empty string. Inside the queue we save its size in a variable and run a for loop extracting all elements (this because we need to track only current depth). Inside the for loop we need to find the smallest possible character out of the characters we have visited at this depth therefore we add their coordinates all into a vector and simultaneously keep track of the current letter. If we ever find a smaller one at that depth we clear the vector and start adding the ones that match this letter. After that we will have a vector of all coordinates at the current depth that have a smallest letter available and therefore could be the smallest path. Since the available moves are down and right the new coordinates could overlap which would increase time complexity and TLE therefore we create a visited array and for each point we add it to the queue only if visited[x][y]==0 if it is 1 we skip it. If it was 0 we mark it as visited. We break up out of the while loop when we reach string size 2n-1. We also never push coordinates that have x or y bigger than n-1. At the end of each iteration of the while loop we push the letter we have found to be the smallest to the string. At the end we will have a string with the lexicographically smallest path. We output that.
