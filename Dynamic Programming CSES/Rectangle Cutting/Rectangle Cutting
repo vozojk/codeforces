@@ -1,0 +1,12 @@
+Given an a*b rectangle, your task is to cut it into squares. On each move you can select a rectangle and cut it into two rectangles in such a way that all side lengths remain integers. What is the minimum possible number of moves?
+
+Input:
+The only input line has two integers a and b.
+Output:
+Print one integer: the minimum number of moves.
+
+Constraints:
+1<=a,b<=500
+
+Strategy:
+The idea here is that the 2D dp array will track how many cuts will it take to slice a rectangle of size i x j into squares. The base cases are all the squares in the input rectangle meaning all points where i==j. For each size we can get to it by either making a horizontal cut or a vertical cut which will leave us with rectangles of size (where k is width or height) k x j and i-k x j or i x k and i x j-k. Therefore our dp transition is dp[i][j]=min(min(all possible horizontal cuts), min(all possible vertical cuts)). This gives us a setup with a double for loop to loop through all the sizes and then the inner inner for loop (third) will loop for each size through all the rectangles that the cutting will create (their sizes) and add them up and take their absolute minimum. We then take the minimum assign it to dp[i][j] and add 1 for the new cut. (the horizontal or vertical cut we found to be the cheapest). We output dp[a][b].
