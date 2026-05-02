@@ -1,0 +1,18 @@
+Your task is to count the number of ways numbers 1,2,...,n can be divided into two sets of equal sum.
+For example, if n=7, there are four solutions:
+{1,3,4,6} and {2,5,7}
+{1,2,5,6} and {3,4,7}
+{1,2,4,7} and {3,5,6}
+{1,6,7} and {2,3,4,5}
+
+Input:
+The only input line contains an integer n.
+
+Output:
+Print the answer modulo 10^9+7.
+
+Constraints:
+1<=n<=500
+
+Strategy:
+This is just a reskin of the classic problem of finding the number of sums. We know the sums of the 2 sets are total/2 each. Therefore if the total is odd there are no sets and we output 0. We can get the sum with n(n+1)/2. The problem makes us find pairs of sets but since each set summing to a half of the total will have a counterpart that has the same sum we can just find the number of sets summing to the half. We do this by going through the values (1 to n) first and in the inner loop (since we want unique values) we go from total/2 (size of the half set) to 1 which is also the range of the dp array. It stores the ways to get to sum i (dp[i]). The only thing left to solve is how to get rid of duplicates since the set {1,2} will have a counterpart {3} and the set {3} will have a counterpart {1,2} these will both get counted as a "pair". Since we output the answer mod 1e9+7 we can't just halve it but we would have to run an algorithm to find the modular multiplicative inverse. There is a genius way to solve this. We can just anchor a number and exclude all the sets that have it. If we run the outer loop only to n-1 instead of n we exclude all the sets that have n in them which is going to be exactly half (since the other half are the other ones in the pairs that don't, there will be always one set with n and one set without in the pair since we need to use all numbers but none twice). We just output that number. We can also use any other number for this. All of them will work.
