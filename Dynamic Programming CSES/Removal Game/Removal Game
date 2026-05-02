@@ -1,0 +1,16 @@
+There is a list of n numbers and two players who move alternately. On each move, a player removes either the first or last number from the list, and their score increases by that number. Both players try to maximize their scores.
+What is the maximum possible score for the first player when both players play optimally?
+
+Input:
+The first input line contains an integer n: the size of the list.
+The next line has n integers x_1,x_2,\ldots,x_n: the contents of the list.
+
+Output:
+Print the maximum possible score for the first player.
+
+Constraints:
+1<=n<=5000
+-10^9<=x_i<=10^9
+
+Strategy:
+This problem is intro to minimax and being able to use DP to solve 2 player games where both player play optimally. The main idea here is that we unify that complex state of 2 players each playing into one variable we can track through which we can express the states of both players scores. Here it is tracking the maximum advantage of player 1 which is just points_p1-points_p2. Since we also know which coins were picked by players and therefore the total this gives us the ability to reconstruct both players point count from just this one variable and the total. We do this since tracking points of p1 is not possible since it disregards anything p2 would be doing. This way they can ping pong the tracked value back and forth and keep it updated and therefore keep the ability for us to reconstruct both points later. Then for the implementation (since now we know the dp array stores the advantage) is just a matter of finding the transition which here we can do by calculating the advantages for all subarrays with increasing the size as we go. We start with length 1 then 2 etc... Since the state can be expressed just by keeping L and R variables to index the coins array to know which 2 options are available we do this just by sliding a window of all widths over the array. The base case is dp[i][i]=coins[i] since thats just player 1 taking the coin. Then the transition is dp[l][r]=max(coins[l]-dp[l+1][r],coins[r]-dp[l][r-1]). This transition works since it takes dp[l-1][r] or dp[l][r-1] which is the total advantage of the player who got to the point {l-1,r} or {l, r-1} and deducts it from the coins that the current player picked (l or r). This means taking the value player gained by picking up the coin and deducting the advantage the other player had. The negative sign is there because it is what advantage the other player had. Therefore is p1 picks up a coin at l and he had advantage even before the advantage at dp[l-1][r] will be negative since p2 must have been losing. Therefore when we do the calculation we get coin[l]-p2_adv which is the same as doing coin[l]+p1_adv. We do this for windows of all sizes upto n and print dp[0][n-1] which holds the advantage of p1 for the whole coins array.
