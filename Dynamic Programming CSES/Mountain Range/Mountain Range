@@ -1,0 +1,17 @@
+There are n mountains in a row, each with a specific height. You begin your hang gliding route from some mountain.
+You can glide from mountain a to mountain b if mountain a is taller than mountain b and all mountains between a and b.
+What is the maximum number of mountains you can visit on your route?
+
+Input:
+The first line has an integer n: the number of mountains.
+The next line has n integers h_1, h_2,..., h_n: the heights of the mountains.
+
+Output:
+Print one integer: the maximum number of mountains.
+
+Constraints:
+1<=n<=2*10^5
+1<=h_i<=10^9
+
+Strategy:
+In this problem we need to use segment trees since 2*10^5 is too big for a normal approach to search for maxima. The idea is go from the smallest height and add more and more mountains. The dp array will therefore hold the maximum number of mountains for dp[i] having mountains upto height i in the path. Since the heights go upto 10^9 we need to compress the coordinates. We can do this since we do not care about the height traveled or anything related to the actual heights but only to the order they bestow upon our path. We compress the coordinates by just assigning ranks to them. We can do this by saving the height and its index in a pair, sorting by height and then saving the indices inside the rank array where rank[i] has the rank of the initially ith mountain. For the segment trees to work we need to give it correct ranges. The idea for that is that for each mountain we will store the index of the closest bigger mountain on the right and on the left. We can use a stack approach to get these. Then we combine it all together. We take the ranked indices of the mountains with the range arrays and initialize the segment tree with 0s. Then we run in the order from smallest to biggest mountain and always ask the ranges where is the next >= mountain on the right and left. We then develop a range so that the mountains are not inside so the segment tree gives us a maximum over as range where our mountain is the biggest. The inputted range will be L[i]+1, R[i] since a segment tree takes [left, right) and we need to exclude the bigger mountain. To clarify, the segment trees stores the maximum number of mountains, it is the dp data structure here. We start at 0 and always loop at a maximum for our range and add 1 (the mountain we added). Since we go from the smallest mountain up, all the ranges that we query must be composed from ranges of mountains that are guaranteed to be smaller and therefore we calculated them before and the new mountain which will glue them together. We output tree[1] since that is the root and by the definition of the segment tree it will hold the maximum over the whole tree. The one thing we need to look out for is look for mountains that have the same height, here it is fine though since the before and after arrays handle the ranges correctly.
