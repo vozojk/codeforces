@@ -1,0 +1,15 @@
+Given an array of n integers, your task is to calculate the number of increasing subsequences it contains. If two subsequences have the same values but in different positions in the array, they are counted separately.
+
+Input:
+The first input line has an integer n: the size of the array.
+The second line has n integers x_1,x_2,...,x_n: the contents of the array.
+
+Output:
+Print one integer: the number of increasing subsequences modulo 10^9+7.
+
+Constraints:
+1<=n<=2*10^5
+1<=x_i<=10^9
+
+Strategy:
+Here we need to apply logic from Increasing Subsequence I and Mountain Ranges. This is using segment trees to store the sums and using lower bound to correctly query the tree. The segment tree will store the number of subsequences ending at number i for each number in numbers. We build the segment tree logic for query and update so we update the leaf nodes and their sums and query so we get the correct sum. Then we need to correctly iterate through the numbers and get correct ranges to query and update. We need to iterator front to back in the original order since we need to preserve that for the subsequences but we also need to make sure we don't include any numbers for the sum that are bigger than the number we are "appending" to the current sums. For this appending to make sense we need to query for all subsequences ending with a number lower than our current so we can append it to the end. We find this range by getting a rank of our current number based on their ordering smallest to biggest. We can get this rank by having a copy array from which we need to remove duplicates since that wouldn't make sense for rankings, we cannot reuse numbers of the same value. We use lower bound and our current number on the copy. The output of lower bound - sorted.begin() gives us the index. We then use this index to query the tree for [0, rank) which gives us the sum for all subsequences which can current number be appended to. We add 1 to it for the subsequence that only has the new number and add that to the index rank inside the segment tree (since there could be the same thing from different position, the duplicates, which we count separately) so we can query it later. We use mod 1e9+7 on all operations. We output query(0, n) since thats the sum for everything. Note: the segment tree queries number [l, r) for the inputs l,r.
