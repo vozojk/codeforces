@@ -1,0 +1,14 @@
+Given the structure of a company, your task is to calculate for each employee the number of their subordinates.
+
+Input:
+The first input line has an integer n: the number of employees. The employees are numbered 1,2,...,n, and employee 1 is the general director of the company.
+After this, there are n-1 integers: for each employee 2,3,...,n their direct boss in the company.
+
+Output:
+Print n integers: for each employee 1,2,...,n the number of their subordinates.
+
+Constraints:
+1<=n<=2*10^5
+
+Strategy:
+Here the idea is that for each node we need to take sum of its descendants and thats the amount need to be saved for it. We can do this by tracking the degree of nodes starting at the ones that have 1 (leaves) and then just loop inside a queue. Each time in a node we just push its value to the boss +1 for the child itself. Since it's a tree and we started at the leaves we are basically doing a topological ordering and therefore when we get to a node all the nodes under it in the hierarchy will have been explored. We do this all the way to the to the root by tracking the in-degree of the nodes. This works since the input gives us bosses which is effectively just a tree with reversed edges. We naturally go to the root.  Because of this we just push the nodes to the queue when the indeg reaches 0. Then we just output the contents of the array saving the sums for each node.
