@@ -1,0 +1,16 @@
+You are given a tree consisting of n nodes.
+A matching is a set of edges where each node is an endpoint of at most one edge. What is the maximum number of edges in a matching?
+
+Input:
+The first input line contains an integer n: the number of nodes. The nodes are numbered 1,2,...,n.
+Then there are n-1 lines describing the edges. Each line contains two integers a and b: there is an edge between nodes a and b.
+
+Output:
+Print one integer: the maximum number of pairs.
+
+Constraints:
+1<=n<=2*10^5
+1<=a,b<=n
+
+Strategy:
+Here we need to do a topological ordering on the tree. Since we need to maximize the size of the set of pairs of nodes that are connected with a single edge and we cannot reuse them the startegy is to always start with the nodes at the edges of our current state. This is because we cannot disallow more than 1 pair from being created by taking the node on the edge and its neighbour. This converts to doing a topological ordering on the tree. We keep an array of usedNodes and visited and keep a count of the pairs so far. Then we establish the starting nodes which are the leaves of the original tree with degree 1. From these we run a topological sort where if a node hasnt been used in a pair and got popped we look through all its neighbours and try to find a one for it to pair with. If we do we increase a counter and mark them in the used array. For each neighbour we decrease its degree to account for the popped node. If the degree of a node gets to 1 leaving only the edge going up in the tree we push it to the queue since its at the edge. We repeat this until we are out of nodes. We output count.
