@@ -1,0 +1,16 @@
+You are given a tree consisting of n nodes.
+The diameter of a tree is the maximum distance between two nodes. Your task is to determine the diameter of the tree.
+
+Input:
+The first input line contains an integer n: the number of nodes. The nodes are numbered 1,2,\ldots,n.
+Then there are n-1 lines describing the edges. Each line contains two integers a and b: there is an edge between nodes a and b.
+
+Output:
+Print one integer: the diameter of the tree.
+
+Constraints:
+1<=n<=2*10^5
+1<=a,b<=n
+
+Strategy:
+Here the idea is that we need to find the longest path inside the tree. The key is realizing that if we run a depth tracking bfs from any node. The node that is furthest away will be one of the endpoints of this path. We can simplify this by imagining a 1d line. Whichever point we pick the longest path possible from that point is one of the edges. Turns out this scales for trees. Therefore we run a bfs to find one of these points and then run another bfs from this point to find the longest path from it tracking the depth. We output depth-1 since my counter starts at 0 and increases for each pop from the queue. We also need to handle the edge case where n=1 where we need to manually output 0.
