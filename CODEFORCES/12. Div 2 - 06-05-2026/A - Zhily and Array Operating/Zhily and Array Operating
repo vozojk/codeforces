@@ -1,0 +1,23 @@
+Deep in the wilderness, Zhily and Jily discovered a series of gathering places that contain abstract logic. Some of these gathering places harbor inconsistent errors in their logic, which may collapse at any moment. They hope to transmit logic between adjacent gathering places through reasonable transfer arrangements so that as many gathering places as possible can eventually restore logical stability.
+You are given an array a of n integers. You can perform the following operation any number of times:
+Choose an index i (1 <= i < n) and assign ai = ai + a(i+1).
+Each index can be chosen at most once.
+Find the maximum number of positive integers in the final array after all operations.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t. The description of the test cases follows.
+The first line of each test case contains a single integer n.
+The second line of each test case contains n integers a1, a2, ..., an.
+
+Output:
+For each test case, you should output a single line containing an integer k, the number of positive numbers in the final sequence.
+
+Constraints:
+1 <= t <= 10000
+2 <= n <= 200000
+-1000000000 <= ai <= 1000000000
+
+The sum of n over all test cases does not exceed 200000.
+
+Strategy:
+Here the idea is that for any integer we can propagate it if needed onto integers on the left of it. The strategy is to start on the rightmost index and go left and everytime we can increase the number usable for the next index (by adding the number from the previous index to our current) we will. This way we will propagate the biggest numbers possible to the left and therefore any number that can be changed to positive will. More concretely, everytime a(i+1)>0 we add it to ai since that increases the number we can add to a(i-1) and can also make ai itself positive. Simultaneously for each number ai we check after the operation if its > 0. If it is we add a counter. We output the counter.
