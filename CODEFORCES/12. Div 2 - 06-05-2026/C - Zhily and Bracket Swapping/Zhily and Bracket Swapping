@@ -1,0 +1,22 @@
+Deep in the wilderness, Zhily and Jily discovered two sequences composed of brackets. Each sequence carries some logical structure, but neither of them is necessarily a regular bracket sequence on its own. They found that by swapping brackets between the two sequences, they could repair them. They wish to make both sequences regular bracket sequences by swapping brackets between them.
+A regular bracket sequence is a sequence consisting of ( and ), which can be turned into a valid math expression by inserting 1 and + any number of times into the sequence. For example, the sequence ()(()) is a regular bracket sequence, while ())( or (()( are not regular bracket sequences.
+You are given two bracket sequences a and b of even length n. You can perform the following operation any number of times:
+Choose a position i (1 <= i <= n) and swap ai and bi.
+Determine whether you can turn both a and b into regular bracket sequences.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t. The description of the test cases follows.
+The first line of each test case contains a single integer n, the length of the strings a and b.
+The second line of each test case contains a sequence a of length n consisting only of characters ( and ).
+The third line of each test case contains a sequence b of length n consisting only of characters ( and ).
+
+Output:
+For each test case, output YES if you can turn both a and b into a regular bracket sequences, NO otherwise. You can output YES and NO in any case (for example, yES, yes, and Yes will be recognized as a positive response).
+
+Constraints:
+1 <= t <= 10000
+2 <= n <= 200000, n is even
+The sum of n over all test cases does not exceed 200000.
+
+Strategy:
+In this problem there are 2 rules which apply for all problems with bracket sequences. 1. the number of left brackets is always >= than right brackets for any point in the array; and 2. the number of left brackets must the same as the number of right brackets for the sequence to be valid. Since we get 2 strings and need to swap brackets at the same indices to achieve 2 valid strings the idea here is to track the running bracket balance (+ for more '(' and - for more ')') and do greedy swaps based on this. We also have a few obvious cases where the answer is no. If the number of left brackets in both strings != the number of right brackets or if the any string starts with ')' or ends with '(' the answer is no immediately. After this we initiate the balance counter for s1 and s2a and we loop left to right. At each index we look at the balances. Since the end goal is to get them both to 0 we will try to do this. Since they are dependent on each other we can try to make the difference between them as close to 0 to balance them out. Each iteration we if the brackets at this index are not the same, if the are we can't do anything. If they are not we check which balance counter is bigger and we try to give its '(' away to the other one. If it has a '(' to give away at that index we perform a swap and adjust the balance counters with one having +=2 and the other -=2 since we remove an opening bracket but also add a closing one and the opposite in the other one. At the end of each iteration we check if the balance counter of any string is not negative. If this is the case there are more closing brackets than opening ones in this prefix of the string making it automatically invalid. At the end we check if both counters are 0 if they are we output yes otherwise no. The greedy approach works because the fundamental idea is to never let the balance counters drop below 0. The best approach to do this is to try to balance out the opening brackets and therefore never force the string to be invalid.
