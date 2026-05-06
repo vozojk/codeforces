@@ -1,0 +1,21 @@
+Deeper in the wilderness, Zhily and Jily discovered a mysterious sequence of numbers. Each prefix of the sequence has an important characteristic value, known as the mex and the max. By rearranging the sequence, it can generate a special kind of magic.
+You are given an array a of n non-negative integers. You can rearrange it arbitrarily.
+Find the maximum possible value of the sum of the MEX and the maximum value over all prefixes. Formally, you need to maximize the sum from i=1 to n of (mex(a1, a2, ..., ai) + max(a1, a2, ..., ai)).
+The minimum excluded (MEX) of a collection of integers c1, c2, ..., ck is defined as the smallest non-negative integer x which does not occur in the collection c.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t. The description of the test cases follows.
+The first line of each test case contains a single integer n, the length of the array a.
+The second line contains n integers a1, a2, ..., an, the array a.
+
+Output:
+For each test case, output the maximum sum on a new line.
+
+Constraints:
+1 <= t <= 10000
+1 <= n <= 200000
+0 <= ai <= 1000000000
+The sum of n over all test cases does not exceed 200000.
+
+Strategy:
+Here the biggest leap in logic that needs to be made is that the best possible strategy is to put the biggest number in the array to index 0 (which maximizes all the prefix sums totaling m*n) and then maximize the running mex by using the numbers in order and not putting duplicates next to each other. This gives us 2 possible cases. One where the maximum number is also a part of the 1 to x series and therefore the mex for the array is max+1. The second case is where there is a gap between the max and other smaller numbers and therefore the mex increasing part will end earlier. This gives us 2 equations for which we need to obtain variables which are the maximum mex, the maximum number and the number of duplicates in the array. Then we check if max < mex. If it is it means it must be a part of the increasing sequence and therefore the total output will me max*n for maxes and then for mex it is (here mex is the maximum mex) (mex-1)*(mex-2)/2+mex*(duplicates+1). The first part is the sum of the mexes all the way to mex-2. This is because we have used the max at the start and therefore it is included in all the prefixes which means the mex will increase by 1 by adding a number all the way until we add max-2 included which corresponds to mex-2. We cannot count mex-1 since when we add max-1 the mex immediately jumps to max+1 because of the max at the start. Therefore then we will have mex*(duplicates+1) here we can get duplicates by taking n-mex. This is the result for max < mex. For max >= mex we have that that max is not included in the sequence of increasing number where we increase mex. The equation here is max*n + (mex+1)*(mex)/2 since we go all the way from 0 to mex one by one. And then the rest is mex*(n-mex-1) Here n-mex is the duplicates and numbers unused in the mex and we need to remove 1 because we need to account for the max used at the start. We output one of these based on the max <-> mex relation.
