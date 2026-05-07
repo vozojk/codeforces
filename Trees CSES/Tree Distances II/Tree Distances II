@@ -1,0 +1,16 @@
+You are given a tree consisting of n nodes.
+Your task is to determine for each node the sum of the distances from the node to all other nodes.
+
+Input:
+The first input line contains an integer n: the number of nodes. The nodes are numbered 1,2,...,n.
+Then there are n-1 lines describing the edges. Each line contains two integers a and b: there is an edge between nodes a and b.
+
+Output:
+Print n integers: for each node 1,2,...,n, the sum of the distances.
+
+Constraints:
+1<=n<=2*10^5
+1<=a,b<=n
+
+Strategy:
+Here the idea is tree rerooting. We can choose a root and then run the first part of the calculation which is getting the distance from this root to all of its children. We do this by a normal post order dfs where we calculate the distance to all children before to the parent. We do this by saving the distance sum and the number of nodes in the subtree for all nodes. Then transition is just dist[node] = sum(dist[children])+no_descendants. The second part is there since for each descendant the distance increases by 1 compared to the child. Now we have the total answer for the root but we need to recalculate for all the other nodes. We can do this by just doing another dfs. This time we traverse the tree top to bottom with a pre order dfs. For each child of a parent the answer for the child is just the answer for the parent + the change for moving from the parent to the child. This change can be divided into the change that we incur by moving away from all the nodes "above" the child and moving closer to all the nodes in which the child is the root of the subtree. Converted to the transition equation this gives ans[node]=ans[parent]+(n-nodes_subtree)-nodes_subtree. This works since the only thing that changes is the relative distances to all the nodes which all change by 1. Therefore we increase by 1 for all the nodes out of the subtree since we moved away and decrease by 1 for all the nodes in the subtree we moved closer to. This is very easy to do since we calculate all the subtree sizes for our chosen root in the previous post order dfs. We output the ans array. We use ll to not overflow.
