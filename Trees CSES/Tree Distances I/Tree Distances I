@@ -1,0 +1,16 @@
+You are given a tree consisting of n nodes.
+Your task is to determine for each node the maximum distance to another node.
+
+Input:
+The first input line contains an integer n: the number of nodes. The nodes are numbered 1,2,...,n.
+Then there are n-1 lines describing the edges. Each line contains two integers a and b: there is an edge between nodes a and b.
+
+Output:
+Print n integers: for each node 1,2,...,n, the maximum distance to another node.
+
+Constraints:
+1<=n<=2*10^5
+1<=a,b<=n
+
+Strategy:
+We can use that the maximum distance in between any 2 nodes is the diameter and that the maximum distance from any node will be the distance to one of the endpoints of the diameter. We can achieve this by finding the diameter with a bfs to find the endpoint and then another bfs to set the distances from it for all nodes. Then, from the node that was the furthest away we run another bfs and use the max of the distance already saved in the array and this new one. We output the contents of the distance array.
