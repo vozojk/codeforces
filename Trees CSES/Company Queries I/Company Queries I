@@ -1,0 +1,19 @@
+A company has n employees, who form a tree hierarchy where each employee has a boss, except for the general director.
+Your task is to process q queries of the form: who is employee x's boss k levels higher up in the hierarchy?
+
+Input:
+The first input line has two integers n and q: the number of employees and queries. The employees are numbered 1,2,...,n, and employee 1 is the general director.
+The next line has n-1 integers e_2,e_3,...,e_n: for each employee 2,3,...,n their boss.
+Finally, there are q lines describing the queries. Each line has two integers x and k: who is employee x's boss k levels higher up?
+
+Output:
+Print the answer for each query. If such a boss does not exist, print -1.
+
+Constraints:
+1<=n,q<=2*10^5
+1<=e_i<=i-1
+1<=x<=n
+1<=k<=n
+
+Strategy:
+We use a concept called binary lifting. The whole idea here is that everytime we get a query we need to jump up k times to through the parents of the nodes to reach the correct level boss. However since the queries get done on the same tree we can precompute these jumps. In this strategy for each node we precompute jumps for all powers of 2 upto the maximum height in the tree which is n here so the size of the power will be log n. We can create a 2d dp array housing [node_id][power_2] for each node and each power. This gives us the ability to do a sort of a binary search on the path since we always check from the smallest power and if the jump is too big (we know since we get how many levels up to go) we just go to the next power. Since any number can be represented in powers of 2 we will always find the boss, if it exists just by looping from biggest power to the smallest. To initialize the dp array we loop from the smallest power to the biggest in the outer loop and through the nodes in the inner loop and we use the simple trick that 2^n=2^(n-1)+2^(n-1) therefore our dp transition is just dp[node][pow]=dp[dp[node][pow-1]][pow-1]. This works perfectly since the lower power will always be already computed for all the nodes. After that we just execute the queries. For each node we use the binary lifting array to take pow of 2 big steps. This makes us reach the target in logN time and not N time making the whole process NlogN. The base case is just dp[node][0]=boss[node] since thats just a jump of 1. The array gets initialized to -1 everywhere else which marks out of bounds. At the end we output either -1 if the boss is unreachable or the node id if we reached it. We can also optimize by not using the pow function but by just doing 1 << pow to get the power of 2 required. This is incredibly fast.
