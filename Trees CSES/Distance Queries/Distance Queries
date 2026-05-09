@@ -1,0 +1,17 @@
+You are given a tree consisting of n nodes.
+Your task is to process q queries of the form: what is the distance between nodes a and b?
+
+Input:
+The first input line contains two integers n and q: the number of nodes and queries. The nodes are numbered 1,2,...,n.
+Then there are n-1 lines describing the edges. Each line contains two integers a and b: there is an edge between nodes a and b.
+Finally, there are q lines describing the queries. Each line contains two integer a and b: what is the distance between nodes a and b?
+
+Output:
+Print q integers: the answer to each query.
+
+Constraints:
+1<=n, q<=2*10^5
+1<=a,b<=n
+
+Strategy:
+This problem is just an extension of Company Queries II. The idea is that the shortest path between any 2 nodes in a tree is always the path to the LCA from node a and then the path back from the LCA to node b. This simplifies to depth[a]+depth[b]-2*depth[lca(a,b)]. The only extra complexity this problem adds over CQ II is that we don't get bosses of nodes but just edges. This is easy to solve since we can just pick an arbitrary nodes, declare its the root and create our boss array and depths based on that. After that we just find the lca and do the depth equation above for each query. We output the result.
