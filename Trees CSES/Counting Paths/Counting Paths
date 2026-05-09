@@ -1,0 +1,17 @@
+You are given a tree consisting of n nodes, and m paths in the tree.
+Your task is to calculate for each node the number of paths containing that node.
+
+Input:
+The first input line contains integers n and m: the number of nodes and paths. The nodes are numbered 1,2,...,n.
+Then there are n-1 lines describing the edges. Each line contains two integers a and b: there is an edge between nodes a and b.
+Finally, there are m lines describing the paths. Each line contains two integers a and b: there is a path between nodes a and b.
+
+Output:
+Print n integers: for each node 1,2,...,n, the number of paths containing that node.
+
+Constraints:
+1<=n, m<=2*10^5
+1<=a,b<=n1
+
+Strategy:
+To add to a lot of nodes multiple times we will use the same idea as when adding to overlapping ranges in an array. For each range where we add we mark the start with a +1 and the end with a -1. We do this for all the ranges. Then at the end we do one sweep combining all these ranges together by just keeping a count. For the tree we can do the same for the paths but since each path will go up and then down we need to pick the correct nodes to which to assign the numbers. +1 will go to both ends of the path since we go up from both. The point where they meet is always the LCA of them. Since there will be a +1 coming from 2 sides we put a -1 there so it gets counted only once and then we put a -1 to the parent of the lca so we don't count further. We do this to all the paths. Each time by finding the LCA just as in Company Queries II and then we just do mark[a]++, mark[b]++, mark[lca]--, mark[boss[lca]]--. We find the bosses and the lca by just picking an arbitrary root and then doing a bfs to form the tree from that node. From the root we picked we assign the boss array and calculate depths from which we can find the LCA as normal. Then, we mark the nodes as described. At the end we need to traverse the tree and give all the nodes their correct counts. Turns out a topological sort is perfect for this since the only rule is that we need to have values calulated for all children to do a parent since the values get passed upwards. Since this is a tree a topo sort is just going from the leaves and then moving by 1 depth everytime, this is the same as the bfs we did so in the bfs we save the nodes in the order of getting popped and then traverse this array backwards while doing mark[boss[node]]+=mark[node] for each node in order if its not the root. We output the contents of the mark array.
