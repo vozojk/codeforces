@@ -1,0 +1,22 @@
+You are given a rooted tree consisting of n nodes. The nodes are numbered 1,2,...,n, and node 1 is the root. Each node has a value.
+Your task is to process following types of queries:
+
+change the value of node s to x
+calculate the sum of values in the subtree of node s
+
+Input:
+The first input line contains two integers n and q: the number of nodes and queries. The nodes are numbered 1,2,...,n.
+The next line has n integers v_1,v_2,...,v_n: the value of each node.
+Then there are n-1 lines describing the edges. Each line contans two integers a and b: there is an edge between nodes a and b.
+Finally, there are q lines describing the queries. Each query is either of the form "1 s x" or "2 s".
+
+Output:
+Print the answer to each query of type 2.
+
+Constraints:
+1<=n, q<=2*10^5
+1<=a,b, s<=n
+1<=v_i, x<=10^9
+
+Strategy:
+This is a segment tree problem. We need to flatten the tree, define the ranges correctly and then run queries based on these ranges inside a segment tree to get the sums. First we load all the nodes in and then we use a dfs to create the order. This works because a dfs will always explore the full subtree before returning back to another node so when we flatten the tree and query a range for the subtree starting at x and ending at the node after coming back from x we will have the full subtree only. This is realized by keeping an in and out array and keeping a counter. For each node its place in the order is determined by its number in the in array which is set when first seeing the node, at each call of dfs() we increase the global counter so each node has a unique number. The out array is set after all the children of a node return which is exactly the same index the next node in thr dfs will have. Then we initialize the segment tree based on this order and configure update and query to find sums of descendants. For each query we call either update if it's a type 1 and query if it's type 2. We query ranges based on in[a] and out[a] (works pefectly since the segment tree does not include the right bound) since those are the indices in our segment tree. We return whatever the segment tree returns.
