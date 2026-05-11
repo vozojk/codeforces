@@ -1,0 +1,18 @@
+You are given a rooted tree consisting of n nodes. The nodes are numbered 1,2,...,n, and node 1 is the root. Each node has a color.
+Your task is to determine for each node the number of distinct colors in the subtree of the node.
+
+Input:
+The first input line contains an integer n: the number of nodes. The nodes are numbered 1,2,...,n.
+The next line consists of n integers c_1,c_2,...,c_n: the color of each node.
+Then there are n-1 lines describing the edges. Each line contains two integers a and b: there is an edge between nodes a and b.
+
+Output:
+Print n integers: for each node 1,2,...,n, the number of distinct colors.
+
+Constraints:
+1<=n<=2*10^5
+1<=a,b<=n
+1<=c_i<=10^9
+
+Strategy:
+We use a strategy where we go through the nodes bottom up in a dfs manner so we always explore a whole subtree before getting to its root and then for each parent we take the child that has the biggest set of colors and make that the baseline set for the parent, we use std::swap to not waste time actually swapping the elements. Then for the rest of the children we just insert all of the colors one by one. Since we are using actual set as the inner data structures inside the vector, we handle duplicates automatically in logN time. This strategy also guarantees maximum logN moves for each node and therefore total Nlog^2N time complexity (squared for set insertions). This works because since we take the biggest set every time the set size into which we move each node must at least double. This gives log2n maximum moves per node. The implementation is using a dfs and inside it we keep a vector with sets that store the actual colors. We let that bubble up with the dfs which will store for each parent only when all the children are processed. Then we keep another vector which holds the actual answers we save that everytime at the end of each dfs call since then it will get scrambled by the swap. We output the contents of that.
