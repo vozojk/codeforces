@@ -1,0 +1,15 @@
+Given a tree of n nodes, your task is to find a centroid, i.e., a node such that when it is appointed the root of the tree, each subtree has at most n/2 (floor) nodes.
+
+Input:
+The first input line contains an integer n: the number of nodes. The nodes are numbered 1,2,…,n.
+Then there are n-1 lines describing the edges. Each line contains two integers a and b: there is an edge between nodes a and b.
+
+Output:
+Print one integer: a centroid node. If there are several possibilities, you can choose any of them.
+
+Constraints:
+1<=n<=2*10^5
+1<=a,b<=n
+
+Strategy:
+We use the idea that since the subtree has to have at most n/2 nodes the whole "reversed subtree" meaning the subtree of that same node if we reversed all the edges must have also at most n/2 nodes. This creates an inequality we can use to solve this. At any point in even the most adversary tree to this we will have ways that have less nodes and ways that have more nodes. Since the only requirement is for the nodes children to have subtree of size <= n/2 we just need to make sure this is true. Since by going into a subtree that has size > n/2 we take the parent node from the big subtree into the other smaller part or make it the centroid we can iteratively make the subtree smaller and smaller until it is <= n/2. Since the size is half of the tree there can always be only one subtree with size > n/2. This makes the implementation just a matter of traversing the tree from an arbitrary node and each time check the sizes of subtrees of the children of the current node. We go to the node the size of which is > n/2 until there is none. Because of the facts stated above. We are guaranteed to find the centroid. The only thing left therefore is to precalculate the sizes beforehand. We can do this with a simple dfs. We start at an arbitrary node (same one as from which we will start the search) and just add the sizes of all of its children to the current node. We initialize these counts at one to account for the roots of the subtrees. After running the centroid finding loop we output the node idx where we stopped.
