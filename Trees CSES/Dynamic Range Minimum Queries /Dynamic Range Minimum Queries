@@ -1,0 +1,21 @@
+Given an array of n integers, your task is to process q queries of the following types:
+
+update the value at position k to u
+what is the minimum value in range [a,b]?
+
+Input:
+The first input line has two integers n and q: the number of values and queries.
+The second line has n integers x_1,x_2,...,x_n: the array values.
+Finally, there are q lines describing the queries. Each line has three integers: either "1 k u" or "2 a b".
+
+Output:
+Print the result of each query of type 2.
+
+Constraints:
+1<=n,q<=2*10^5
+1<=x_i, u<=10^9
+1<=k<=n
+1<=a<=b<=n
+
+Strategy:
+We use a segment tree for minimums. The only thing different from the sum tree (other than changing from sums to minima) is that when updating we need to pull into parents and not push from children. This means that for each affected parent we need to check both children to find the new minimum. We start at the lowest parent (1 level above leaf) and go upwards while checking min(c1,c2). We initialize the segment tree with 2*1e9 and let the minima just bubble up. For the queries we either call update or query the range a-1, b.
