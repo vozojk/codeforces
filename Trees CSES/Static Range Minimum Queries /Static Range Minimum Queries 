@@ -1,0 +1,17 @@
+Given an array of n integers, your task is to process q queries of the form: what is the minimum value in range [a,b]?
+
+Input:
+The first input line has two integers n and q: the number of values and queries.
+The second line has n integers x_1,x_2,...,x_n: the array values.
+Finally, there are q lines describing the queries. Each line has two integers a and b: what is the minimum value in range [a,b]?
+
+Output:
+Print the result of each query.
+
+Constraints:
+1<=n,q<=2*10^5
+1<=x_i<=10^9
+1<=a<=b<=n
+
+Strategy:
+We can use a static segment tree for minimum. We write only an init method which will initialize the tree with n to 2n-1 leaves as the actual values from the array and then we let the minimums bubble up. Since there are no updates we don't need to be concerned with that. For the query function we just do a classic min seg tree. We then query the ranges a-1, b.
