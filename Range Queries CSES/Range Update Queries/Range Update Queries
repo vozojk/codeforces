@@ -1,0 +1,21 @@
+Given an array of n integers, your task is to process q queries of the following types:
+
+1. increase each value in range [a,b] by u
+2. what is the value at position k?
+
+Input:
+The first input line has two integers n and q: the number of values and queries.
+The second line has n integers x_1,x_2,...,x_n: the array values.
+Finally, there are q lines describing the queries. Each line has three integers: either "1 a b u" or "2 k".
+
+Output:
+Print the result of each query of type 2.
+
+Constraints:
+1<=n,q<=2*10^5
+1<=x_i, u<=10^9
+1<=k<=n
+1<=a<=b<=n
+
+Strategy:
+We use a fenwick tree. This data structure stores prefix "x" (sum etc... needs to have an inverse since otherwise we cant do pref[a,b]=pref[b]-pref[a]). The concept is that that each prefix is composed of power of 2 sized blocks. These blocks have a very specific property. For each index i the block that is ending at i has length LSB(i). Meaning that a block at 14 (1110) has length 2 since LSB(1110)=0010. This way, each prefix will be a sequence of powers of 2 which are precisely the bits set to 1 in the index. 1110 will have ranges [13,14] [9,12] [1,8]. For all the different indices this creates an interesting thing. We can look at the ranges at blocks of a certain size. The idea is that for each odd index there is a series of blocks [i],[i+1,i+2],[i+3,i+6],[i+7,i+10]... always adding bigger powers of 2. This in the end will cover all of the ranges without any redundancy. It is a perfect representation of the ranges in a flattened array. Then, when we add to a certain range we always take the lsb and keep adding it to the current number. This way we will go up in powers of 2 and continue the series of powers that started at some previous index until we would be > n. For querying we do the opposite and here is the beauty. When querying we peel back always the lsb and therefore the block sizes will be in reverse compared to all the original series starting at some index i. This means that we will be going against the flow of them while increasing our block sizes and therefore we can only use a block from a certain series once. Since the whole logic of updating will bubble the update up one singular series this means we will always intersect with an updated number only once without overcounting. With this in mind we update a range [L,R] by doing add(L, val), add(R+1, -val) this is just a classic difference array. When we query we just traverse the branch of the tree with x & -x (lsb finder) until the root which will give us the total count for that node. We can either add the initial values to the difference in the fenwick tree initializing at 0 or initializing everything by just calling add for each initial index and value.
