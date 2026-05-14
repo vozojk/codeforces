@@ -1,0 +1,18 @@
+There are n hotels on a street. For each hotel you know the number of free rooms. Your task is to assign hotel rooms for groups of tourists. All members of a group want to stay in the same hotel.
+The groups will come to you one after another, and you know for each group the number of rooms it requires. You always assign a group to the first hotel having enough rooms. After this, the number of free rooms in the hotel decreases.
+
+Input:
+The first input line contains two integers n and m: the number of hotels and the number of groups. The hotels are numbered 1,2,...,n.
+The next line contains n integers h_1,h_2,...,h_n: the number of free rooms in each hotel.
+The last line contains m integers r_1,r_2,...,r_m: the number of rooms each group requires.
+
+Output:
+Print the assigned hotel for each group. If a group cannot be assigned a hotel, print 0 instead.
+
+Constraints:
+1<=n,m<=2*10^5
+1<=h_i<=10^9
+1<=r_i<=10^9
+
+Strategy:
+We use the rule that we pick the first hotel that has enough space. This means we don't have to search for an optimal one just go through the list find the first one and decrease a counter. This would be N^2 so we use a segment tree instead. We can track the maximum of nodes inside the segment tree and they will represent the range maxes of the subtree until index i. This allows us to do a binary search to an unsorted array which is amazing. Since if we are at an i which is not the last node in the prefix that has that amount of rooms i-1 will also have that max and therefore the tree will allow us to go left. The root holds the maximum for the whole array, we start there and then theres the right and left child holding halves of the parent subarray. We always go left if we can otherwise we go right. We can also prove right at the start if this group has a hotel to assign them since it the root maximum is less than the amount we need we can output 0 right away. We write a basic max segment tree and we load it up by called update for each element in the input array, the we process the groups one by one and do the binary search on the tree putting the result index (need to subtract n from it since the index will be to the leaf not the actual index) inside the result array and update the tree if we found a hotel for the group. We update by taking the current value and just sending in cur-group_size to the same index. The only thing we need to be careful about that for the searching to work we need a perfect binary tree. This is because if the tree is not balanced everywhere going to a child will not divide the subarray into a correct half and therefore break the logic. We output the results of the result array.
