@@ -1,0 +1,17 @@
+You are given an array of n integers and q queries of the form: how many distinct values are there in a range [a,b]?
+
+Input:
+The first input line has two integers n and q: the array size and number of queries.
+The next line has n integers x_1,x_2,...,x_n: the array values.
+Finally, there are q lines describing the queries. Each line has two integers a and b.
+
+Output:
+For each query, print the number of distinct values in the range.
+
+Constraints:
+1<=n,q<=2*10^5
+1<=x_i<=10^9
+1<=a<=b<=n
+
+Strategy:
+The main idea is that we keep a sort of a window. The rule is that for each value, if we keep the last seen location of it we dont have to care about any of the previous ones if we load all the queries in and then execute them ordered by the right boundary. This way we always execute all queries ending at R before R+1 which means we can just load all the distinct values before R+1 in and then we can just query our structure for distinct values upto R and distinct values upto L-1 and subtract. We can do this because in our structure we will agresssively demark all the values which have a duplicate further right and basically delete them which means the only thing query(l-1) returns is the distinct values that query(R) does not have. The rest of the problem is just state management. We need to keep track of all the original positions so then if we find a result for something in the sweep line we can place it at the correct spot in the output array. The data structure we use is a fenwick tree and a hashmap to save the indices of the last seen values. Then we load in all the queries, sort them and go from earliest ending to latest and if the time where the query ends matches the index we are at in the sweep line (the last loaded value) we execute a loop to process all the queries ending at that spot and save the results to the correct indices. We use a tuple or a custom struct for this. 1-indexed because of the fenwick tree. To make this faster and not prone to edge cases we reverse the hashmap for size n.
