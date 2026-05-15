@@ -1,0 +1,17 @@
+You are given a list consisting of n integers. Your task is to remove elements from the list at given positions, and report the removed elements.
+
+Input:
+The first input line has an integer n: the initial size of the list. During the process, the elements are numbered 1,2,...,k where k is the current size of the list.
+The second line has n integers x_1,x_2,...,x_n: the contents of the list.
+The last line has n integers p_1,p_2,...,p_n: the positions of the elements to be removed.
+
+Output:
+Print the elements in the order they are removed.
+
+Constraints:
+1<=n<=2*10^5
+1<=x_i<=10^9
+1<=p_i<=n-i+1
+
+Strategy:
+Here the main idea is that we track the positions of elements instead of trying to somehow force actual removals or changes. We can do this by saving an array of 1s and 0s where a 0 means deleted or never there and 1 means there for each index. This transforms this problem into a simple range query since now if we just query(0, i) we will get the amount of elements until original index i. Then we can do a binary search on this to find the smallest i for which the query result is == position in the removal array. This leaves us with 2 approaches. We can either use a fenwick tree and do a binary search on the result of queries giving us a total Nlog^2N complexity or we can use a segment tree and do a binary search by literally traversing the tree, going down from the root and aggressively picking the left child of nodes (important thing is that if we go right we need to search for idx original_idx-tr[left] since we are effectively doing a range query starting 1 node after the left child ended) until we get to a leaf (we pick left if the sum is >= idx). The segment tree needs to be padded. We run the binary search and then print out the original number (adjusted for the result format). After each finished search we need to update the tree so that the node now has a 0 for deleted. We do this with add(idx, -1) or update(idx, 0). We can also use binary lifting on the fenwick tree to push it to Nlogn.
