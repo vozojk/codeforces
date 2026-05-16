@@ -1,0 +1,18 @@
+There is an array consisting of n integers. Some values of the array will be updated, and after each update, your task is to report the maximum subarray sum in the array.
+
+Input:
+The first input line contains integers n and m: the size of the array and the number of updates. The array is indexed 1,2,...,n.
+The next line has n integers: x_1,x_2,...,x_n: the initial contents of the array.
+Then there are m lines describing the changes. Each line has two integers k and x: the value at position k becomes x.
+
+Output:
+After each update, print the maximum subarray sum. Empty subarrays (with sum 0) are allowed.
+
+Constraints:
+1<=n,m<=2*10^5
+-10^9<=x_i<=10^9
+1<=k<=n
+-10^9<=x<=10^9
+
+Strategy:
+Here the idea is that through saving a multi field state of each range starting from each individual block all the way upto the whole range. A segment tree is an obvious choice for this. We can use the nodes to represent any range in the array. The point is the divide the array into blocks, each block will be saving the prefix and suffix with the maximum sum, then the sum of the whole block and then the final answer which can be any range inside that block. To get these answers we start at the smallest possible blocks of size 1 and then try to merge them. For each block we can gain the prefix of P (parent) by using max(l.prefix, l.sum+r.prefix), suffix in the same way but other side. Sum is just the sum and the final answer for the parent is max(l.ans, r.ans, l.suf+r.pref). This is true since we either have the answers for left or right beating everything else or we can merge subarrays from the two blocks and this is only possible if we take the suffix and the prefix. This guarantees optimal sum. Then, to update we can just use the segment tree. We use the merge function and we use it for the pull into parent segment tree updating (for each parent we merge the children and go up this way). For query we just use print tr[1] since that's the whole subarray. We then process the queries outputting the correct result for each. The base case is loading in the initial values in the tree. The tree also needs to be padded so we first create a padded tree with all zeroes and then use update for each index and value to load in the initial values.
