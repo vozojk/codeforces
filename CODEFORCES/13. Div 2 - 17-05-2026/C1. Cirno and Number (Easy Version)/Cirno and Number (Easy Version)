@@ -1,0 +1,14 @@
+This is the easy version of the problem. The difference between the versions is that in this version, n=2. You can hack only if you solved all versions of this problem.
+You are given a non-negative integer a and a non-empty, strictly increasing sequence of digits d of length n, where 0≤di≤9.
+Find the minimum value of |a−b| over all non-negative integers b whose decimal representation contains only digits from d.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The first line of each test case contains two integers a and n (0≤a≤1017, n=2).
+The second line contains n integers d1,d2,…,dn. It is guaranteed that 0≤d1<d2<…<dn≤9.
+
+Output:
+For each test case, output the minimum value of |a−b|.
+
+Strategy:
+Here the idea is that we have to preload all the possible combinations of taking or not taking the digits. This is easily possible since there is 2 possible choices for each digit and the number has at most 17 digits therefore for any pair of digits we have 2^17 possible combinations which if we extrapolate to all possible pairs of d1 and d2 of which there are 45 we get 45*(2^18+2^17+2^16...2)~45*2^19 or about 24 million. We also use .reserve on the arrays of combinations to already have memory for all the numbers. This is well within the 2 second time limit we have. Then after we get the combinations precomputed we sort them for each pair and then for each testcase we can use this precomputed sorted array and just do a binary search. We take lower_bound(a) and use the value that the lower bound found and also the one before since thats the first one thats smaller than a. We output the one that is closer.
