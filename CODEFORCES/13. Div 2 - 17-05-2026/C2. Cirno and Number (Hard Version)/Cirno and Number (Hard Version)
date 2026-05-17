@@ -1,0 +1,14 @@
+This is the hard version of the problem. The difference between the versions is that in this version, 1≤n≤10. You can hack only if you solved all versions of this problem.
+You are given a non-negative integer a and a non-empty, strictly increasing sequence of digits d of length n, where 0≤di≤9.
+Find the minimum value of |a−b| over all non-negative integers b whose decimal representation contains only digits from d.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The first line of each test case contains two integers a and n (0≤a≤1017, 1≤n≤10).
+The second line contains n integers d1,d2,…,dn. It is guaranteed that 0≤d1<d2<…<dn≤9.
+
+Output:
+For each test case, output the minimum value of |a−b|.
+
+Strategy:
+We have to completely change the architecture from the easy version. Here the idea is that we can just run an aggressively pruning dfs that will assume that the best number has the same amount of digits as the target and then just place the closest number possible there. To take care of the assumption we will generate the best numbers for length +1 and -1 which are just the lowest/highest possible digit at the start followed by some amount of 0s or the highest digit. For the guess that is the same length we will the target converted to a string and the dfs with 2 flags (greater, less). The idea is that the dfs will only branch out if it doesn't know what its building. If none of the flags are set we will just loop through all the digits for the digit we are trying to find right now and branch out with each of them while setting the greater or less flags if it was greater or less than the current digit. This makes the dfs aggressively stop branching since the only thing that will do this big branching in the next step again is the one that had the same digit picked as was in the target (none of the flags were set). For the dfs calls where a flag is set the problem is easy. If the flag is lower we just place the biggest possible digit in each of the remaining spots since we need to come as close to the target from the left. For the greater flag we do the same thing but from the right. We keep track of a global min_diff and best_val which we continously update with the best guesses we have found so far. At the end we check the best guess of the dfs with the guesses of length+1 and -1 and output the one with the smallest diff.
