@@ -1,0 +1,16 @@
+Given n integers, your task is to report for each integer the number of its divisors.
+For example, if x=18, the correct answer is 6 because its divisors are 1,2,3,6,9,18.
+
+Input:
+The first input line has an integer n: the number of integers.
+After this, there are n lines, each containing an integer x.
+
+Output:
+For each integer, print the number of its divisors.
+
+Constraints:
+1<=n<=10^5
+1<=x<=10^6
+
+Strategy:
+We use the fact that the number of divisors can be obtained through the prime factors and their multiplicities of the number. This is because all the divisors of a number will be divisible by 1 or more of the factors therefore the combinations or the factors are the amount of divisors. This is without order and therefore the result is taking the factors with their multiplicities and multiplying (multiplicity+1) for each factor into the final result. This is because the number can appear 0 to multiplicity times in each divisor. For the factors we can precompute them normally since 10^8 is within the limit.
