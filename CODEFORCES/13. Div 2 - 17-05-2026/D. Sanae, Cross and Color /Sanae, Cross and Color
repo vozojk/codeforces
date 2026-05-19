@@ -1,0 +1,23 @@
+Upon the mountain, Sanae gazes at the stars. Faith, for her, is where winds encounter one another and choices diverge, and it is the point where all directions meet. For the glory of the Holy Cross, let us trace the sign of faith together.
+
+There are n distinct integer points in the plane, where the i-th point is located at (xi,yi). To color the points, choose two integers k1 and k2 such that each of the four regions divided by the lines x=k1+0.5 and y=k2+0.5 contains at least one point. Each point (x,y) is colored according to the region it lies in:
+
+Top-left (x≤k1 and y>k2): the point is colored red.
+Top-right (x>k1 and y>k2): the point is colored green.
+Bottom-left (x≤k1 and y≤k2): the point is colored blue.
+Bottom-right (x>k1 and y≤k2): the point is colored yellow.
+A valid coloring of the third test case, where k1=4 and k2=5.
+Find the number of distinct colorings, where two colorings are considered distinct if and only if there exists at least one point colored differently, regardless of the choice of k1 and k2.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The first line of each test case contains an integer n (4≤n≤2⋅106).
+The following n lines each contain two integers xi, yi (1≤xi,yi≤n), representing the coordinates of the i-th point.
+It is guaranteed that the points are pairwise distinct in each test case.
+It is guaranteed that the sum of n over all test cases does not exceed 2⋅106.
+
+Output:
+For each test case, output the number of distinct colorings.
+
+Strategy:
+We need to count the number of distinct colorings created when we divide a plane by a sort of crosshair (creating four rectangular regions) where each region needs to have at least 1 point and a distinct coloring means the point is in a different region than other arrangements. Therefore the idea is to count the number of unique region arrangements we can create. This can be done by thinking about the plane through the points and not coordinates then we make one of the axis of the crosshair static and scan through the other for each step in the static one while counting the points. The only other thing that needs to be managed is for all regions to be valid (have points). This can be done by keeping prefix and suffix maximums and minimums through which we will manage the ceilings and floors under which our axis cannot go so there are still points as they should. Therefore, we create suffix and prefix maximum and minimum arrays keeping the maximum and minimum height in any point for x>k and x<k (the k is a+0.5) for all is. We filter our coordinates for x and y separately and then create vectors holding separate x and y coordinates which have a point at all. This way when sweeping for example x=5.5 we will know whats the lowest and highest y we can go to such that there is still a point in the region for x>5.5 and y>chosen_y_divide and all the other regions. We use binary search on the unique y arrays when using x as the static axis to find these floors and ceilings. We need the suffix and prefix since we need a point both on left and right. We then just use the iterators returned by the binary search and subtract them to get the amount of points in between the ceiling and floor (the vector needs to be sorted). We do this for all the positions of the x axis where there is any point at all since otherwise we would be overcounting, we do this through the unique_x array. The unique_x and unique_y vectors basically give the coordinates their unique rank. The binary search is capped at logN worst case if all the points are in one line. We output the final total. Note: We can use rank precomputation to make this even faster O(n) but it is not necessary since n<=2e6. This works since the axis are completely decoupled from each other allowing us to assign each point a unique x and y rank.
