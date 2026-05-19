@@ -1,0 +1,14 @@
+You are given a string s consisting of digits from 1 to 4.
+Let's say that the string is beautiful if it is impossible to select some of its elements and write them out (in the same order as they appear in the string) to form a number that is a multiple of 4. For example, the strings 31, 222, 213 are beautiful, while the strings 143, 3123, 1322 are not. The empty string is considered beautiful.
+Your task is to calculate the minimum possible number of elements in the string s that need to be removed in order to make it beautiful.
+
+Input:
+The first line contains a single integer t (1≤t≤104) — the number of test cases.
+The only line of each test case contains a string s (1≤|s|≤3⋅105), consisting of digits from 1 to 4.
+Additional constraint on the input: the sum of the lengths of s over all test cases doesn't exceed 3⋅105.
+
+Output:
+For each test case, print a single integer — the minimum possible number of elements in the string s that need to be removed in order to make it beautiful.
+
+Strategy:
+First part is removing all 4s. We add the number of 4s to the counter. The second part is handling the other possible values having %4==0. These are values ending with a 2. Either 32 or 12 or number ending with one of these. 22 is not but since we care about subsequence 322 still needs to have both 2s or the 3 removed since otherwise we have 32. This gives 2 possible ways to get rid of these. Either removing 1s and 3s before 2s or removing 2s after 1s and 3s. Now the most important part is that we can switch between these but only one way. Going left to right we can always just remove all the odd numbers to the 2s have nothing to connect to or all the 2s so 1s and 3s cant form anything but the optimal strategy is to check when we can switch from removing 1s and 3s to removing 2s. We can always switch from removing 2s to removing odds. This is because by removing 2s we create a valid subsequence of only 1s and 3s which dont make a multiple of 4 but after i already allow them to be there i cant have any 2s anymore and have to keep removing them. Therefore we keep track of the total odd numbers and cap the amount of 2s at that. If the amount of 2s is bigger at any point in the array we are better of removing the odds and therefore dont have to increase the counter above that. The odd counter acts as a global cap. We use min(odds, 2s) to facilitate that. We use min(odds, 2s) before increasing the odd counter since we c2 needs to have the number of deletions required before at the first odd which will be 0 since strings like 22221 or 22223 are beautiful. At the end we output fours+min(odds, 2s).
