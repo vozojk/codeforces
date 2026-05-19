@@ -1,0 +1,14 @@
+Let s(n) denote the sum of divisors of an integer n. For example, s(12)=1+2+3+4+6+12=28.
+Your task is to calculate the sum sum_{i=1}^n s(i) modulo 10^9+7.
+
+Input:
+The only input line has an integer n.
+
+Output:
+Print sum_{i=1}^n s(i) modulo 10^9+7.
+
+Constraints:
+1<=n<=10^{12}
+
+Strategy:
+The idea is to use the property that the count of numbers a number will divide for all integers up to n included will be floor(n/k) for a divisor k and maximum n. Therefore the problem is now to check all divisors upto n and sum up their counts. We cannot just run a for loop since n is <=1e12. We use that for huge blocks in the 1,2,3...,n sequence the number of divisors is the same. This allows us to group them into blocks of divisors [L,R] where the number of divisors is q. We can then just do ((r)(r+1)/2-(l)(l-1)/2)*q to get the total for that block. Identifying the blocks boils down to noticing that the borders are always at remainderless division of n by some number (n/2,n/3,n/4...) for example for n=100 the borders of the blocks will be 50, 33, 25 etc... We start is l=k=1. Get the multiplier by doing q=n/k and then the right bound by doing n/q. Then calculate the sum and add it to total with mod. We set left to right+1 and repeat until left>n. We output the total. We need to use 128 bit ints for the part where we calculate the sum for the divisors from L to R because it can be over 2^63.
