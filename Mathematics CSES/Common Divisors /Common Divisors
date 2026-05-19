@@ -1,0 +1,15 @@
+You are given an array of n positive integers. Your task is to find two integers such that their greatest common divisor is as large as possible.
+
+Input:
+The first input line has an integer n: the size of the array.
+The second line has n integers x_1,x_2,...,x_n: the contents of the array.
+
+Output:
+Print the maximum greatest common divisor.
+
+Constraints:
+2<=n<=2*10^5
+1<=x_i<=10^6
+
+Strategy:
+For a number to be a gcd it needs to divide both of the numbers meaning it needs to be a combination of prime factors both of the numbers share. The main idea here is that we dont try to compute the solution but since the maximum integer size is 1e6 we can just check from the biggest to smallest and see which will be the first to divide 2 numbers. We can check if a number or any of its multiples is a divisor of 2 numbers by saving all the numbers in a hashmap and then running one for loop from 1e6 to 0 there we check the map if i is contained in it at all. If it is we run a second loop which will check all multiples of i to find a second match match. The idea is that the second the total sum of counts retrieved from the hashmap for one i will be >=2 we have found a number that divides more than 1 number and it was the first from the right therefore it must be the gcd. We output that number (the instant the sum of counts for some i will be >= 2).
