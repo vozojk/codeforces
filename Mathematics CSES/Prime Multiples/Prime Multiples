@@ -1,0 +1,17 @@
+You are given k distinct prime numbers a_1,a_2,...,a_k and an integer n.
+Your task is to calculate how many of the first n positive integers are divisible by at least one of the given prime numbers.
+
+Input:
+The first input line has two integers n and k.
+The second line has k prime numbers a_1,a_2,...,a_k.
+
+Output:
+Print one integer: the number integers within the interval 1,2,...,n that are divisible by at least one of the prime numbers.
+
+Constraints:
+1<=n<=10^{18}
+1<=k<=20
+2<=a_i<=n
+
+Strategy:
+We use the Inclusion-Exclusion principle. The idea is that we get primes and we need to find what number 1 to n are a multiple of at least one of them. We can use that n/p is literally the amount of numbers from 1 to n divisible by p. Therefore we can find how many numbers are divisible by each prime and then we just need to subtract the overlaps. The problem arises from the overlaps (like subtracting A,B and B,C) also have overlaps (A,B,C) which get overcounted. We can solve this by just going until we have no overlaps to create. Since sets created from many sets get created by multiplying different primes we just try all the combinations of primes and use the ones that are <= n. We use a bitmask to find all the combinations, we go from 1 to 1 << prime_count and for each mask we check if the bit for a prime is set and if it is we multiply the running count by it. Then we do n/running_count to get amount of numbers that get divided by the count. Since the overcounting and correcting is switching from 1 to the other periodically and we start with adding (just the base primes as divisors) we can use popcount for the mask to count the number of primes inside the total divisor, if its odd we add and if its even we subtract. Also, since multiplying large primes together can overflow even long long we check n/divisor < primes[i] which is equivalent to n < primes[i]*divisor and we just stop if it gets over.
