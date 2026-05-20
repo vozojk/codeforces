@@ -1,0 +1,13 @@
+Given a string, your task is to calculate the number of different strings that can be created using its characters.
+
+Input:
+The only input line has a string of length n. Each character is between a–z.
+
+Output:
+Print the number of different strings modulo 10^9+7.
+
+Constraints:
+1<=n<=10^6
+
+Strategy:
+We use the same logic for modulo factorials and inverse factorials as in binomial coefficients. The only different here is that the coefficient gets divided again and again. We start with n! as per the factorial array and the use the inverse to correctly readjust. Since multinomial coefficients are the same as binomial we just divide the divisors into more groups than a and a-b. So we put all the counts of the letters in a hashmap and then use the inverse factorial for each of the counts to divide it getting n!/(count1!*count2!*...*counti!) which gives us the final answer. We apply modulo throughout all the operations.
