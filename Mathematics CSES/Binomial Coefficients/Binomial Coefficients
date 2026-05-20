@@ -1,0 +1,16 @@
+Your task is to calculate n binomial coefficients modulo 10^9+7.
+A binomial coefficient {a choose b} can be calculated using the formula {a!}/{b!(a-b)!}. We assume that a and b are integers and 0<=b<=a.
+
+Input:
+The first input line contains an integer n: the number of calculations.
+After this, there are n lines, each of which contains two integers a and b.
+
+Output:
+Print each binomial coefficient modulo 10^9+7.
+
+Constraints:
+1<=n<=10^5
+0<=b<=a<=10^6
+
+Strategy:
+The only problem here is that the numbers are big so we need to know how to work with modulo division. We can make use of fermat's little theorem. This states that x^(M-1)=1 mod (M). Turns out if we divide both sides by x we get x^(M-2)=1/x mod (M) so (x!)^(M-2)=1/x! mod M which is exactly what we need. Through this we can calculate the inverse factorials. We precompute all the normal factorials for all the test cases by just running fact[i]=i*fact[i-1] and then for the inverse we start at ifact[1e6] which we compute with fermats little theorem and then we can use the same rule since ifact[1e6-1]=ifact[1e6]*1e6. This works since ifact[1e6] is just 1/1e6! with the modulo applied so by multiplying by 1e6 we get 1e6/1e6!=1/(1e6-1)!. We run this all the way down. Then we can get the binomial coefficient by just doing (fact[a]*ifact[b])%MOD*ifact[a-b]%MOD. We output that for each input.
