@@ -1,0 +1,19 @@
+While exploring the depths of the Internet, Theodore the chipmunk found a very interesting sequence of positive integers and decided to play with it.
+In one operation, he chooses an element of the sequence and performs the following action:
+
+If the chosen element is even, he divides it by 2.
+If the chosen element is odd, he increases it by 1.
+
+Theo really loves equality, so he wants to make all numbers in the sequence equal (otherwise, some numbers might feel offended). Since he needs to plan his lunch time, help him determine the minimum number of operations required to make all numbers equal.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains a single integer n (1 <= n <= 10^5) — the length of the sequence.
+The second line of each test case contains n integers a_1, a_2, ..., a_n (1 <= a_i <= 10^9) — the elements of the sequence.
+It is guaranteed that the sum of n over all test cases does not exceed 10^5.
+
+Output:
+For each test case, output a single integer — the minimum number of operations Theo needs to make all numbers in the sequence equal.
+
+Strategy:
+The biggest realization is that since we divide by 2 at even and increase by 1 at odd we can only about about 2log(n) operations before we reach 1. This is because by each operation we either halve the amount or increase by 1 and then halve it. Therefore if we omit details we either pay 1 or 2 operations to halve a number. Due to the nature of odd+1=even. The logarithmic complexity will hold. There are 1e5 numbers and 2*log(1e9) is about 40 therefore at most (with no overlaps) we will be able to reach 4e6 numbers which can easily fit in a vector or a hashmap. It is not advisable to use a hashmap since we have to instantiate a new one for each test case and we either pay hugely for resizings or we need to reverse memory which can also TLE or MLE. Therefore we use a vector as the main state holder. The whole idea is that for each number we can just save the amount of times it got visited and how much did it cost to get there. We can then aggregate the costs for each number and count the amount of visits it got. The constraints guarantee that no number in one operation sequence will be visited more than once except for the base case infinite loop 1->2->1... (we handle this by keeping track of visiting them and breaking correctly). Since we don't want to use a hashmap we can just a vector. In this vector we store a pair with [visited_number, cost]. We can reverse this vector to be around 30n which is an optimistic estimate on the possible amount of elements. After we have the vector populated from processing the whole input we can sort it and then just take the elements out one by one. We go through all the costs for a number keeping a counter of how many of them are there and then running cost sum. If the counter reaches n (meaning all inputs reached it and therefore can be used as a target) we save the aggregate cost into a min variable through best=min(best, cost_sum). We do this for all the numbers and output the best cost.
