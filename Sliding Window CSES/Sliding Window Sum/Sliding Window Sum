@@ -1,0 +1,19 @@
+You are given an array of n integers. Your task is to calculate the sum of each window of k elements, from left to right.
+In this problem the input data is large and it is created using a generator.
+Input:
+The first line contains two integers n and k: the number of elements and the size of the window.
+The next line contains four integers x, a, b and c: the input generator parameters. The input is generated as follows:
+
+x_1=x
+x_i=(ax_{i-1}+b) mod c for i=2,3,...,n
+
+Output:
+Print the xor of all window sums.
+
+Constraints:
+1<=k<=n<=10^7
+0<=x, a, b<=10^9
+1<=c<=10^9
+
+Strategy:
+We use the generator to get numbers one by one. The only thing we need to do then is to do a running sum of the numbers and then use a queue to always retrieve the element thats k items in the past. We can do this by having one for loop to get it going long k elements [0,k) and then [k,n) for the rest always popping, taking the sum and xoring with a global total. We output that.
