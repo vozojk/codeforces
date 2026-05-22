@@ -1,0 +1,20 @@
+You are given an array of n integers. Your task is to calculate the minimum of each window of k elements, from left to right.
+In this problem the input data is large and it is created using a generator.
+
+Input:
+The first line contains two integers n and k: the number of elements and the size of the window.
+The next line contains four integers x, a, b and c: the input generator parameters. The input is generated as follows:
+
+x_1=x
+x_i=(ax_{i-1}+b) mod c for i=2,3,...,n
+
+Output
+Print the xor of all window minimums.
+
+Constraints:
+1<=k<=n<=10^7
+0<=x, a, b<=10^9
+1<=c<=10^9
+
+Strategy:
+We can use the monotonic deque concept. We keep a deque and for each new element we first compare it from the back of the deque to see if we can delete any of the previous elements (in this case anything >=) and if so we just pop. We do this until the element does not fit the condition or the deque is empty. This way the elements will always be sorted. We also need to kick out anything too old for our window. We do this by doing another pass from the front kicking out anything that has age smaller than i-k (we keep an age counter i and store the state as a pair {num, age}). For each iteration [k,n) we xor the minimum which will be at the front of the deque after all operations. We output the final variable.
