@@ -1,0 +1,17 @@
+You are given a string of length n and a dictionary containing k words. In how many ways can you create the string using the words?
+
+Input:
+The first input line has a string containing n characters between a–z.
+The second line has an integer k: the number of words in the dictionary.
+Finally there are k lines describing the words. Each word is unique and consists of characters a–z.
+
+Output:
+Print the number of ways modulo 10^9+7.
+
+Constraints:
+1<=n<=5000
+1<=k<=10^5
+the total length of the words is at most 10^6
+
+Strategy:
+We can use the same trie design as in bitwise operations - Maximum Xor Subarray but instead of having just 0 and 1 as the possible values we extend it to 0 to 25 for all the letters in the alphabet. We adjust the trie to no starting value. Delete the max function and update the insert function to take the letters in the input string instead of the bits of the input number. The insertion is the same, we go down the prefix path and create new connections marking them with a new sequential id if there is none yet. The only new things is adding an is_word flag for each possible prefix of which there are the same amount as the sum of the sizes of all the strings in the dictionary. This is important since these are the ones we will count towards our final result, we cannot count a sequence of letters if we have not defined it as a word. Then we need to combine it with dp. We count the sum of the sizes and initialize the trie. The we insert all the words so the base prefixes are ready. The dp array will store the number of possible ways to get to a prefix of the target word with dp[n] having the final result. dp[0]=1. The we run a basic loop 0 to size of goal-1 this represent the base prefix we are working with. This is the main state since we need the dp array to have all prefixes before worked out. Inside we run a second array to handle the other part of the target. We check the trie if we can create the target word from this prefix. For each letter if we can continue to the next, if we can we can update the dp array to mark that we can now reach 1 letter further to the goal and we add the value from dp[outer counter (original prefix)] to dp[inner counter+1 (new prefix proven to exist)] we let the values propagate like this %MOD. This way all the possible ways we can apply the words will propagate to dp[n]. The important part is we only do this propagation if the is_word flag for the new prefix is true. We output dp[n].
