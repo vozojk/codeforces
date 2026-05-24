@@ -1,0 +1,15 @@
+Given an array of n integers, your task is to find the maximum xor sum of a subarray.
+
+Input:
+The first line has an integer n: the size of the array.
+The next line has n integers x_1,x_2,...,x_n: the contents of the array.
+
+Output:
+Print one integer: the maximum xor sum in a subarray.
+
+Constraints:
+1<=n<=2*10^5
+0<=x_i<=10^9
+
+Strategy:
+This problem introduces binary tries. The idea is that the trie store prefixes for each word. The trie marks the existence of each prefix. There will either be the index of the next prefix for each possible next letter or 0,1 in this case or 0 if there is nothing there. This way we can efficiently traverse all the prefixes and check if they exist or not and calculate with that. The insert function goes through the correct route reaching the prefix representing the input and on the way it creates new edges wherever there were not. This establishes the ability for us to systematically check all the prefixes for all the possible suffixes which can help us determine the best possible subarray. The architecture is that the subarray [L,R] will have the value pref(R)-pref(L-1) therefore for each prefix we will check bigger prefixes and the difference between them will be the subarray. The prefixes we are checking by effectively marks the part of the array which cant be a part of the subarray. For each prefix we find the absolute best one. We put that through max into a global maximum. We do this for all prefixes and then output the global max. There are checks for the path not existing (trie[a][b]==0 and we get the xor by taking |= (1 << i) for all bit indices i. We also need to insert 0 to the trie at the start at the base to allow for the "suffix" to start from the absolute beginning.
