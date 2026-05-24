@@ -1,0 +1,13 @@
+Your task is to count the number of one bits in the binary representations of integers between 1 and n.
+
+Input:
+The only input line has an integer n.
+
+Output:
+Print the number of one bits in the binary representations of integers between 1 and n.
+
+Constraints:
+1<=n<=10^15
+
+Strategy:
+Main idea is we count the number of bits vertically meaning for each bit index we count its occurrences in all numbers 1 to n and then move on and not go all bits 1,2,3,..,n. This allows us to use math to optimize. Since for each bit we will have cycles of some length where a patterns repeats we can just count these cycles, count the ones in one cycle and multiply. Then add the remainder for an optional unfinished cycle and move on. This can be done because each bit has a pattern that repeats ever 2^idx+1 number. for example for the first bit (0-indexed) we get a pattern of 0,0,1,1 and generally it will be of length 2^idx+1 with first half 0s and second half 1s. This way we can take n/(1 << idx+1) as the number of cycles and the number of 1s there will be cycles*(1<<idx). For the remainder we just take (n+1) mod (1 << idx+1) and then we take max(0, remainder - 1 << idx) since we need only the second half since the first half is all 0s. This gives a total for each bit. Since n is 10^15<2^50 at maximum we look like this for bits 0 to 50. We add each intermediate count of 1s to the counter and output the total.
