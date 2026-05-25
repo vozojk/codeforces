@@ -1,0 +1,16 @@
+Your task is to create a permutation of numbers 1,2,\dots,n whose longest monotone subsequence has exactly k elements.
+A monotone subsequence is either increasing or decreasing. For example, some monotone subsequences in [2,1,4,5,3] are [2,4,5] and [4,3].
+
+Input:
+The first input line has an integer t: the number of tests.
+After this, there are t lines. Each line has two integers n and k.
+
+Output:
+For each test, print a line that contains the permutation. You can print any valid solution. If there are no solutions, print IMPOSSIBLE.
+
+Constraints:
+1<=t<=1000
+1<=k<=n<=100
+
+Strategy:
+We need to make use of theorem that states that for any sequence of length n the length of the longest monotone subsequence will be at least sqrt(n). Therefore if n > k^2 we output impossible. If n <= k^2 we know a solution exists since the theorem guarantees it. The easiest way to generate one is to divide the permutations into decreasing blocks if size k which are themselves increasing. This creates a pattern like 321,654,987 etc... which guarantees to have the correct monotone longest subsequence length. If n%k!=0 that is not a problem at all since the remainder will just get cut off at the end and cannot create a longer monotone subsequence.
