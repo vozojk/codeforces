@@ -1,0 +1,15 @@
+Your task is to create a permutation of numbers 1,2,\dots,n that has exactly k inversions.
+An inversion is a pair (a,b) where a<b and p_a>p_b where p_i denotes the number at position i in the permutation.
+
+Input:
+The only input line has two integers n and k.
+
+Output:
+Print a line that contains the permutation. You can print any valid solution.
+
+Constraints:
+1<=n<=10^6
+0<=k<=n(n-1)/2
+
+Strategy:
+The idea is that when going from the biggest to smallest available numbers the amount of inversion to get the array sorted if we put a number c at the start where c is the maximum of all of them will be c-1 since thats the amount of numbers smaller than c. This is the definition of an inversion. Since this is true we can then run a loop going from the biggest number n down to 1 which will decrease k by i-1 at all indices until k would be negative, we save the last i before breaking. We print all the values i in the process. At the end of the loop we print k+1 (+1 since we need a+1 for a inversions). The we run a normal loop going from 1 to the last saved i and print all the numbers 1 to last in order except for k+1. There is a few edge cases. If k is zero meaning no remainder we dont print anything after the main loop. The logic, if written correctly successfully handles even cases where k < n since at that point we immediately skip the part compounding inversions and just print the one number <= needed or nothing at all out of order if k is zero.
