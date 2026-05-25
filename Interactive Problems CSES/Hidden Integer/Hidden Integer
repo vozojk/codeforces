@@ -1,0 +1,18 @@
+There is a hidden integer x. Your task is to find the value of x.
+To do this, you can ask questions: you can choose an integer y and you will be told if y < x.
+
+Interaction:
+This is an interactive problem. Your code will interact with the grader using standard input and output. You can start asking questions right away.
+On your turn, you can print one of the following:
+
+"? y", where 1<=y<=10^9: ask if y < x. The grader will return YES if y < x and NO otherwise.
+"! x": report that the hidden integer is x. Your program must terminate after this.
+
+Each line should be followed by a line break. You must make sure the output gets flushed after printing each line.
+
+Constraints:
+1<=x<=10^9
+you can ask at most 30 questions of type ?
+
+Strategy:
+This problem just tests the logic of interactive problems. We can just do a binary search (if y < x left = mid+1 else right = mid). We output the final result of that.
