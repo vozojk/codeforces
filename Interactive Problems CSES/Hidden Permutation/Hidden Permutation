@@ -1,0 +1,18 @@
+There is a hidden permutation a_1, a_2,..., a_n of integers 1, 2,..., n. Your task is to find this permutation.
+To do this, you can ask questions: you can choose two indices i and j and you will be told if a_i < a_j.
+
+Interaction:
+This is an interactive problem. Your code will interact with the grader using standard input and output. You should start by reading a single integer n: the length of the permutation.
+On your turn, you can print one of the following:
+
+"? i j", where 1<=i, j<=n: ask if a_i < a_j. The grader will return YES if a_i < a_j and NO otherwise.
+"!a_1,a_2 ... a_n": report that the hidden permutation is a_1, a_2,..., a_n. Your program must terminate after this.
+
+Each line should be followed by a line break. You must make sure the output gets flushed after printing each line.
+
+Constraints:
+1<=n<=1000
+you can ask at most 10^4 questions of type ?
+
+Strategy:
+We get 10k queries per testcase. This means we have at least 10 queries per letter. We can create an array with number 1 to n and then just sort it and use the queries as a comparator. This gives us the permutation inverse. Meaning the first number in the sorted array will contain the index where a 1 should be, the second number will contain the index where i should put a 2 and so on. We output that as the final result. This works since stable_sort is NlogN which fits into the 10k limit and since the comparator function literally just answers is the number a before number b we can let the judge answer this. We get the inverse because we are still sorting indices. We are asking if the number at index i is smaller than number at index j therefore we get the indices sorted from low to high. Then we need to convert them to the actual permutation. We output that.
