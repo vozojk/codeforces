@@ -1,0 +1,16 @@
+You are given an array of n numbers. In how many ways can you choose a subset of the numbers with sum x?
+
+Input:
+The first input line has two numbers n and x: the array size and the required sum.
+The second line has n integers t_1,t_2,...,t_n: the numbers in the array.
+
+Output:
+Print the number of ways you can create the sum x.
+
+Constraints:
+1<=n<=40
+1<=x<=10^9
+1<=t_i<=10^9
+
+Strategy:
+We can split the array into two parts. For each we find all the permutations (their sum). Since the max size of them is 20 the cap will be 2^20 for each which is well within memory limits. We can then run 2 sum on the permutations in each half to find all the possible sums that sum up to the target x. We do this by sorting on of them and running a basic 2 pointer 2-sum algorithm. To create the permutation arrays we just a mask and just increase it. The sizes are (1 << n/2) and (1 << n)-(1 << n/2), this handles odd division nicely. Since the mask starts at 0 both the halves will contain a zero which represents using only number from one half which is correct. The last thing is counting all the possible numbers since there will be duplicates. We do this by using lower and upper bound for the ceiling and floor and subtracting them to find the total. We increase a global counter and output that. We use long long since the sum could overflow a normal int.
