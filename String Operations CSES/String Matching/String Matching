@@ -1,0 +1,13 @@
+Given a string and a pattern, your task is to count the number of positions where the pattern occurs in the string.
+
+Input:
+The first input line has a string of length n, and the second input line has a pattern of length m. Both of them consist of characters a–z.
+
+Output:
+Print one integer: the number of occurrences.
+
+Constraints:
+1<=n,m<=10^6
+
+Strategy:
+We use polynomial string hashing. The main idea is just converting each letter into a number (its hash) which will allow us to operate on any substrings in the form of their aggregate hash (which we obtain through a hash function we define). Here, we can just hash the pattern and then use a sliding window to create hashes of size m of all the windows in the string. We just count the number of windows the hash of which matches the hash of the pattern. The important part is that we need to use exponentials (a good hash function, we keep order, use a prime as a base and then the coefficients for the letters are base^power) combined with primes. Since we use exponentials the hash would get huge fast so we need to use modulo. The main rules are that our space of hashes of limited by the modulo which means the bigger the modulo the smaller the chance of collisions and the second one is that if we choose a low prime base it could be guessed. Therefore the ideal setup is to choose a bigger prime like in the 200-1000 range and then use 128 bit integers and modulo around 10^18 to accommodate all the possibilities.
