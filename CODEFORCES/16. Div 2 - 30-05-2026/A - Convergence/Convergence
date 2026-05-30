@@ -1,0 +1,17 @@
+Alice is inviting her friends to a party to eat cakes. However, each friend may not be at the same place, so everyone has to meet up at the same location first.
+
+Alice has n friends, where the i-th friend is at position ai. To make everyone be at the same place, Alice has to make multiple group calls. Unfortunately, the signal is weak, and Alice can only call 2 other people at a time.
+
+Being a good person, Alice doesn't want her friends to walk too far. So, for each group call containing the i-th friend and the j-th friend, Alice will tell both of them to meet at some integer location between min(ai,aj) and max(ai,aj) inclusive. After that, both of them will move to that location so quickly that Alice cannot make any group call during their movement. Please note that Alice can call these friends again once they reach that location.
+The party is starting soon, so Alice needs to make group calls fast. Help her find the minimum number of group calls she needs to make.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤500). The description of the test cases follows.
+The first line of each test case contains an integer n (2≤n≤100) — the number of friends Alice has.
+The second line of each test case contains n integers a1,a2,…,an (1≤ai≤109) — the locations of her friends.
+
+Output:
+For each test case, output the minimum number of group calls she needs to make in order for all of her friends to be in the same location.
+
+Strategy:
+We need to find the spot to which we can haul people the fastest. Since we go to somewhere between ai and aj we should find the place to which we can send everybody in pairs or the place which has so many duplicates to make it worth it. The idea is to track the amount of numbers on the left and on the right for each number while not counting the duplicates but only for the current number. For example for sequence 1122344455 we will have 0022566688 on the left and a similar process for the numbers on the right. We can find these by putting the counts in a hashmap and then do a pass to filter. Then we can do one final pass and just track global=min(global, max(left[i], right[i]). This works since for each segment we will need to put in left[i] numbers from the left and right[i] numbers from the right. We can take the max since the min we will pair up and the rest we need to go one by one since we use the middle as the anchor. We output global.
