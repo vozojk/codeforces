@@ -1,0 +1,22 @@
+Alice's friends have come to the party, and now they are lining up to enter the party.
+
+There are x tables at the party with s seats each. Each seat can only hold one person.
+Each friend has one of these three following personalities:
+
+Introverts (I) who have to sit at an empty table
+Extroverts (E) who have to sit at a non-empty table
+Ambiverts (A) who can sit at any table.
+Initially, every seat is empty. However, because Alice was eating cakes, her friends had already formed a line, which Alice cannot change their order. For each person in the line, Alice has to assign them a table or kick them out of the party. Each person is seated before the next person is assigned a table.
+Wanting to have a lot of fun at the party, Alice needs to seat as many people as she can at the party. Help her find the maximum number of friends she can have at the party.
+Note that once a friend is seated, they are not allowed to move even if they are not seated according to their personality anymore.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The first line of each test case contains three integers n, x, and s (1≤n,x,s≤2⋅105) – the number of Alice's friends, the number of tables, and the number of seats per table. The second line contains a string u of length n consisting only of the letters A, E, and I, representing an ambivert, extrovert, and introvert respectively.
+It is guaranteed that the sum of n for all test cases is at most 2⋅105.
+
+Output:
+For each test case, output an integer: the maximum number of people seated.
+
+Strategy:
+The whole state can be tracked with 3 variables. Tables left, ambiverts that didn't create a table and capacity of current tables. We can do one sweep to allocate seats greedily. The main thing to realize that the state only matters when seating the people. An introvert needs to start at an empty table but then we can just add on people to them. Ambiverts the same. The idea is that for introverts we just create a table. They are no risk. We cant lose. For ambiverts we sit them at a table. If there is no table available we create a new one. For extroverts we try to sit them at a new table, when there is no new table we can check the amount of ambiverts that sat onto a preexisting table. Since that table must've been valid before they sat down we can change their state and create a table with them creating space for the extrovert. We update variables accordingly. Every time we sit somebody down we increase a counter. We output that.
