@@ -1,0 +1,15 @@
+Alice is preparing a cake for her party. However, she is in a rush, so the frosting on the cake is uneven. To quickly solve this issue, Alice will put her knife at some integer height and then sweep the frosting from left to right to make the frosting level.
+Formally, let ai be the height of the frosting at the i-th position. Suppose that Alice puts her knife at some integer height h. If the height of frosting at position i is greater than h, the excess frosting will be pushed to position i+1. Excess frosting on position n will be pushed off the cake completely.
+Alice and her friends really love cake frosting. Since Alice might decide to serve some prefix of the cake instead of the whole cake, help her find the maximum height the frosting can be while keeping the frosting level for the first i positions for i=1,2,…,n.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The first line of each test case contains an integer n (2≤n≤2⋅105) — the length of Alice's cake.
+The second line of each test case contains n integers a1,a2,…,an (1≤ai≤109) — the height of the frosting at the i-th position.
+The sum of n over all test cases is at most 2⋅105.
+
+Output:
+For each test case, output n integers where the i-th integer represents the maximum height the frosting can be while keeping the frosting level for the first i positions.
+
+Strategy:
+We can use simple dp for this. The idea is that for each transition we can take the global amount of frosting from all the previous positions and then try to evenly distribute it on the new area which is old area + 1. The only rule is that the frosting cannot go higher than it was before since we cannot go backwards. We can get the total with total=dp[i-1].first*i+dp[i-1].second+nums[i]. Then we do dp[i].first = min(dp[i-1].first, total/(i+1)). dp holds pairs of {height, remainder}. We continue like this for the entire thing. If we reach the limit in the min we put everything else in the remainder. This can be done with dp[i].second=total-dp[i].first*(i+1). At the end we output the whole dp array. The base case is dp[0] = {nums[i], 0}.
