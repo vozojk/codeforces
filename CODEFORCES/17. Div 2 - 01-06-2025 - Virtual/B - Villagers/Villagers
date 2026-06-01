@@ -1,0 +1,16 @@
+Steve lives in a village with n other villagers. Unfortunately, due to disputes over the distribution of emeralds, none of those villagers are friends with any other villager. Furthermore, villager i initially has a grumpiness of gi.
+Steve can perform the following operation any number of times:
+Select two villagers i and j and give them max(gi,gj) emeralds to share. Both of their grumpinesses decrease by min(gi,gj), and they become friends with each other if they weren't already.
+Steve wishes to make every villager friends with every other villager (possibly through some intermediate friendships); that is, from any villager, you can follow a path of friendships to reach any other villager. Since he does not want to inflate the village economy too much, calculate the minimum number of emeralds he must give away to accomplish this.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The first line of each test case contains a single integer n (2≤n≤2⋅105) — the number of villagers.
+The second line of each test case contains n integers g1,g2,…,gn (1≤gi≤109) — the initial grumpiness of each villager.
+It is guaranteed that the sum of n over all test cases does not exceed 2⋅105.
+
+Output:
+For each test case, output a single integer — the minimum number of emeralds Steve must give away to make everyone friends.
+
+Strategy:
+The idea is that we have to create pairs where we maximize the ratio of cost and grumpiness reduced. We can do this by sorting the grumpiness and then pairing the adjacent villagers together ({v1,v2},{v3,v4}...) we will then have many groups which we need to connect together. This can be done by connecting v1,v3,v5 etc... The key is that since v1 and v3 and all the odd ones in this example were the smaller ones in pairs they now have grumpiness 0. Since each pair is guaranteed to have at least one villager who is now at 0 we can just match those at no cost. There is one edge case which is when n%2==1 because then the villager won't have a pair. To handle this correctly we need to sort the array from biggest to smallest, make the pairs {biggest, second biggest}... and then the last one will be added separately since we will have no choice but to pay its price. Since its gonna be the smallest element from the whole array we minimize the cost. We output a global total counter we obtained by summing the costs when making the pairs and possible grump[n-1]. We make the total ll since the grumpiness is upto 10^9.
