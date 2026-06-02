@@ -1,0 +1,18 @@
+Steve made the foolish decision to mine at night, and came across a monstrous creature: the chicken jockey^n!
+
+A chicken jockeyn consists of n mobs stacked in order on top of each other, with mob 1 at the bottom and mob n at the top. Mob i initially has hi health.
+In one attack, Steve can deal 1 damage to any mob. If any mob reaches 0 or less health, it dies, and all the mobs on top of it fall down and form a new stack. The bottom mob in the new stack takes 1 fall damage for every mob it was on top of before falling (i.e. the number of mobs below it in the previous stack, including the one that just died). This may kill it as well, in which case all mobs on top of it fall down again and the process repeats.
+For example, consider a chicken jockey6 with initial mob healths [1,2,1,3,5,2]. If Steve damages the third mob in the stack, it dies and the mobs with health [3,5,2] fall down in a new stack. The bottom mob takes 3 units of fall damage so it also dies, and the mobs with health [5,2] fall down in a new stack. The bottom mob takes 1 unit of fall damage. As a result, after Steve's first attack, there will be two stacks with healths [1,2] and [4,2].
+Steve's sword's durability is low, so he wishes to know the minimum attacks required to kill all the mobs.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The first line of each test case contains a single integer n (2≤n≤2⋅105) — the number of mobs.
+The second line of each test case contains n integers h1,h2,…,hn (1≤hi≤109) — the initial health of each mob.
+It is guaranteed that the sum of n over all test cases does not exceed 2⋅105.
+
+Output:
+For each test case, output a single integer — the minimum attacks required to kill all the mobs.
+
+Strategy:
+The main idea is that we need to go top down. The reason is that for each mob the maximum damage they can by falling take is when they are at their original height. This is the only thing that changes while dealing damage and killing them, after that, the order can be arbitrary. By starting from the top we can maximize the amount of fall damage. We can make each mob either fall or not. We decide based on the cost. When is it profitable to make it fall? If the mob that makes it fall which must be the one directly below it makes it cheaper to deal damage to the upper one this way. This creates a relation between adjacent mobs. We can always take the topmost pair and try to figure out how to kill the one at the top for the least amount of attacks. It is always either going to be killing the mob right below it dealing height[i+1] (where +1 means more down) and then finishing mob i by dealing max(0, health[i]-height[i-1]). This screams dp. We can create a dp array which saves the minimum amount of attacks needed to kill the first i mobs. We make the mobs indexed from 0 and start at the mob (the last mob, bottommost one, is at index n-1). The dp transition is dp[i]=min(dp[i-1]+health[n-i]-(i==n ? 0 : 1),dp[i-2]+health[n-i]+min(health[n-i+1]-(n-i+1),0)) where the health vector is indexed the same as the input (bottom-up). The ternary operator is there since the optimal strategy is to leave everybody with 1 health. Whenever a death happens by a mob below them getting killed, all of these will get killed with him since the stack splits and the bottommost mob gets killed (the one from option 2) and then the one above him had 1 mob below and therefore dies also since it had 1 health. This cascades until they all die. We need to make it 0 at n because thats the last one and there cannot be anything below. The base cases are dp[0]=0 and dp[1]=health[n-1]-1 for obvious reasons. We output dp[n].
