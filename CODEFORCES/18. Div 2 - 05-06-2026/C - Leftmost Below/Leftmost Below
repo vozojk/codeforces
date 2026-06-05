@@ -1,0 +1,21 @@
+Consider an array a1,…,an. Initially, ai=0 for every i.
+You can do operations of the following form.
+
+You choose an integer x greater than min(a).
+Then, i is defined as the minimum index such that ai<x. In other words, i is the unique integer between 1 and n inclusive such that ai<x and aj≥x for every 1≤j≤i−1.
+Finally, ai is incremented by x.
+For example, if a=[6,8,2,1] and you choose x=6, then i will be equal to 3 (since a1≥6, a2≥6, and a3<6) and a will become [6,8,8,1].
+You can do as many operations as you want. Can you reach a target array b1,…,bn?
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤10000). The description of the test cases follows.
+The first line of each test case contains a single integer n (2≤n≤200000).
+The second line of each test case contains n integers b1,b2,…,bn (1≤bi≤109).
+The sum of n over all test cases does not exceed 200000.
+
+Output:
+For each test case, print YES if you can reach the target array and NO otherwise.
+You can output the answer in any case (upper or lower). For example, the strings "yEs", "yes", "Yes", and "YES" will be recognized as positive responses.
+
+Strategy:
+The main idea is that the numbers flow inside the result from the left. This is because we start at all zeroes and the only way we can change a number is that if the thing we are adding is the first thing from the left smaller than the target. This forces us to start at the complete left and then it doesn't matter if we choose to apply all the small additions we can evenly distributed and then go next so we choose to go one by one. The other invariant is that since we add to the first number smaller than our x the thing we need to track is the lowest number so far in the array. This number-1 marks the maximum possible number that will flow all the way to the end. Since we build the numbers one by one this gives us an upper bound on the number we can create from zero. The first step is adding lowest_number to the first 0 position which gives us lowest_number there. Now the maximum amount we can add that will get added to this number is lowest_number-1 since if we tried to make x=lowest_number, it would flow to the next 0. This turns out to be the only limitation. We can scan in the array, track the lowest number and for each new number we check if it fits into a[i]<low*2. If it does, it is possible to construct it. Otherwise, it is not.
