@@ -1,0 +1,19 @@
+You're given a permutation∗ p1,…,pn such that max(pi,pi+1)>pi+2 for all 1≤i≤n−2.
+Compute the sum of the length of the longest decreasing subsequence† of the subarray [pl,pl+1,…,pr] over all pairs 1≤l≤r≤n.
+∗A permutation of length n is an array consisting of n distinct integers from 1 to n in arbitrary order. For example, [2,3,1,5,4] is a permutation, but [1,2,2] is not a permutation (2 appears twice in the array), and [1,3,4] is also not a permutation (n=3 but there is 4 in the array).
+
+Given an array b of size |b|, a decreasing subsequence of length k is a sequence of indices i1,…,ik such that:
+1≤i1<i2<…<ik≤|b|
+bi1>bi2>…>bik
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤10000). The description of the test cases follows.
+The first line of each test case contains a single integer n (3≤n≤500000).
+The second line of each test case contains n integers p1,p2,…,pn (1≤pi≤n, pi are pairwise distinct).
+It is guaranteed that max(pi,pi+1)>pi+2 for all 1≤i≤n−2.
+The sum of n over all test cases does not exceed 500000.
+
+Output:
+For each test case, output the sum over all subarrays of the length of its longest decreasing subsequence.
+
+Strategy:
+We need to realize that the constraint is limiting the LDS so heavily that it is easier to figure out which elements from the subarray not to include to arrive at the correct length. This can be characterized purely by checking the parts where ai<a(i+1) which means we need to remove it from the subsequence that has ai. This is because the constraint guarantees that we can never have 2 consecutive ascents. It also means that since max(pi,pi+1)>pi+2 and then max(pi+1,pi+2)>pi+3. Now if there is not an ascent the sequence is just all 3 numbers. If there is. Lets say at pi+2, this means pi+2<pi+1. This implies pi+1>pi+3. This ripples throughout the entire array. Therefore the LDS is just the total number of elements - number of ascents. But the problem wants the sum of LDSs for all subarrays. This property extends beautifully. The LDS for any subarray is number of elements - ascents, therefore the sum of LDSs for all subarrays is just the sum of all subarray lengths - sum of numbers of ascents. The possibilities to be in a subarray for each index are i for the left part and n-i+1 for the right part (since n-i excludes i itself). Since we can have any combination the total is i*(n-i+1). Now the numbers of subarrays holding an ascent is the same as subarrays holding both pi and pi+1 where pi<pi+1 This is (i) to the left since the left boundary can be anywhere from 1 to i and (n-i) to the right. This is because we can have [i+1,n-1] which gives n-(i+1)+1=n-i. So the answer is keeping a sum and adding i*(n-i+1) for each index and then removing i*(n-i) for each one that has an ascent. We output that final sum.
