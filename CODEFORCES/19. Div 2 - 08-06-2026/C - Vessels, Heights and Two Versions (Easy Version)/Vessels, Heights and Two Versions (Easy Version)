@@ -1,0 +1,32 @@
+time limit per test: 2 seconds
+memory limit per test: 256 megabytes
+
+This is the easy version of the problem. The difference between the versions is that in this version, constraints on n and on the
+number of test cases are smaller. You can hack only if you solved all versions of this problem.
+
+There are n communicating vessels of infinite height arranged in a circle. The base area of each vessel is 1 cm², and between the i-th
+vessel and the (i mod n) + 1-th vessel there is a connection of negligible volume at height hi cm. For each vessel i, find the maximum
+total volume of water in cm³ that can be placed in these vessels under the condition that the i-th vessel remains empty.
+Formally, you are given an array h1, h2, ..., hn. A cyclic array of non-negative integers w1, w2, ..., wn is called good if the following
+holds:
+For every i from 1 to n, if max(wi, wi mod n+1) > hi, then wi = wi mod n+1. In other words, if the maximum of two neighboring
+elements of the array w exceeds the corresponding element of the array h, then these two neighboring elements of the array w must
+be equal.
+
+For each i from 1 to n, output the maximum possible sum w1 + w2 + ... + wn among all good arrays w1, w2, ..., wn, under the
+condition that wi = 0.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 ≤ t ≤ 1000). The description of the test cases
+follows.
+The first line of each test case contains one integer n (3 ≤ n ≤ 3000) — the number of vessels.
+The second line of each test case contains n integers h1, h2, ..., hn (1 ≤ hi ≤ 10^9) — the heights of the partitions between the
+vessels.
+It is guaranteed that the sum of n over all test cases does not exceed 3000.
+
+Output:
+For each test case, output n integers — the l-th integer means the maximum total volume of water in cm³ in the vessels under the
+condition that the l-th vessel remains empty.
+
+Strategy:
+This is the same as the keeping water somewhere problems. Since there must be one highest point (which means the water can never go over since it would go everywhere), we can split the array there making it not circular. Then we can a solution for each index forced to be 0 in O(n). We can do this by going from the 0 node and tracking the maximum height we saw. That is the height we can assign to the element since it is impossible for it to overflow to the right because the one with the maximum height would be blocking it. We take a running sum adding up the maximum height found so far until we reach the cutoff (the maximum height). We do this both to the left and right of the 0 index. We do this by rotating the array by the index of the maximum height so we get it at index 0. For one of the loops we go from the index where water is 0 until i > 0. This can be explained by the defined boundaries. height[1] actually holds the boundary between 0 and 1. Therefore we go only to height[1] since height[0] is the boundary we deleted by making it non-circular. start at height[(zero water)] also makes sense since thats the boundary between zero water and the thing on the left of it which dictates how much water can put inside it so it doesn't overflow to the right. We apply a similar principle for the loop going to the right from the 0 water vessel. We start at zero_water+1 since thats the boundary between zero_water+1 and the vessel on its left and continue until height[n-1] which marks the boundary between n-1 and n. This works since this boundary wraps with the highest vessel which we also need to count. We take the running sums for both these loops and add them. This is the count for this index. We save those inside a result array with result[(i+idx+1)%n] = sum; which derotates the numbers back to the correct position (we rotated by idx elements to the left but then it set the highest way before the first vessel. Since the index of the wall means that on the left of the wall there is a vessel with the same index the boat on the right of the wall must be idx+1 which is the first boat. We loop for all i values and then output the result array.
