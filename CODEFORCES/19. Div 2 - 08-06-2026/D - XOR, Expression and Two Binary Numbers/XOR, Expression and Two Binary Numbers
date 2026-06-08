@@ -1,0 +1,27 @@
+You are given an integer k. There is a sequence of n-bit binary numbers a1,a2,…,a2k+1. The numbers a1 and a2k+1 are given to you, and the others are unknown. Then the unknown numbers are filled in as follows over k steps:
+
+Suppose that before the i-th step, the numbers with indices p1<p2<…<pm have already been filled. (Before the first step, these are the numbers with indices 1,2k+1).
+Then for each j from 1 to m−1, the assignment apj+pj+12:=apj⊕apj+1∗ is performed.
+These assignments happen simultaneously, and after that all these numbers also become filled.
+It can be shown that this process always fills all numbers completely.
+
+This is what the process looks like for k=2 and n=3, where initially a1=010,a5=110:
+
+Before the first step, the numbers with indices 1,5 are filled. Therefore, this operation will perform a3:=a1⊕a5=010⊕110=100.
+Before the second step, the numbers with indices 1,3,5 are filled. Therefore, this operation will perform a2:=a1⊕a3=110 and a4=a3⊕a5=010
+You need to compute the following expression: x1⋅y1+x2⋅y2+…+x2k+1⋅y2k+1, where xi is the number of set bits in the i-th number, and yi is the number of zero bits in the i-th number.
+
+∗x⊕y denotes the bitwise exclusive OR of numbers x and y
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The first line of each test case contains two integers n,k (1≤n≤105, 1≤k≤30) — the length of the binary numbers and the number determining the number of binary numbers in the sequence.
+The second line of each test case contains a binary string s of length n (si∈{0,1}) — the value of a1.
+The third line of each test case contains a binary string z of length n (zi∈{0,1}) — the value of a2k+1.
+It is guaranteed that the sum of n over all test cases does not exceed 105.
+
+Output:
+For each test case, output one integer — the value of the expression from the statement.
+
+Strategy:
+The biggest idea here is that we start with a1 and a(2^n+1), let's call them A and B. In the first step we create A^B=C in the middle. Then, at step 2, we have the sequence ACB and we create A^C and C^B. When we substitute this gives A^(A^B)=B and (A^B)^B=A. This proves the building blocks are only A,B and C. since then the As and Bs start cancelling out. This simplifies our problem to figuring out if there is A,B or C at each point. For this, the main realization is that they actually get evenly distributed. At each step we create the third missing element (since A^B=C A^C=B and B^C=A) This means that for each pair of 2 elements the third gets created between them. This is limited only by the size of the sequence. This gives triples of the elements. Turns out this applies to all odd k. If we examine the pattern we get AB at k=0, ACB at k=1, ABCAB at k=2 and ACBCBACB at k=3 etc... This works since there will always be A and B on the sides. Which means they only form 1 pair while all of the other elements form pairs on both sides. Therefore at odd k's when the counts are the same we will get one less C because that's the one that would be created if the sequence wrapped. At an even k there is now one less C but the C would be inner generating 2 elements so we get +1 C overall. Therefore the case k%2==1 is just the counts for a,b and c * (2^k+1)/3. For evens the case, as outlined above will be (2^k+1)/3(floor)*(counts for a,b,c)+a+b since those are the extra ones. We can get the values for A,B and C by just taking them in as a string and then counting ones and zeroes where the digit for C is just the xor of the digits of A and B. Then we multiply the zeroes by the ones for each and apply the formulas above based on the parity of k. We use long long everywhere to avoid overflows.
