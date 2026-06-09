@@ -1,0 +1,23 @@
+time limit per test: 2 seconds
+memory limit per test: 512 megabytes
+
+Let the cost of an arbitrary bracket string be the length of its longest subsequence that is a regular bracket sequence.
+You are given a bracket string s and an integer k. Your task is to remove at most k characters from the string s so that the cost of the resulting string is minimized.
+A sequence a is a subsequence of a sequence b if a can be obtained from b by the deletion of several (possibly, zero or all) elements from arbitrary positions.
+A bracket sequence is called regular if it is possible to obtain a correct arithmetic expression by inserting the characters + and 1 into this sequence. For example, the sequences "(())()", "()", and "(()(()))" are regular, while ")(", "(()", and "(()))(" are not.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^3). The description of the test cases follows.
+The first line of each test case contains two integers n and k (1 <= n <= 5000; 0 <= k <= n) — the length of the string s and the maximum number of deletions.
+The second line of each test case contains a string s of length n consisting of the characters "(" and/or ")".
+
+Additional input constraints:
+the sum of n over all test cases does not exceed 5000.
+
+Output:
+For each test case, output a binary string of length n. The i-th character should be equal to "1" if the corresponding character of the string s is removed, and "0" otherwise.
+The number of ones in the string must not exceed k. The cost of the string obtained after removing the marked characters must be as small as possible.
+If there are several answers, output any of them.
+
+Strategy:
+Since n<=5000 the solution can be O(n^2). The main idea is that sequence to get a longest subsequence of length one is all the closed parentheses on the left and all the open ones in the right (i.e. ))))((( ). Another invariant is that the outer parentheses are always >= value than the inner ones since an open parentheses all the way at the beginning will be able to reach more closed ones than another one closer to the end. This applies for closed ones in the opposite direction. We can solve the problem by choosing a pivot on the left of which we will try to create only closed parenthesis and on the right only open ones. We can achieve this just by traversing from 0 to pivot-1 and greedily marking (deleting) all the parenthesis that are open. Everytime we decrease k to track to amount of deletions left. Then we loop from n-1 to pivot+1 and try to delete closed ones. (from the end because end has higher value than center). We remove until we remove everything needed or we have no deletions left. The pivot itself can be any of the parenthesis since it's on the boundary and would just waste a move. This gives us the optimal solution for a pivot in O(n). Finding the cost for the sequence we created in O(n) can be done by keeping a count of open brackets and every time we run into a closed one we check if there is at least 1 open one and if there is we decrease the count and add 2 to the count. We can solve the problem by just looping through all of the pivots. We can track every single deletion sequence (0-kept, 1-deleted) for all the pivots and also have a global variable pair that tracks {cost, index}. We update this variable with min to achieve minimum cost. At the end we can just do a for loop through the array saved at sequences[index]. Alternative we can just keep one best_sequence and its cost and update it when we find a better one.
