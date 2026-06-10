@@ -1,0 +1,24 @@
+In a supermarket, goods of the same type are usually placed next to each other so that the shelf looks neat and it is easier for customers to find what they need.
+
+The shelf is described by an array a of n elements, where ai is the type of the good at position i.
+We will say that the shelf is arranged correctly if for every two positions i and j such that 1≤i<j≤n and ai=aj, the following condition holds: for each k from i to j, it is true that ak=ai. In other words, goods of each type on the shelf must form one contiguous block.
+You are allowed to choose two different positions at most once and swap the goods at these positions. You may also choose not to perform any swap.
+Determine whether it is possible to make the shelf arranged correctly after that.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The first line of each test case contains an integer n (2≤n≤2⋅105) — the number of goods on the shelf.
+The second line of each test case contains n integers ai (1≤ai≤109), where ai denotes the type of the good at position i.
+
+Additional input constraints:
+the sum of n over all test cases does not exceed 2⋅10^5.
+
+Output:
+For each test case, output one of the following:
+
+NO, if it is impossible to arrange the shelf correctly;
+YES, if it is possible to make the shelf arranged correctly with at most one swap of two goods.
+You may output the answer in any case. For example, "YeS", "YES", "NO", "nO" will also be accepted.
+
+Strategy:
+The main idea is that we can prune the search process for what to swap from n^2 until we get into a satisfactory search space we can brute force. Another thing is that the elements appear in blocks of the same number. Our goal is to have one block of each number since that means they are all together. More than 3 blocks automatically means there is no solution since the when we take a good sequence like 11222333 and move any element anywhere the most fragmented sequence we get had 3 blocks of 1 number (like 121212333). We start by compressing the numbers inside to work with them properly. This can be done because we only care about the positions of number that are equal or not equal, not about the actual value. We do this just by sorting a copy, removing duplicates and then using lower bound to find the position of the number in order which is the number we assign to it. Then, since for each fragmented array we can only fix it by moving the displaced number right next to its block, we save all the indices where this could be. Since for each number there will be a place we can move it but we also need to take it from somewhere we can take it only from edges of a block because otherwise we fragment it and we can also append or prepend it only to sides of a block therefore we save the start, start-1 and finish, finish+1 indices for each number in its separate array. Because of this we will get an array for each unique element that will have all the possible indices we can move it to and from. Then we can just loop for all the unique elements (we sort and then erase unique indices to prune) and check the index arrays to try all the possibilities. We do this with a double for loop on the index array and inside we just try to swap i and j and then check if the array has any fragmentation which we can do just with a vector (since we compressed the numbers) where we mark the number of blocks for each number. If any has more than 2 its still fragmented and we try the next combination. This works since the space for which the double loop runs is very small (only block number 2 and 3) and also the number of indices is very small (only the edges and 1 off them) This means that since we can have only 3 blocks and each of them 4 points of interested this gives us 12^2 possible options for one index array at most. Even if all the numbers had 3 blocks and there would be n numbers (which is not even possible) we would still have 144n or about 1.44*10^7 operations which is well within the limit (there is an O(n) check inside). The reason checking for all numbers doesn't go to >O(n^2) is because if we ever find a number which has 2 or more blocks we have to fix it. We cannot leave it behind. And only fixing it triggers the double loop and the O(n) check. Therefore the O(n) of the outermost loop adds to the complexity and does not multiply it. The do The nlogn sorting, lower bound and compression is also well within bounds. We output yes when we find a correct combination. If the double loop manages to exit we output no.
