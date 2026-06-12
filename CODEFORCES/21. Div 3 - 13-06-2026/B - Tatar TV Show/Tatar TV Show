@@ -1,0 +1,19 @@
+time limit per test: 2 seconds
+memory limit per test: 256 megabytes
+
+During the holidays, Egor came to visit his friend Dabir in the city of Kazan. Out of boredom, Dabir and Egor came up with a new business idea: to make their own TV show.
+The format of the show is very simple: in each episode they invite a guest and play a game with them on a binary string.
+In today's episode, Egor and Dabir invited Arseniy (aka MAKAN) — the main celebrity of Omsk. For the game, they chose a binary string s of length n and an integer k.
+Arseniy can make an unlimited number of moves. In one move, he can choose an integer i (1 <= i <= n - k) and invert the characters at positions i and i + k, that is, change 0 to 1 and 1 to 0.
+For example, if s = 10110 and k = 2, then by choosing i = 2, Arseniy inverts the characters at positions 2 and 4: [10110 -> 11100]
+Arseniy wants to get the main prize — 1 000 000 tugriks. To do this, he needs to make the entire string s equal to zero.
+Help Arseniy determine whether he can get his prize, or if he will have to return to Omsk with nothing.
+
+Input:
+The first line contains a single integer t (1 <= t <= 10^4) — the number of test cases.
+The first line of each test case contains two integers n and k (1 <= k <= n <= 2 * 10^5).
+The second line of each test case contains a binary string s of length n.
+It is guaranteed that the sum of n over all test cases does not exceed 2 * 10^5.
+
+Strategy:
+The problem divides things into sequences with gaps of k. These do not overlap (since k+1, 2k+1... can never cross with k+2, 2k+2 for k>1). This means we can divided the text into k sequences each starting at one number from 1 to k-1. Inside these sequences we can match any number with any other through a series of one or more operations. Therefore this boils down to calculating the number of 1s in each sequence, if it is odd anywhere it's impossible to make everything 0 since each operation affects 2 elements. We output an answer based on this. It can be obtained by simple traversing each sequence and counting 1s.
