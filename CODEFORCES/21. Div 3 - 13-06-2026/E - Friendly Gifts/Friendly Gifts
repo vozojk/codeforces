@@ -1,0 +1,25 @@
+time limit per test: 3 seconds
+memory limit per test: 512 megabytes
+
+Arseniy decided to make his friends Dabir and Egor happy. For this, he decided to give each of them an array of numbers of the same length. An array b is called good if its elements can be rearranged so that for all i > 1 the condition b_i - b_i-1 = 1 holds.
+
+Arseniy wants Dabir and Egor to be able to play with these arrays. For this, the following conditions must be satisfied:
+
+Each of the given arrays is good.
+
+If you write one array after the other (in other words, concatenate them), the resulting array is also good.
+
+Arseniy already has an array a of length n. He plans to cut both arrays from a, that is, to choose two non-overlapping subsegments of the same length. Help Arseniy determine the maximum possible length of the resulting arrays.
+
+Input:
+The first line contains a single integer t (1 <= t <= 1000) — the number of test cases.
+Then t test cases follow.
+The first line of each test case contains a single integer n (1 <= n <= 6000).
+The second line contains n integers a_1, a_2, ..., a_n (1 <= a_i <= n).
+It is guaranteed that the sum of n over all test cases does not exceed 6000.
+
+Output:
+For each test case, output a single integer — the maximum possible length of the arrays.
+
+Strategy:
+We make use of n being <= 6000. We can calculate the indices for all possible ranges by creating 2 double vectors storing the earliest and latest index where a certain range (x, y) is starting. This can be calculated by just looping from 0 to n, tracking if we have seen a value (since duplicates automatically make an index range invalid and makes all the ranges starting at an x also invalid if they include that duplicate idx). The outer loop marks the starting idx of the range and then we do a second loop from i to n which marks the end idx of the range. We can then just do traversals, stop when we find a duplicate and for all the others we just keep a min and max starting indices updated, we can save the data in the double arrays through the current range we have found (use i, j, we save only when j-i==max-min) We keep track of the minimum and maximum index and use the number range of the loop to update the 2D coordinates. This creates our double vectors (they are expressed as a single vector for which we write a lambda to convert 2D to 1D coords) which contain INF or -INF or the actual index where the corresponding range starts. Then we can run another loop sequence. The outer loop will go through all the possible distances (starting at input length/2) and going downwards. Then an inner loop will go through all the possible starting indices (which is 1 to (n+1)/2(length of input) which we can express as x+2l-1<=n), then we can express the starting and ending points of both halves with l1=x, r1=x+l-1, l2=x+l and r2=x+2l-1, we then query our double arrays with {l1,r1} and {l2,r2} to check if we have anything saved for these ranges since if we do we can make them. Then we check if they don't overlap, this is where saving the actual indices of the start and end and not just true/false come in. We check if the earliest start of the first range +l-1 is smaller then the latest start of the second range. (earliest and latest because that gives the widest range) If it is we found valid ranges. We also check the opposite (the end of the second half and start of first half). If any of these come out as non-overlapping we have found a valid pair and we can output the current length the outer loop is at.
