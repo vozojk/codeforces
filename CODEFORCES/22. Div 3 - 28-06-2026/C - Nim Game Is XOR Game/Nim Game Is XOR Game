@@ -1,0 +1,23 @@
+Alice and Bob are playing a game with an array a consisting of n non-negative integers. Alice goes first.
+
+In each turn, the current player must choose an array of n non-negative integers b = [b_1, b_2, ..., b_n] that satisfies the following conditions:
+
+Condition 1: 0 <= b_i <= a_i for all 1 <= i <= n;
+Condition 2: The sum of b_i from i=1 to n > 0 (i.e. the array b does not consist entirely of zeros);
+Condition 3: b_1 XOR b_2 XOR ... XOR b_n = 0, where XOR denotes the bitwise XOR operation.
+
+After choosing the array b, the player updates the array a by performing a_i = a_i - b_i for all 1 <= i <= n.
+The player who cannot perform such an operation loses the game.
+Determine the number of valid choices for the array b that Alice can make on her first turn to guarantee a win, assuming both players play optimally. Since this number may be large, output the answer modulo 998244353.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains a single integer n (1 <= n <= 10^6) — the length of the array a.
+The second line of each test case contains n integers a_1, a_2, ..., a_n (1 <= a_i < 2^30) — the contents of the array a.
+It is guaranteed that the sum of n over all test cases does not exceed 10^6.
+
+Output:
+For each test case, output the number of valid choices for the array b that Alice can make on her first turn to guarantee a win modulo 998244353.
+
+Strategy:
+Here there is a series of things we need to realize. The first part is that the XOR having to be equal to zero means that the count of 1s in all positions needs to be even in array b. By applying condition 1,2 and 3 we can figure that if we ever receive an array that has either 1 singular element (even count at at least 1 position impossible) or an empty array (violates conditions 1 and 2) we lose. Therefore we need to make sure we never receive this. The next thing is that if we ever hold an array a where all the positions have an even number of 1s we can instantly win since the xor will be 0 and we can just subtract the value at ai from each ai. The biggest realization is that we can never allow our opponent to get hold of an array which has 2 or more elements. It can be proven that if we hold an array that has 2 or more elements we can always get it to a state where it has 1 or 0 which means instant loss for the opponent. This is possible because the number either fit perfectly or we can save the highest number there. Since all the other numbers are smaller, we can just deduct their whole value from the making them 0 and then from the biggest number we deduct such a number so that we will make the count of all the positions that are now odd decrease by 1. Since we can't really pass away an array with more than 2 numbers we need to count the ways that we can get it to 0 and ways to get it to 1 number. Zero is easy, we just take the xor of the array. When it is 0 (and there is at least 1 number >0) we add 1 to the total. We then loop through all of the elements inside the array. For each we know that the number we are missing to get to xor 0 is the xor off all the numbers xorred with the current element (which is the one we want to keep). Therefore we can just take do this operation and then check if the resulting number is < (not = since that would be making it to 0s which we counted before) than the current element. If it is we can subtract and create a winning array so we add 1 to the total. By looping through all the elements like this we get the total count. I
