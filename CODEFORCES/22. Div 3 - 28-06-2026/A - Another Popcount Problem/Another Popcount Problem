@@ -1,0 +1,19 @@
+You are given two integers n and k.
+
+Your task is to construct a sequence a consisting of k non-negative integers a_1, a_2, ..., a_k such that:
+
+Condition 1: The sum of a_i from i=1 to k <= n.
+Condition 2: The total number of set bits, i.e., the sum of popcount(a_i) from i=1 to k, is as large as possible.
+
+You only need to output the maximum possible value of the sum of popcount(a_i) from i=1 to k.
+Here, popcount(x) denotes the number of 1 bits in the binary representation of x. For example, popcount(6) = popcount(110 in base 2) = 2, and popcount(0) = 0.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^3). The description of the test cases follows.
+Each of the next t lines contains two integers n and k (1 <= n, k <= 10^6) — the maximum allowed sum of the sequence and the length of the sequence, respectively.
+
+Output:
+For each test case, output a single integer — the maximum possible value of the sum of popcount(a_i) from i=1 to k.
+
+Strategy:
+The idea is that the cheapest way (taking in the sum of the elements) to get high popcount is to use powers of 2 -1. This gives us numbers with all 1s therefore any numbers that do not fulfill this condition are inferior since we can just delete the 0s and get a smaller number. With these constraint using a smaller number is always better (with the same amount of 1s) so we do that. Then we have to realize that the most efficient way to fill the array if it has unlimited length is with 1s. These have the best popcount/value ratio (1). Then this ratio gets worse but since we have only k spots we can just go up through numbers of value 2^i-1 and update each element. While all numbers in the array can be upgraded to a higher level (all numbers meaning in the array of size k, this is provably optimal) we can just do total+=k since in each upgrade we add a 1 to each of the k elements which gives k add total. In the round where we cannot fit all of them anymore we need to calculate how much we can fit. The current sum in the array is powers[i-1]*k and the maximum is n. Therefore the count of numbers we can upgrade is available_money/cost where available money is n-powers[i-1]*k and cost is powers[i]-powers[i-1]. We add this number to the total and print that. We use ll for everything to ensure there is no overflow.
