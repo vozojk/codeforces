@@ -1,0 +1,17 @@
+Milkcat2009 has a matrix a with n rows and m columns consisting of integers 0 and 1. The rows are numbered from 1 to n, and the columns are numbered from 1 to m. The element in the i-th row and j-th column is denoted as a_i,j.
+Milkcat2009's AI scans every single submatrix* of a consisting of r rows and c columns. The AI considers the matrix clean if the bitwise XOR sum of elements in each such submatrix is equal to 0.
+
+Formally, the matrix a is valid if and only if for all 1 <= i <= n - r + 1 and 1 <= j <= m - c + 1:
+The XOR sum from x=i to i+r-1 and y=j to j+c-1 of a_x,y = 0.
+Your task is, given various sets of integers n, m, r, c, to count the number of clean matrices of n rows and m columns with respect to scanning dimensions r and c. Since the answer can be very large, calculate it modulo 998244353.
+*A submatrix of a matrix is obtained by removing some rows (from the beginning and/or end) and/or columns (from the beginning and/or end) from the original matrix.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+Each test case consists of a single line containing four integers n, m, r, c (1 <= r <= n <= 10^9, 1 <= c <= m <= 10^9), representing the dimensions of the matrix and the dimensions of the scanning area, respectively.
+
+Output:
+For each test case, output a single integer representing the answer modulo 998244353.
+
+Strategy:
+This divides the space into submatrices of size rxc. This window slides through all possible matrices of this size checking if the xor sum is 0. Since there are only 0s and 1s this is equivalent to checking if there is an even number of 1s. We need to create a formula for this. (rows-r+1)*(columns-c+1) is the number of submatrices. Rows*columns is the total. The main idea is that for each submatrix we can force the xor to be 0 by counting the number of 1s (in some theoretical matrix) and then the last element we can use to make the xor 0 (we set to 1 if odd count and 0 if even). This means these positions are completely forced. They are predetermined by the previous numbers. This also means all the other numbers are completely free since we can change the xor by setting these locked ones. Therefore the number of free variables is total-num_of_submatrices or rows*columns-(rows-r+1)*(columns-c+1). All these cells we can pick to anything and since there are 2 options the final result is 2^this_number. We use binary modulo exponentiation to achieve the modulo in logN time. We use long long for everything. We output the result of this.
