@@ -1,0 +1,17 @@
+Time limit per test: 1 second
+Memory limit per test: 256 megabytes
+
+After summoning the next boss — The Brain of Cthulhu, you noticed that it surrounds itself with n eyes, numbered from 1 to n. In one attack, The Brain of Cthulhu chooses a triple of eyes (not necessarily distinct) with numbers (a, b, c). The triple of eyes is called crimson if and only if the following property holds:
+gcd(lcm(a, b), lcm(b, c)) = gcd(a, c)
+To defeat the boss, you want to know how many ways The Brain of Cthulhu can choose a crimson triple of eyes. The triples of eyes (a_1, b_1, c_1) and (a_2, b_2, c_2) are considered different if a_1 != a_2, or b_1 != b_2, or c_1 != c_2.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 1000). The description of the test cases follows.
+The only line of each test case contains one integer n (1 <= n <= 2 * 10^5) — the number of eyes of The Brain of Cthulhu.
+It is guaranteed that the sum of n across all test cases does not exceed 2 * 10^5.
+
+Output:
+For each test case, output one integer — the number of ways to choose a crimson triple of eyes.
+
+Strategy:
+This is just math manipulation. By the formula the left gcd has %b==0 (since the lcms share a b). Therefore we need to find numbers a and c so that b divides them (satisfying gcd(a,b)%b==0). To count them we know that we need to count the multiples of b (since a multiple of b will get divided by b) this count is just floor(n/b). Since we can choose from a and c for this number we get floor(n/b)^2 for each possible b. We run a for loop with this formula and output the final sum.
