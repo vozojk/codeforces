@@ -1,0 +1,20 @@
+Time limit per test: 1 second
+Memory limit per test: 256 megabytes
+
+Papyrus came up with another puzzle for Frisk to solve. Papyrus brought two arrays a and b of length n and allowed the following two operations to be performed:
+choose any index i (1 <= i <= n) and change a_i to a_i - 1. The execution time of such an operation is 1 second.
+reorder all elements of array a in any way. The execution time of such an operation is c seconds.
+You need to convert array a into array b.
+Frisk wants to solve the puzzle as soon as possible. Help Frisk determine the minimum time needed to solve the puzzle. If there is no solution, output -1.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 500). The description of the test cases follows.
+The first line of each test case contains two integers n and c (1 <= n, c <= 100) — the length of arrays a and b and the cost of the second operation.
+The second line of each test case contains n integers a_1, a_2, ..., a_n (1 <= a_i <= 100) — the elements of the first array.
+The third line of each test case contains n integers b_1, b_2, ..., b_n (1 <= b_i <= 100) — the elements of the second array.
+
+Output:
+For each test case, output a single integer representing the minimum number of seconds required to solve the puzzle, or -1 if it is impossible to solve the puzzle.
+
+Strategy:
+The idea is to just decrease the numbers until they will match the numbers in the target array. Then rearrange them if needed. The key is realizing that for a correctly ordered array we need ai<=bi for all i. This way there cannot be a higher element to which we cannot get by subtracting which would make it impossible to solve. Therefore first we do a pass to check if the ordered is already not correct, we can do this by using a for loop and checking the condition for all i accumulating a total count of bi-ai for all elements. If in no point we get ai>bi we can output the final count since we don't need to pay to reshuffle. If we do we sort both arrays and then repeat the same process. Now if we run into ai>bi we return -1. Otherwise we return the accumulated total.
