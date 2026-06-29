@@ -1,0 +1,18 @@
+Time limit per test: 1 second
+Memory limit per test: 256 megabytes
+
+During his long adventure, Steve stumbled upon a village of villagers. The houses in the village are connected by bidirectional paths. In total, there are n houses in the village, numbered from 1 to n. The graph of houses and paths represents a rooted tree, rooted at vertex 1, where the town hall is located.
+Consider an arbitrary house v and its subtree. For each such house v and each non-negative integer h, consider the set of houses that are in the subtree of v at a distance exactly h from v. Such a set will be called a guild.
+Two guilds are considered different if there exists a house that is in one guild and not in the other. Steve wants to know how many different non-empty guilds there are in the tree. Help him with this.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains a single integer n (2 <= n <= 2 * 10^5) — the number of houses in the village.
+The second line contains n - 1 integers p_2, p_3, ..., p_n (1 <= p_i < i), where p_i is the parent of the i-th house in the tree.
+It is guaranteed that the sum of n over all test cases does not exceed 2 * 10^5.
+
+Output:
+For each test case, output a single integer — the number of different guilds in the village.
+
+Strategy:
+Here we get a tree and we need to find a certain count. We need to count the number of guilds. These guilds are defined as groups for each vertex with downward distance of 0 to the deepest child. This makes each node its own guild. Then, each level of the subtree rooted at each node is its own guild. The crucial thing to cover is that if the node has only one branch at any point the guild created at dist=1 from that node already exists since it's just one node. We need to make sure this doesn't happen. This is the key to the whole problem. It makes us not overcount lonely branches and also, we need to realize we need to make sure even more down. This gets solved by adding the count for the second biggest branch not the biggest one. This is because the difference between the biggest and second biggest branch must be alone since the second biggest doesn't have enough nodes (biggest here means biggest depth), and since node with only one branch doesn't count we fix overcounting by taking the depth of the second biggest branch. The rest of the logic boils down to just a while loop. We create vectors to save parents and children of each node and an answer vector. Since we need to process the nodes only when all the children have been processed (to pull the counts correctly) we do a topo sort on the nodes and for each we check the children, update the depth of the parent and add the second biggest branch depth+1 to the parent depth. If there is only one branch we don't add anything to the count. The default count for each node in the answer vector is 1. We save the counts along with the depths for each node (this needs to be decoupled for correct calculations). We let the topo sort run until we get to the root node where we break and return counts[0].first. We make sure to keep everything 0 indexed to avoid bugs.
