@@ -1,0 +1,18 @@
+Time limit per test: 1 second
+Memory limit per test: 256 megabytes
+
+An integer n is said to be good if it contains at most two distinct digits in its decimal representation. For example, the integers 3, 8588, 67 are good, whereas the integers 123, 9447 are not.
+You are given an integer x (1 <= x < 10^8), which is good. Your task is to find an integer y (2 <= y <= 10^9) such that both of the following conditions are satisfied:
+y is good.
+x * y is good.
+
+Input:
+The first line contains an integer t (1 <= t <= 10^4) — the number of test cases. The description of each test case follows.
+Each test case contains a single integer x (1 <= x < 10^8). It is guaranteed that x is good.
+
+Output:
+For each test case, print a single integer y (2 <= y <= 10^9) such that both the integers y and x * y are good.
+If there are multiple valid answers, output any one of them.
+
+Strategy:
+We just need to find a number x*y which doesn't have any extra unique digits than x. The trivial solution is adding length(x) 0s and then repeating the same number again. This is equivalent to doing x*10^length(x)+x (for example for 7465 we get 7465*10^4+7465=74657465 which satisfies the rules). Therefore we can just output 10^length(x)+1.
