@@ -1,0 +1,22 @@
+Time limit per test: 3 seconds
+Memory limit per test: 256 megabytes
+
+A tree is an undirected connected graph with no cycles.
+You are given a tree having n vertices. Each vertex i has an integer value a_i written on it.
+For any two vertices u and v (u != v), define p(u, v) as the product of the values written on the vertices lying on the unique simple path* from u to v.
+An unordered triplet of three distinct vertices {u, v, w} is called good if and only if: p(u, v) * p(v, w) * p(w, u) is a perfect square.
+Determine the number of good unordered triplets in the given tree.
+A simple path from the vertex u to vertex v is a sequence of distinct vertices u = x_0, x_1, ..., x_k = v such that there exists an edge between vertices x_{i-1} and x_i for all 1 <= i <= k.
+
+Input:
+The first line contains an integer t (1 <= t <= 10^4) — the number of test cases. The description of each test case follows.
+Each test case begins with an integer n (3 <= n <= 2 * 10^5) — the number of vertices.
+The second line contains n integers a_1, a_2, ..., a_n (1 <= a_i <= 10^6) — the integer values written on the vertices.
+Each of the next n - 1 lines contains two integers u, v (1 <= u, v <= n), denoting an edge of the tree. It is guaranteed that the edges form a tree.
+It is guaranteed that the sum of n over all the test cases does not exceed 2 * 10^5.
+
+Output:
+For each test case output the number of good triplets in the tree.
+
+Strategy:
+Here if we draw it out we realize that the whole path always creates a Y shape. We go u->v->w->u and all nodes on this path get visited twice except one of them which gets visited 3 times. Since nodes visited twice can't break a perfect square and something^3 is not a perfect square if something is not a perfect square by itself we need this middle node to be a perfect square. Therefore the solution boils down to finding the total amount of triplets and then finding the amount of triplets which are invalid (have the middle not be a perfect square). This divides the problem into 2 scenario, first where the middle is one of the u,v,w nodes and second where it is not. When it is not we pick 3 nodes from different branches of out it. If we can do that the triplet is valid. Therefore we calculate the number of triplets not in 3 different branches which is either 3 nodes in the same branch or 2 nodes in the same branch. For 3 in the same branch we just find all the possible combinations of the nodes inside the subtree, or the 2 which are sum of nodes in the subtree times the remaining nodes for the different branch. Here we get size of the subtree and branch calculations by iterating through the children of the middle nodes. This locks us onto a branch. For the case where the center node is one of the triplet we just take all the possible picks for the other 2 nodes and deduct the ones which are in the same branch. We explore the parent branch too by taking n-subtree[i]. We loop through all nodes and all branches for each doing the counting thing if the middle is a perfect square and output the final sum. We use total3 and total2, they dont overlap even though total3 is all the possible combinations because when we subtract for total3 we take only combinations that have u in branch1, v in branch2 and w in branch3 as valid. The situation for total2 which is one of the nodes being the literal middle point is not included here and therefore gets subtracted.
