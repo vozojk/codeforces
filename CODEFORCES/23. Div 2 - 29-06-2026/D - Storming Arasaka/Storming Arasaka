@@ -1,0 +1,24 @@
+Time limit per test: 2 seconds
+Memory limit per test: 256 megabytes
+
+Hah, you just discovered what it takes to become a legend.
+— Cyberpunk 2077
+
+You and Johnny Silverhand decided to storm Arasaka together. After making your way through the guards, you reached Mikoshi — but in order to connect to it, you need to hack the main server.
+The password to the server is formed as follows. There is a secret number n. Consider all of its positive divisors except 1, but the divisor equal to n is considered, and partition all of them into several nonempty layers L_1, L_2, ..., L_k. A partition is called good if two conditions are satisfied:
+for any divisor x from layer L_i, all of its divisors, except 1 and x, lie only in the layers L_1, L_2, ..., L_{i-1};
+in each layer, all numbers can be ordered into a chain so that any two neighboring numbers in this chain have GCD* greater than 1.
+The length of the password is defined as the number of layers k. For the security of the layers, their number must be as small as possible.
+Fortunately, Arasaka has not changed n since Johnny's time, and he remembers several possible values of this number. For each of them, help V and Johnny determine the minimum possible number of layers.
+gcd(x, y) denotes the greatest common divisor (GCD) of integers x and y.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+
+The only line of each test case contains a single integer n (2 <= n <= 10^6) — a candidate value of the secret number that Johnny told you.
+
+Output:
+For each test case, output a single number — the minimum number of layers.
+
+Strategy:
+The combination of the two constraints creates an easy rule. It is stated that the gcd must be greater than 1 in each layer and yet it is also stated that the numbers that are multiples of each other cannot be in the same layer. Since we are working with GCDs be first look at the prime decompositions. Since all numbers that are not primes are multiples of primes and no primes are multiples of each other (their prime factorization is just themselves) the first layer must be a prime, but since a prime and any other prime have gcd 1 there must be layers for all the primes. Then in the next layer section we can have different combinations of those primes but only composed by using 2 elements from the layer below (since if we used 3, like a,b,c then a*b*c has a factor b*c which should be in a lower layer but is not). Therefore we have prime_count layers for the primes at the base and then sum of exponents-1 layers since this is how many layers does it take to go up the tree we are building where n is. This means fundamentally we just do a prime decomposition of n and the answer is sum(exponents)-1+distinct_prime_factors. The -1 is there since we start at one of the layers of the primes.
