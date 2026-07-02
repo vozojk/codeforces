@@ -1,0 +1,23 @@
+Time limit per test: 2 seconds
+Memory limit per test: 256 megabytes
+
+You are given two arrays a and b, each of length n. You are allowed to perform the following operation on array a any number of times (including zero):
+Choose two indices l and r such that 1 <= l <= r <= n;
+For each index i from l to r (both inclusive),
+Set a_i := a_i - 1 if i - l is odd.
+Set a_i := a_i + 1 if i - l is even.
+Determine whether you can make the array a equal to the array b by performing the operation any number of times.
+
+Input:
+The first line contains a single integer t (1 <= t <= 10^4) — the number of test cases. Description of each test case follows.
+The first line of each test case contains a single integer n (1 <= n <= 2 * 10^5) — the length of the arrays a and b.
+The second line of each test case contains n integers a_1, a_2, ..., a_n (1 <= a_i <= 10^9) — the elements of the array a.
+The third line of each test case contains n integers b_1, b_2, ..., b_n (1 <= b_i <= 10^9) — the elements of the array b.
+It is guaranteed that the sum of n over all test cases does not exceed 2 * 10^5.
+
+Output:
+For each test case, print "YES" if you can make array a equal to array b and "NO" otherwise.
+You can output "YES" and "NO" in any case (for example, strings "yEs", "yes" and "Yes" will be recognized as a positive response).
+
+Strategy:
+This requires us to realized that we increase and decrease in an alternating pattern and that i-l is, as far as parity is concerned, is just indexing by the position in the subarray (starting at 1). We also know that creating groups larger than 2 has no point since they can be divided up into smaller ones. The biggest thing is that since a subarray of l==r (length 1) has only a number at i-l%2==1 we can arbitrarily add any number to any letter. Therefore we are only concerned by numbers that are bigger than the target. For these we need to pair up with a number before them (since we remove 1 from index 2 in a subarray). This gives us a budget for each number to increase. We can go from the back, always checking if a number needs to get smaller (if it needs to get bigger we skip), if it does we increase the number before it by that amount. This ripples all the way to idx=0 where the number will either be smaller than the target and we win or bigger and there is no solution.
