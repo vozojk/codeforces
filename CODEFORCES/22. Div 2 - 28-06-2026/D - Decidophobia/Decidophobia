@@ -1,0 +1,21 @@
+Time limit per test: 2 seconds
+Memory limit per test: 256 megabytes
+
+There are n people attending a round-table party, numbered 1, 2, 3, ..., n in clockwise order. You have prepared some gifts to distribute among them.
+Each person i has a weight a_i and a common field of view d. The field of view for person i consists of the d people sitting clockwise and the d people sitting counter-clockwise from them (a total of 2d people excluding person i).
+The happiness gained by person i is determined by the following rules:
+If person i receives a gift, and there are x people within their field of view who did not receive a gift, they gain x * a_i happiness.
+If person i does not receive a gift, and there are x people within their field of view who received a gift, they incur -x * a_i happiness.
+You want to maximize the total happiness of all n people combined. Find this maximum value.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains two integers n and d (3 <= n <= 2 * 10^5, 1 <= d < n / 2).
+The second line contains n integers a_1, a_2, ..., a_n (1 <= a_i <= 10^8), where a_i is the weight of the i-th person.
+It is guaranteed that the sum of n over all test cases does not exceed 10^6.
+
+Output:
+For each test case, output a single integer representing the maximum total happiness.
+
+Strategy:
+Here we need to write out the math and find the invariant. Turns out that we can just do a sliding window sweep. If we give a gift to position a, assuming all the positions in its range don't have a gift we gain w[a]*2d happiness. At the same time we lose sum(range of a) happiness since now all of the other seats can't add bob to the count of people having a gift. The localizes the problem onto each of the seats. We can calculate the total absolute happiness delta by using 2*d*w[i]-sum(range). If this is positive then giving a gift there has a positive delta so we do it. Otherwise we just don't. We don't have to think about anything else (gift/no gift for others) because the impact is absolute. If a person already has a gift then position a having it also decreases the happiness by that persons weight. If they do not have a gift then they go from 0 for people having nothing to -weight for position a which has a gift. Both leave negative delta of their own weight. Therefore the effect is our formula. We can then just do a sliding window with the fixed width we got as input and check if the result of it is positive and if it is we add the result. We output the total sum of these adds.

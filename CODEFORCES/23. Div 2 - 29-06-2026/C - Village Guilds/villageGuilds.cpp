@@ -79,7 +79,7 @@ void solve() {
         if (indeg[parent[idx]]==0 && idx!=0) {
             dq.push_back(parent[idx]);
         }
-A
+
     }
     cout << counts[0].first << "\n";
     //save depth, add that+1+sum of children
