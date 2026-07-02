@@ -1,0 +1,24 @@
+Time limit per test: 1 second
+Memory limit per test: 256 megabytes
+
+You are given a binary string s consisting only of the characters 0 and 1.
+
+In one operation, you can do the following:
+Choose a substring* of s that is a palindrome† of length at least 2.
+Delete exactly one character from this chosen substring.
+The remaining parts of the string are then concatenated to form the new string s.
+Find the minimum possible length of the string s that can be achieved after applying this operation any number of times (possibly zero).
+
+A string a is a substring of a string b if a can be obtained from b by the deletion of several (possibly, zero or all) characters from the beginning and several (possibly, zero or all) characters from the end.
+† A string a of length m is said to be palindrome if a_i = a_{m+1-i} for all 1 <= i <= m.
+
+Input:
+The first line contains a single integer t (1 <= t <= 100) — the number of test cases. Description of each test case follows.
+The first line of each test case contains a single integer n (1 <= n <= 100) — the length of the binary string s.
+The second line of each test case contains a binary string s of length n. It is guaranteed that each character of s is either 0 or 1.
+
+Output:
+For each test case, print the minimum possible length of the string s that can be achieved after applying the operation any number of times.
+
+Strategy:
+Since 11 and 00 are palindromes we can immediately remove any duplicates. Then, we will be left with a sequence of alternating 0s and 1s. Only the beginning and end are of interest. A conclusion of the duplicate removal for 2 number is that the length of the final string can be only 1 or 2. If we are left with a 101 or 010 sequence at the end we can do ABA->AA->A leaving length of 1. The only way to be left with length of 2 is that if the final string is ABB or BBA. This way the only palindrome is AA or BB and we are left with AB or BA which we can't reduce. The only way this happens is that there is either only AB or only BA in the string. This is because is there is both of them (like ABBAABAB) we can just do ABBAABAB->ABABAB->ABABA->AAA->A. If there is only one of them this means a string of one character with one boundary and then a string of the other (like AAABBBB). This can never be reduced to one character since there can never be a palindrome which contains both A and B at once. Therefore we look for these. We look at the boundaries between characters. If there is both AB and BA or none (meaning AAAAA or BBBB) we output 1, if there is AB XOR BA (meaning only one of them) we output 2.
