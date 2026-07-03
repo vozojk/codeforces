@@ -1,0 +1,24 @@
+time limit per test: 1 second
+memory limit per test: 256 megabytes
+
+You are given n sets S_1, S_2, ..., S_n, where each element in the sets is an integer between 1 and m.
+You want to choose some of the sets (possibly none or all), such that every integer between 1 and m is included in at least one of the chosen sets.
+You have to determine whether there exist at least three ways to choose the sets.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains two integers n and m (2 <= n <= 5 * 10^4, 1 <= m <= 10^5) — the number of sets and the upper bound of the integers in the sets.
+Then n lines follow, the i-th line first containing an integer l_i (1 <= l_i <= m) — the size of set S_i.
+Then l_i integers S_i,1, S_i,2, ..., S_i,l_i follow in the same line (1 <= S_i,1 < S_i,2 < ... < S_i,l_i <= m) — the elements of set S_i.
+
+Let L = sum from i=1 to n of l_i. It is guaranteed that:
+The sum of n over all test cases does not exceed 5 * 10^4.
+The sum of m over all test cases does not exceed 10^5.
+The sum of L over all test cases does not exceed 2 * 10^5.
+
+Output:
+For each test case, print "YES" if there exist at least three ways to choose the sets. Otherwise, print "NO".
+You can output the answer in any case (upper or lower). For example, the strings "yEs", "yes", "Yes", and "YES" will be recognized as positive responses.
+
+Strategy:
+We can use the idea that if we need to have at least 3 ways to create a set of sets that satisfy the constraints, we will need to be able to take the total sum of counts of numbers in all sets and then be able to remove to different sets. This gives us at least 3 ways (no removed, A removed, B removed). We can do this by putting the total counts for each elements in a hashmap and then having a vector of maps for each set. First we check that each element is present at least once, if not we output a no right away. Then we proceed. We loop through the vector of maps and try to remove all the counts of 1 of the sets from the total. If the count of no number in the total dips below 1 (the number is still there) after removing the set, we know it is redundant. If we find at least 2 sets like this we output a yes, otherwise a no.
