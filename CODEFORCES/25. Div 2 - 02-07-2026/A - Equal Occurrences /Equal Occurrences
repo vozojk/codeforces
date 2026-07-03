@@ -1,0 +1,14 @@
+We call an array balanced if and only if the numbers of occurrences of any of its elements are the same. For example, [1, 1, 3, 3, 6, 6] and [2, 2, 2, 2] are balanced, but [1, 2, 3, 3] is not balanced (the numbers of occurrences of elements 1 and 3 are different). Note that an empty array is always balanced.
+You are given a non-decreasing array a consisting of n integers. Find the length of its longest balanced subsequence*.
+*A sequence b is a subsequence of a sequence a if b can be obtained from a by the deletion of several (possibly, zero or all) element from arbitrary positions.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 500). The description of the test cases follows.
+The first line of each test case contains a single integer n (1 <= n <= 100) — the length of a.
+The second line contains n integers a_1, a_2, ..., a_n (1 <= a_1 <= a_2 <= ... <= a_n <= n) — the elements of a.
+
+Output:
+For each test case, output a single integer — the length of the longest balanced subsequence of a.
+
+Strategy:
+Since the number of elements is just <=100 we can do a brute force approach. Since the the length of the longest subsequence that includes elements of count >=x is always going to be the number of distinct elements with count >=x times x. We can go from the biggest count down. We use a hashmap and count all of the elements. Then we can compress them into a hashmap which counts the number of elements inside each size bucket. We then loop these buckets from the biggest. We keep track of the elements with size >= cur_size and multiply that with the cur_size going down. This is the size of the subsequence. The max of this all the way to min(cur_size) is the global maximum.
