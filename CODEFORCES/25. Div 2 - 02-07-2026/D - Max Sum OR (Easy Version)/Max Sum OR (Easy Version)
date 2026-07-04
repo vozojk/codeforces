@@ -1,0 +1,21 @@
+This is the easy version of the problem. The difference between the versions is that in this version, l=0, and r<2⋅105. You can hack only if you solved all versions of this problem.
+You are given two integers l and r (l≤r).
+Let n=r−l+1. We will create two arrays a and b, both consisting of n integers. Initially, both a and b are equal to [l,l+1,…,r]. You have to reorder the array a arbitrarily to maximize the following value:
+
+∑i=1n(ai|bi).
+
+Here, | denotes the bitwise OR operation.
+You also need to construct a possible way to reorder the array a.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The only line of each test case contains two integers l and r (0=l≤r<2⋅105) — the minimum and maximum elements in a.
+Let n=r−l+1. It is guaranteed that the sum of n over all test cases does not exceed 2⋅105.
+
+Output:
+For each test case, print a single integer in the first line of output — the maximum value of ∑i=1n(ai|bi).
+Then, print n distinct integers a1,a2,…,an in the second line — the array a after reordering.
+If there are multiple answers, you may print any of them.
+
+Strategy:
+Due to the nature of binary numbers, it is always possible to rearrange the array so its OR with the base array will result in all sums being r. This is because what we are doing in both arrays is counting up from 0 to r. Since we have 2 of them, for each number in the base array, there must be a second number which has 1s in the spots where the base has 0s up until the xor of them will be r. Since if both numbers don't share any 1s, OR turns into XOR we can use it here. Therefore our goal simplifies to creating a mask which gives us the total amount of 1s and their positions, then we xor with the current number to remove some of them and the rest is the complement we need for them to sum (or OR) to r. The mask is always just the 2^(highest power in current+1)-1. This gives us all 1s for all digits starting from the MSB in current. An optimization technique to not calculate the mask everytime is taking whole blocks of numbers. Since {i, mask^i} is a pair that sums up to the mask, we know everything in this range will work with the mask. THerefore we can run an outer while loop with cur>=0 and inside we always calculate the mask and then run a for loop from i=current to i>=mask^current which is our lower bound. We save the results into a result array. At the end of the for loop we set current=mask^current-1 and repeat. We print the result array. Since the maximum sum is always just (r+1)r (this follows from ((r+1)(r)/2)*2) we print that before the result array.
