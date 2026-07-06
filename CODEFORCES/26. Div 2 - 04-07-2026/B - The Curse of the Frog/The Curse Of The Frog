@@ -1,0 +1,15 @@
+On an infinite number line, at point 0, sits a frog. After many years of meditation, the frog has mastered n unique types of magical jumps. The i-th type of jump allows it to jump forward by no more than ai units. In other words, if it was at integer point k, after the jump it can land at any integer point from k to k + ai.
+But magic always comes with a price; it has been cursed. Before each bi-th attempt (before bi-th, 2bi-th, 3bi-th etc. attempt among the jumps of type i) to use the i-th type of jump, the frog rolls back ci units! In other words, if it was at point k, it will first find itself at point k - ci, and after the jump, it can land at any integer point from k - ci to k - ci + ai.
+The frog's goal is to reach the point with the number x, using jumps while minimizing the number of rollbacks. Help the frog — find the minimum number of rollbacks it will have to endure on its way to the goal, or determine that it cannot reach point x.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+In the first line of each test case, there are 2 integers n and x (1 <= n <= 10^5, 1 <= x <= 10^18) — the number of types of jumps the frog can make and its final target.
+In the following n lines, the description of the jump types is provided; the i-th line contains 3 integers ai, bi, and ci (1 <= ai, bi, ci <= 10^6).
+It is guaranteed that the sum of n across all test cases does not exceed 10^5.
+
+Output:
+For each test case, if the frog can reach point x, find the smallest number of rollbacks it must endure to do so. If it cannot reach point x, output -1.
+
+Strategy:
+All the jumps before the first rollback on all types are free. We execute those first. If the sum of that if >=x we output 0. The next case is if this is not true and none of the jump cycles including rollback have positive movement we output -1 since we can never get there. For the rest we subtract the summed up free jumps from x and then create an array which holds the distances for all types per jump cycle including rollback. We pick the one with the biggest distance. Since all the types are maxed out we can just output ceil(x/that_value).
