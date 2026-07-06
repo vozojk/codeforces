@@ -1,0 +1,16 @@
+This is the easy version of the problem. The difference between the versions is that in this version, 2 <= i <= n - 1. Note that a correct solution for the hard version is not necessarily a correct solution for the easy version.
+Given a natural number n. Find a permutation p of length n, such that for each i (2 <= i <= n - 1) there exists a j (i <= j <= n) such that pi = pj XOR i.
+It can be proven that under the constraints of the problem, there exists at least one suitable permutation p.
+A permutation of length n is an array consisting of n distinct integers from 1 to n in arbitrary order. For example, [2, 3, 1, 5, 4] is a permutation, but [1, 2, 2] is not a permutation (2 appears twice in the array), and [1, 3, 4] is also not a permutation (n = 3 but there is 4 in the array).
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The only line of each test case contains a single integer n (3 <= n <= 2 * 10^5) — the length of the permutation.
+It is guaranteed that the sum of n across all test cases does not exceed 2 * 10^5.
+
+Output:
+For each test case, output n integers p1, p2, ..., pn — the permutation p.
+If there are multiple solutions, you may output any of them.
+
+Strategy:
+pi = pj^i -> pj = pi^i. The idea here is finding a number such that we can put all of the others numbers on such an index the xor will always result in this number. Turns out this is easy to do for 1. Since odd^(odd-1)=1 (because everything is the same except the 1 that made it odd disappears) we instantly solve all odd numbers. For even numbers we do it the other way around. Since even^(even+1)=1 we can just again xor the number with 1 to get the number that makes it 1 if we xor them. Then we can just go from i=2 to i=n-2 and solve the equation i^x=1 and solve for x. The last position is 1. The first position has either n or n^1. This is because we go until i=n-1 which gives (n-1)^1=n if n is odd since n-1=even and even^1=even+1, therefore n is already there at position n-1 but we are missing n-1 (since that would be at position n but 1 is there) therefore we put n^1 at ans[0]. Since we don't care about the first position there can be whatever here. This is important since if n%2==0 then n^1>n which would give a number outside the permutation range making the problem much harder. We save the results in an ans array and output that.
