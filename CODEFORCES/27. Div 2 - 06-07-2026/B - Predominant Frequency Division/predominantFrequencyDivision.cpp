@@ -1,0 +1,78 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#include <climits>
+#include <string>
+#include <cmath>
+
+// --- Type Aliases ---
+using ll = long long;
+using vi = vector<int>;
+using vvi = vector<vector<int>>;
+using vll = vector<ll>;
+using pii = pair<int, int>;
+
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x).size()
+
+#ifdef lOCAl
+#define dbg(x) cerr << #x << " = " << (x) << "\n"
+#else
+//#define dbg(x)
+#endif
+
+// --- Constants ---
+constexpr int MOD = 1e9+7;
+constexpr ll INF = 1e9;
+
+// 4-Directional Grid Movement
+const int dx[4] = {-1, 1, 0, 0};
+const int dy[4] = {0, 0, -1, 1};
+const char dir_char[4] = {'U', 'D', 'L', 'R'};
+// For 8-directional movement (Kings/Queens):
+const int dx8[8] = {1, 1, 0, -1, -1, -1, 0, 1}, dy8[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+// dont have a pair marked, can delete or make a pair
+void solve() {
+
+    int n;
+    cin >> n;
+
+    vector<int> nums(n);
+    for (int i = 0; i < n; i++)cin >> nums[i];
+
+    vector<int> mp2bal(n);
+    mp2bal[n-2] = nums[n-2] == 3 ? -1 : 1;
+    for (int i = n-3; i >= 1; i--) {
+        int b = (nums[i] == 3 ? -1 : 1);
+        mp2bal[i] = b+max(0, mp2bal[i + 1]);
+    }
+    int p1b = 0;
+    for (int i = 0; i < n - 2; i++) {
+        p1b += nums[i] == 1 ? 1 : -1;
+        if (p1b >= 0 && mp2bal[i+1] >= 0) {
+            cout << "YES\n";
+            return;
+        }
+    }
+
+    cout << "no\n";
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t = 1;
+
+    cin >> t;
+    while(t--) {
+        solve();
+    }
+
+    return 0;
+}
