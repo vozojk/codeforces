@@ -1,0 +1,15 @@
+You are given two strings a and b, consisting only of digits. In one operation, you can choose two adjacent characters in either of these two strings and replace them with their sum modulo 10. For example, from the string 57246 you can obtain the following strings in one operation: 2246; 5946; 5766; 5720.
+Note that after such an operation, the length of the string always decreases by exactly 1.
+You can perform any number of such operations (even zero). You have to make these strings equal (|a| = |b| and ai = bi for all i from 1 to |a|). Calculate the maximum possible length of the resulting equal strings.
+
+Input:
+The first line contains a single integer t (1 <= t <= 2 * 10^3) — the number of test cases.
+The first line of each test case contains a string a (1 <= |a| <= 5 * 10^3), consisting only of digits.
+The second line of each test case contains a string b (1 <= |b| <= 5 * 10^3), consisting only of digits.
+Additional constraint on the input: Sum(|a| + |b|) across all test cases does not exceed 10^4.
+
+Output:
+For each test case, print one integer — the maximum possible length of the resulting equal strings. If you can't make the strings equal, print -1.
+
+Strategy:
+This problem simplifies to calculating the Longest Common Subsequence of the prefix sum (mod 10) of the digits. This is because what we are doing is summing adjacent digits (mod 10) repeatedly until we reach the same number. Now if the 2 number are a different size we can compress the bigger one by summing some of its digits. The running sum at sum position basically represent the the invariant state of the equalness of the digits mod 10. If the prefix sum is the same for some positions a and b in the 2 arrays then it is guaranteed they can all be compressed into one number which will be the same. This scales. For each prefix sum that is the same at any position the numbers can be compressed into that sum and the digits will be equal. For the sums with the lower indices this will tracks small groups possibly individual digits. For the latter sums this can track groups of groups which when added 1 extra digit still work out. Therefore we just compute the mod 10 prefix sum for both arrays and then run a classic LCS algorithm on them. We output the lcs. The only edge case that the total sums of both arrays need to be equal since otherwise we can never get them to be the same (the trivial solution for this problem is compressing the numbers into 1 digit). Therefore we check for the total sums being equal first and if they are not equal we output -1.
