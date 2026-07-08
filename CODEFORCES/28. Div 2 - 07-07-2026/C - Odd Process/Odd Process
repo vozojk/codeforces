@@ -1,0 +1,19 @@
+time limit per test: 2 seconds
+
+memory limit per test: 256 megabytes
+
+You have n coins with denominations a_1, a_2, ..., a_n and a natural number k. You also have a bag, which is initially empty, where you can place coins. You need to perform exactly k actions. In each action, you take one coin from those you have left and put it in your bag. After that, you can no longer take that coin.
+At the same time, you have a cat that loves even numbers, so every time the sum of the denominations of the coins in your bag becomes even, your cat empties the bag, meaning it takes all the coins to a place known only to it, and the bag is empty again. Note that the bag is emptied every time the sum becomes even during the process of adding coins, not just at the very last moment.
+Let your score be the sum of the denominations of the coins in the bag. Your task is to perform k actions such that your final score is maximized. Find the answer for all 1 <= k <= n.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains a single integer n (1 <= n <= 2 * 10^5) — the number of coins you have.
+The second line of each test case contains n natural numbers a_1, a_2, ..., a_n (1 <= a_i <= 10^9) — the denominations of the coins.
+It is guaranteed that the sum of n across all test cases does not exceed 2 * 10^5.
+
+Output:
+For each test case, output n numbers — the maximum possible score that can be achieved by performing exactly k actions for all k from 1 to n.
+
+Strategy:
+This is primarily just implementation and edge case management. Since we need to do this for all k, we need to be able to find the result for one k in O(logN). O(1) is also possible. The main idea is that to achieve the biggest sum possible, the selected number should ideally be one odd number followed by k-1 even numbers. This keeps the sum always even since odd+even=odd. This is not always possible though. For k==1, the answer is just the biggest odd number. If there are no odd numbers, it is 0. For all k where the number of even numbers (e) satisfies e+1>=k the answer is just the sum of k-1 biggest even number + the biggest odd number. We can retrieve the biggest x odd numbers by calculating the prefix sum of a sorted array of the numbers. If the count of odd number is 0 (o==0), the answer for any k is 0. Now we need to cover the case where k>e+1. Here, if e==0, the answer is 0 is k is even and biggest_odd if k is odd. For other es we check is k-e is even or odd. This gives us the number of odd numbers we will be using. If this count is even, we check of k-e==o, if this is true the answer is 0 since odd numbers of odds gives an even which will get stolen to 0. Still with k-e==0, if e==1 the answer is biggest_odd since e==1 means we can't use any evens. This is because is (k-e)%2==0, then we need to use even number of odd numbers to get k if we want to use the evens. But if we use an even number of odd numbers the answe is zero, therefore we use 1 more odd number at the cost of 1 even number, this gives us the possibility to have an odd+(e-1) chain at the end. Therefore if e==1 the answer is biggest_odd since e-1=0. If e>1, the answer is just biggest_odd+prefix_even[prefix_even.size()-2](0-indexed, sz-1 for last, sz-2 for second-last, we can do this since if k>e+1 we will be using all evens except 1 which we cannot use for parity reasons). We output the cost calculated this way for each k.
