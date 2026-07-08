@@ -1,0 +1,17 @@
+time limit per test: 1 second
+
+memory limit per test: 256 megabytes
+
+Given an array a_1, a_2, ..., a_n. In one operation, you can choose a pair of indices i, j such that 1 <= i < j <= n, a_i > a_j, and remove the element at index j from the array. After that, the size of the array will decrease by 1, and the relative order of the elements will not change.
+Determine the maximum number of operations that can be performed on the array if they are applied optimally.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 50). The description of the test cases follows.
+The first line of each test case contains an integer n (1 <= n <= 100) — the size of the initial array.
+The second line of each test case contains n natural numbers a_1, a_2, ..., a_n (1 <= a_i <= n).
+
+Output:
+For each test case, output the maximum number of operations that you can perform on the given array.
+
+Strategy:
+We can remove an element (do an operation), if ai>aj for any i<j. This means that for any 2 elements if the first one is bigger than the second one we can remove the second one. This can be simulated just with a double for loop. One for j and the second one for i with i<j. We can simulate a removal just with aj=ai. This basically propagates ai by making aj bigger which can't break the state in any way. We do this for all is and js and every time we do a removal we increase a counter. It is important to break everytime we do an operation. Also, since we go from the front we can't double count anything change by the aj=ai logic since these elements will all be equal to the leftmost biggest element. We output the counter.
