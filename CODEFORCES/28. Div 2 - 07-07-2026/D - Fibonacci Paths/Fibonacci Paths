@@ -1,0 +1,20 @@
+You are given a directed graph consisting of n vertices and m edges. Each vertex v corresponds to a positive number av. Count the number of distinct simple paths∗ consisting of at least two vertices, such that the sequence of numbers written at the vertices along the path forms a generalized Fibonacci sequence.
+In this problem, we will consider that the sequence of numbers x0,x1,…,xk forms a generalized Fibonacci sequence if:
+    x0,x1 are arbitrary natural numbers.
+    xi=xi−2+xi−1 for all 2≤i≤k.
+Note that a generalized Fibonacci sequence consists of at least two numbers.
+Since the answer may be large, output it modulo 998244353.
+∗A simple path in a directed graph is a sequence of vertices v1,v2,…,vk such that each vertex in the graph appears in the path at most once and there is a directed edge from vi to vi+1 for all i<k.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The first line of each test case contains two numbers n, m (2≤n≤2⋅105, 1≤m≤2⋅105) — the number of vertices and the number of edges in the graph, respectively.
+The second line of each test case contains n natural numbers a1,a2,…,an (1≤ai≤1018) — the numbers written at the vertices.
+The next m lines contain the edges of the graph; each edge is defined by two natural numbers v,u (1≤v,u≤n, u≠v), denoting a directed edge from v to u. It is guaranteed that there are no multiple edges in the graph.
+It is guaranteed that the sum of n and the sum of m across all test cases do not exceed 2⋅105.
+
+Output:
+For each test case, output the number of paths that form a generalized Fibonacci sequence, modulo 998244353.
+
+Strategy:
+The hardest part is realizing that we can use DP to save a state for each incoming value for each node and if we ever get into that node again with the same value we can reuse the precomputed one. This greatly reduces the search space. We need O(1) access to the sums for each node and each cost and also O(1) access to the neighboring nodes with a certain value. We can do this by partition the edges inside a hashmap, each hashmap for a different value. Therefore the edge saving structure is vector<unordered_map<int, vector<ll>>. For the O(1) sum access we can again just have a vector of hashmaps and check if the hashmap has any sum for the element we are searching for. After loading all the inputs into this state, the whole problem simplifies into a for loop where we do a dfs from each node. Inside the dfs, we track the current index and the value we need next (as it is dictated by the sum of the last and second to last value), we check our hashmap of sums for the current node, if it contains anything, we immediately return that. If it doesn't we look inside the hashmap for this node and next value and go through all of the node. For each of them we compute the next value which is cur+nei and call dfs(nei, nei+cur). We sum all the numbers returned by this dfs into a big count and return that. In each operation we apply MOD to stay within bounds. The main for loop sums up all these values (again with MOD) and returns that final number. This works perfectly because for each path we precompute all of the different parts of the biggest possible path when we are there which makes us visit each edge only once on the each of the biggest simple paths for all values and there are never cycles since a fibonacci sequence can't have that. The complexity is O(n+m) since we need that to load in the input and then we take O(m) to do the for loop through the edges where the whole path variable is predetermined by this one edge and then we precompute the rest of the path only once, if it ever comes up again, it is O(1) including if its a part of a bigger path. We use long long where needed.
