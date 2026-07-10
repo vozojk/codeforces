@@ -1,0 +1,15 @@
+You've been staring at your computer screen for too long; it is time to give it a break and go touch some grass.
+Your screen is a line of length a, and there are n tabs displayed on it. You want to close all of the tabs by clicking on the x's at their right endpoint.
+Every tab is a segment of length len = min(b, a / m), where m is the number of remaining tabs. The tabs are always tightly arranged in sequence from the left endpoint of the screen; that is, the x's will be at len, 2 * len, 3 * len, ..., m * len units away from the left endpoint. Please note that the length of each tab will change as you are closing tabs.
+Now your cursor is at the left endpoint of the screen. You wonder what the minimum number of times you need to move the mouse to close all tabs is.
+If you have difficulty understanding the statement, you may also refer to your browser tab for a visualization, or click here.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+Each test case is a line of three integers a, b, and n (1 <= b <= a <= 10^9, 1 <= n <= 10^9).
+
+Output:
+For each test case, output a single integer — the minimum number of times you need to move the mouse to close all tabs.
+
+Strategy:
+We have 2 possible scenarios both of which can happen when closing windows. The optimal position of the cursor is always either at the last X or at the first one. This is because when there is not enough windows to fill the whole screen meaning min(b, a/m)=b, the width won't change and we can repeatedly click on the first X. Analogically, when there is enough windows to fill the width there must be an X at the last position since that is where the last window will end. Therefore the answer is always 1 or 2. This greatly simplifies the problem. The logic is simple, if a/n>=b which means the min outputs b we can just spam the first X until everything disappears. The same thing applies for a==b because then the position of the X when min(b, a/m)=b will be the same as when it does not (all the way at the end). When none of these is true we need to shift when we reach the breakpoint which means the answer is 2.
