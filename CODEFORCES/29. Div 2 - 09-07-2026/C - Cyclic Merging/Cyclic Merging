@@ -1,0 +1,17 @@
+You are given n non-negative integers a_1, a_2, ..., a_n arranged on a ring. For each 1 <= i < n, a_i and a_{i+1} are adjacent; a_1 and a_n are adjacent.
+You need to perform the following operation exactly n - 1 times:
+Choose any pair of adjacent elements on the ring, let their values be x and y, and merge them into a single element of value max(x, y) with cost max(x, y).
+Note that this operation will decrease the size of the ring by 1 and update the adjacent relationships accordingly.
+Please calculate the minimum total cost to merge the ring into one element.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains an integer n (2 <= n <= 2 * 10^5).
+The following line contains n integers a_1, a_2, ..., a_n (0 <= a_i <= 10^9).
+It is guaranteed that the sum of n over all test cases does not exceed 2 * 10^5.
+
+Output:
+For each test case, please print a single integer — the minimum total cost.
+
+Strategy:
+There is a great simplification in this problem. It is basically a 1D DSU. We connect an element through it's cheapest edge. The main idea is that since there is the max all the edges we could ever use are already in the original array formed by connecting adjacent elements. This is because there is always a local peak (a number that can eat all the smaller ones) This works recursively, smallest number gets eaten by the bigger one and then the next smallest again by a bigger one. The actual values {a,b} in the edges do change as we proceed since we delete some elements creating connections between big ones but max(a,b) will never change since the peak does not care what the other element is if it's <= which it will always be. Therefore the solution is just taking the original n edges (including {0,n-1}), sorting them by cost and outputting the sum of all of them except the biggest one. This is because we have n edges and n-1 operations. The last operation would represent deleting the last element by pairing it with itself which cannot happen.
