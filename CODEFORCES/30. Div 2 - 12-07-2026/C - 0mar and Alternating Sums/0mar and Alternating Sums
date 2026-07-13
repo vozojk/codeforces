@@ -1,0 +1,19 @@
+time limit per test: 2 seconds
+memory limit per test: 256 megabytes
+
+Define the alternating sum of an array b of length k to be sum from i=1 to k of (-1)^(i+1) * b_i.
+You are given a non-decreasing* array a of length n such that for all i (1 <= i <= n), either a_i = -1 or a_i is a positive integer. Find the number of sequences 1 <= i_1 < i_2 < ... < i_k <= n such that the alternating sum of the sequence a_i_1, a_i_2, ..., a_i_k is 0. Since this number may be large, output it modulo 10^9 + 7.
+Two sets i_1, ..., i_k and i'_1, ..., i'_k of indices are considered different if k_1 != k_2 or there exists a j such that i_j != i'_j.
+*A sequence a_1, ..., a_n is non-decreasing if a_1 <= a_2 <= ... <= a_n.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains a single integer n (1 <= n <= 2 * 10^5) — the length of the array.
+The second line of each test case contains n integers a_1, a_2, ..., a_n — the elements of the array where a_i = -1 or 1 <= a_i <= 10^9. It is guaranteed that the array is non-decreasing.
+It is guaranteed that the sum of n over all test cases does not exceed 2 * 10^5.
+
+Output:
+For each testcase, output a single integer — the number of subsequences that have an alternating sum of zero modulo 10^9 + 7. A subsequence of length 0 is considered to have an alternating sum of zero.
+
+Strategy:
+The numbers are alternating. They are sorted. The key is that we can never have an increasing sequence of with gaps of more than 1 which would pass (excluding -1 and 1 since we can pair up -1 and 1 together). Any version of type {-1, 1, 3, 5...} would fail since we cannot recover the gap, this is because it will always be smaller than the next number we can choose never allowing us to get it back to 0. Therefore, the problem simplifies to pairing up the number and the using -1 to have pairs of consecutive numbers like {2,3} or {6,7}. Since works because we offset the pair by 1 with the negative number making the triple have a 0 sum. For the number of combinations, we have the total number of combinations from the numbers. For the pairs this simplifies to 2^(n-distinct_nums). This is because for each distinct number, there are 2^(count-1) possibilities to pick an even count of it (which we need for the pairs), when we take this for all the numbers we multiply all of them together which gives 2^((sum of counts)-distinct) which is just 2^(n-distinct). Then we need to take into account the {i, i+1} pairs. For these, we can just count how many {i, i+1} boundaries are there and count them. If there is any -1s at all, we can use all of these since only one of them ever matters for this. Any odd number of -1s will sum of to -1 (since pairs cancel out) therefore we can ever use only one {i, i+1} pair. This multiplies our base count by (1+pairs). The 1 is there since we need to account for not using any of them. The final answer is therefore 2^(n-distinct)*(1+pairs). We print this. The counts and everything necessary can be tracked in a hashmap. We use binary modulo exponentiation for the base calculation since otherwise it would overflow. We apply the mod in all operations.
