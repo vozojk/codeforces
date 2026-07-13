@@ -1,0 +1,16 @@
+time limit per test: 1.5 seconds
+memory limit per test: 256 megabytes
+
+You are given a single integer n. Construct an array of n distinct positive integers a_1, ..., a_n such that for all i (1 <= i <= n), a_1 + a_2 + a_3 + ... + a_n is divisible by a_i, or determine that no such array exists.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 50). The description of the test cases follows.
+The first and only line of each test case contains a single integer n (1 <= n <= 50).
+
+Output:
+For each test case, if there is no solution, output a single integer -1.
+Otherwise, output n integers a_1, ..., a_n (1 <= a_i <= 10^17) — an array satisfying the conditions.
+If there are multiple solutions, print any of them.
+
+Strategy:
+We have 2 base cases. n=1 where we just print 1 and n=2 where we print -1 since we can never have 2 distinct numbers the sum of which is divisible by both of them. This is solving (a+b)%a=0 and (a+b)%b=0. We can solve these mod a and mod b which gives a%b=0 and b%a=0. The only solution to this is a=b which violates the rules. For n>=3 we can initialize by choosing some 3 starting numbers that satisfy the rules like {1,2,3} this works since 6 is divisible by all. Then we can ensure adding a number will not change this fact by just always adding the sum of the current array. 6+6=12 which is equivalent to 2*6=12 and since {1,2,3} divides 6 it will divide 2*6 and a*2/2=a so that works too. Since n<=50 this works great. We can be sure the final number will be <= 2^51 which is easily manageable.
