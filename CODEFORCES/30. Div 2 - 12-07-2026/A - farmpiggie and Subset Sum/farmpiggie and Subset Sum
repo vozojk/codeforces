@@ -1,0 +1,21 @@
+time limit per test: 1 second
+memory limit per test: 256 megabytes
+
+For a permutation* p of even length, you can do the following process:
+Initialize a counter c = 0.
+For each i from 1 to n, either add i * p_i to c, subtract i * p_i from c, or do nothing.
+Let the final value of the counter be c_final.
+Formally, for each i in {1, ..., n}, consider the set S_i = {-i * p_i, 0, i * p_i} and choose some x_i in S_i. Set c_final = sum from i=1 to n of x_i.
+You are given a single even integer n. Find any permutation of length n so that regardless of the operations chosen, the final value c_final will not be 1.
+*A permutation of length n is an array consisting of n distinct integers from 1 to n in arbitrary order. For example, [2, 3, 1, 5, 4] is a permutation, but [1, 2, 2] is not a permutation (2 appears twice in the array), and [1, 3, 4] is also not a permutation (n = 3 but there is 4 in the array).
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 25). The description of the test cases follows.
+The first and only line of each test case contains a single even integer n (2 <= n <= 50) — the length of the desired permutation.
+
+Output:
+For each test case, output n integers p_1, ..., p_n (1 <= p_i <= n) — a permutation satisfying the conditions.
+If there are multiple solutions, print any of them.
+
+Strategy:
+We can print the array in the form {2, 1, 4, 3, n, n-1}. This is because for c_final to not be 1 meaning starting at 0 and doing +/- idx*num_idx, we can ensure the number will never be odd and therefore 1. We do this by putting odd numbers at even positions and even number at odd positions and since even*odd will be even this will keep c always even.
