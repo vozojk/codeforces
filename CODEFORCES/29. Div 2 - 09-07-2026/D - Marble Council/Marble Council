@@ -1,0 +1,22 @@
+time limit per test: 2 seconds
+memory limit per test: 512 megabytes
+
+You are given a multiset a, which consists of n integers a1, a2, ..., an. You would like to generate a new multiset s through the following procedure:
+Partition a into any number of non-empty multisets x1, x2, ..., xk, such that each element of a belongs to exactly one of these multisets.
+Initially, s is empty. From each xi, choose one of its modes* and insert it into s.
+Please count the number of different multisets s that can be generated through the procedure, modulo 998244353.
+Please note that the number of different multisets is counted, which means that the order of elements does not matter. However, the count of each element does matter, i.e. {1, 1, 2}, {1, 2}, {1, 1, 2, 2} are all considered different.
+*The mode of a multiset is defined as the element which appears the most; if several elements are tied as the maximum, then all of them are considered modes.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 5000). The description of the test cases follows.
+The first line of each test case contains a single integer n (1 <= n <= 5000) — the size of multiset a.
+The second line of each test case contains n integers a1, a2, ..., an (1 <= ai <= n).
+It is guaranteed that the sum of n over all test cases does not exceed 5000.
+
+Output:
+For each test case, print one line containing a single integer — the number of different multisets you can obtain, modulo 998244353.
+
+Strategy:
+so the idea is that we need to find combinations of number to pick as the modes of the subgroups so that the condition is met. the first type is where one of the numbers one or more of the biggest_freq numbers. that is easy since we can just put it inside one multiset and it still works. the total ways are (max_freq+1)^biggest_count-1. This is because we can choose 0 to max_freq of each of the biggest_count ones -1 for not choosing anything.
+For the ways which don't include the biggest frequency, we need to make sure the sum of the chosen elements will be >= max_freq since otherwise we can't hide the biggest frequency. We create a dp array where dp[i] represents the number of multisets where the chosen numbers sum of to i. So then we need to build dp. dp[0]=1 since there is 1 way to choose nothing. Then we loop through all the groups we have created. These groups are in a compressed hashmap where we save {frequency of each distinct number in this group, group_size}. We are looping by groups since then the math is easy and then dp works. The main idea is to take a group and then loop through all the possible sums and for all the possible global sums we try to add all the possible sums that can be created from elements inside this frequency group. This is choosing 1 to k distinct elements of which each has count f therefore we will have total sums i+f, i+2f... We use the dp array to find the sum to get to i and then we multiply it by choose k from n for each k where it works out, since each element can appear in the multiset 1 to f times we do f^k and multiply that with the rest, this is because choosing a number from a different index even though the value is the same counts as different multisets. Then we do dp_copy[new_sum] = dp_copy[new_sum] + dp[old_sum]*(count_dist choose k*f^k). We do this for all ks for all sums for all groups. We use dp_copy and then use move to put it back into dp so our calculation updates don't conflict. Then, for the boss multisets we can pick the other non-boss (non max_freq) elements entirely freely therefore there are (f+1)^group_size choices for each group. We calculate that and multiply it with the max_freq calculation outlined above. Then we sum it with the dp results which are all the dp sums >=max_freq summed up. We add that to the max_freq ones and output that. We use mod and long long in all operations to not overflow.
