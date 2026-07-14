@@ -1,0 +1,20 @@
+You are given an array a of n integers. Alice and Bob will play a game with this array.
+
+Before the game with Bob starts, Alice can increment any element of the array any number of times, each increment taking one move. One increment consists of a single addition by 1 to one index.
+After that, the game starts and Bob and Alice take turns, with Bob making the first move. On Bob's turn, he can choose any two indices i and j and swap the array elements at these indices (note that Bob may choose i=j, in which case the array remains unchanged after the swap).
+On Alice's turn, if a1 is even, she finds the largest j≤|a| such that ai is even for all i≤j, then sets ai:=ai/2 for i≤j. Otherwise she sets a1:=a1−1. If any element becomes zero, it automatically gets erased from the array (and the other elements are re-indexed accordingly).
+The game ends when the array is empty.
+Alice wants to minimize the number of moves she makes, while Bob wants to maximize the number of moves Alice makes. Note that the number of moves is the sum of the number of initial additions and the number of turns Alice plays after.
+How many moves will Alice make with optimal play?
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The first line of each test case contains a single integer n(1≤n≤105) — the length of the array.
+The second line of each test case contains n integers a1,a2,…,an(1≤ai≤105) — the elements of the array.
+It is guaranteed that the sum of n over all test cases does not exceed 105.
+
+Output:
+For each test case, output a single integer — the number of moves Alice will make if both players play optimally.
+
+Strategy:
+The biggest idea is bruteforce and simplifying the moves. Since bob can swap elements he can always put an odd element in the front or on even element followed by an odd element, this can be done by putting an odd element in the second position, if we have {odd, even...} he swaps i=0, j=1, if we have {even,odd} he does nothing, if we have {even, even} he searches for an odd element. The only way bob cannot make it more difficult for us is if all the elements are even. If there is only one odd one, bob makes us pay 1 unit for dividing every single one and since from the point where there is an odd element there will always be one because bob will keep it at the second index, we will just pay full price. No sweeps. Therefore our goal is to minimize our cost by making the all-even state last as long as possible. Since a number can be divided by 2 Z times if it has a factor 2^Z, we need to try to make all numbers be a multiple of 2^Z for some Z while our cost to get them there (through the increments) is cheaper than the inevitable divisions. If we get the number to be a multiple of 2^Z we will get a discount of (n-1)*Z, n-1 because we still need to do the sweep Z times but we sweep all of them at once. The key here is that since ai<=1e5 and 2^17>1e5 we only have 18 possible Zs to pick ([0-17]). Now then we also need to searching for which multiple of 2^Z do we choose, since getting a number to be a multiple of 2^Z can save upto 13 operations (for the scenarios where we have 15 1s being 2^16-1 and getting converted to 2^16 eliminating 15 1s but adding 1 new one), we can check 0, 2^Z, 2*2^Z, ..., 14*2^Z. For each Z, each number we are trying to get to 2^Z and each multiple of 2^Z (which can vary by element) we calculate the cost to get there. For each element we find the minimum to get to any multiple of 2^Z. The cost for each is bit_width(x)-1+popcount(x)+v-num. This is because bit width-1 is how many shifts we will need to make (/2) to get all the 1s to the LSB where we decrement them which is what the popcount is for and v-num is just distance between the current number and the multiple of 2^Z we are looking at. We can then update the cost by updating v which will house the possible multiple of 2^Z we want to get to. We calculate the minimum for each element for each Z. We output the absolute lowest value found for the whole array.
