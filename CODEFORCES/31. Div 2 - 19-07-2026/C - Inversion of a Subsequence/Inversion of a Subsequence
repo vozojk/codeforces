@@ -1,0 +1,21 @@
+You are given two arrays a and b of length n, consisting only of 0 and 1.
+You may perform the following operation on a any number of times:
+
+    Choose k indices 1 <= i_1 < i_2 < ... < i_k <= n, where 1 <= k <= n and the sum of a_(i_j) for j = 1 to k is odd. In other words, choose a non-empty subsequence of a with an odd sum.
+    For each 1 <= j <= k, set a_(i_j) = 1 - a_(i_j). In other words, invert all elements of the chosen subsequence.
+
+Find the minimum number of operations needed to transform a into b, or determine that it is impossible.
+A sequence c is a subsequence of a sequence d if c can be obtained from d by the deletion of several (possibly, zero or all) elements from arbitrary positions.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains a single integer n (1 <= n <= 2 * 10^5) — the length of the arrays a and b.
+The second line of each test case contains n integers a_1, a_2, ..., a_n (a_i in {0, 1}) — array a.
+The third line of each test case contains n integers b_1, b_2, ..., b_n (b_i in {0, 1}) — array b.
+It is guaranteed that the sum of n over all test cases does not exceed 2 * 10^5.
+
+Output:
+For each test case, output a single integer — the minimum number of operations needed to transform a into b, or -1 if it is impossible.
+
+Strategy:
+The first part is figuring out the answer is -1,0,1 or 2. Proving the upper bound is the whole problem. The impossible case is all 0s being converted to any array with a 1 and any non-all-1 array being converted to all 1s. The 0 answer is when they match. Since the main point is that we can use up an odd number of 1s and make them 0 to make 0-all 0s a 1, we can do it in one move if we have at least one 1 (and odd number of them in total to be changed) at a position where there should be a 0. This simplifies to counting the number of positions where there should be a 0 and is a 1 and checking if its even. If it is the answer is 2, otherwise 1. We can always do it in 2 since we can just pick any 1 where there should be a 1, put a 1 where there should be a 0 and then do the 1 move solve. We check edge cases first and fall back to this.
