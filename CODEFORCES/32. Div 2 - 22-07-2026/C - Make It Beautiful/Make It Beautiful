@@ -1,0 +1,18 @@
+time limit per test: 2 seconds
+memory limit per test: 512 megabytes
+
+You are given an array a of n integers. We define the beauty of a number x to be the number of 1 bits in its binary representation. We define the beauty of an array to be the sum of beauties of the numbers it contains.
+In one operation, you can select an index i (1 <= i <= n) and increase a_i by 1.
+Find the maximum beauty of the array after doing at most k operations.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 5000). The description of the test cases follows.
+The first line of each test case contains two integers n and k (1 <= n <= 5000, 0 <= k <= 10^18) — the length of the array and the maximum number of operations.
+The second line of each test case contains n integers a_1, a_2, ..., a_n (0 <= a_i <= 10^9) — denoting the array a.
+It is guaranteed that the sum of n over all test cases does not exceed 5000.
+
+Output:
+For each test case, output a single integer, the maximum beauty after at most k operations.
+
+Strategy:
+This is an implementation problem. Since adding a 1 to a number where it will flip any 1 to 0 has negative EV and adding a 1 some number of times which will flip a 1 to 0 and then flip some 0 to 1 is them same as adding enough to flipping that 1 directly (by adding a corresponding power of 2), the problem simplifies to adding the cheapest power of 2 possible for each number in the array repeating until we run out of k. This can be implemented by doing sweeps on the array and always searching for the cheapest position with a 0. After finding it we sweep again to find all of these with this cost while simultaneously decreasing k and increasing the numbers in the array. Since n<=5000 we can just do this in a while loop until we run out of k. This is because in the worst case we will do log2(10^18) sweeps which is fine for this n. The complexity is O(Nlogk). We run the while loop and check with each add if we didnt run out of k, if we did we exit and use popcount on everything to sum up the final answer. We use long long for everything.
