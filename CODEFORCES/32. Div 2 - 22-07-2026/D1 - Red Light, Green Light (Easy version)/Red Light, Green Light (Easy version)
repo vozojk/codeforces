@@ -1,0 +1,30 @@
+This is the easy version of the problem. The only difference is the constraint on k and the total sum of n and q across all test cases. You can make hacks only if both versions of the problem are solved.
+
+You are given a strip of length 10^15 and a constant k. There are exactly n cells that contain a traffic light; each has a position pi and an initial delay di for which di<k. The i-th traffic light works the following way:
+
+    it shows red at the l⋅k+di-th second, where l is an integer,
+    it shows green otherwise.
+
+At second 0, you are initially positioned at some cell on the strip, facing the positive direction. At each second, you perform the following actions in order:
+
+    If the current cell contains a red traffic light, you turn around.
+    Move one cell in the direction you are currently facing.
+
+You are given q different starting positions. For each one, determine whether you will eventually leave the strip within 10100 seconds.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤500). The description of the test cases follows.
+
+The first line of each test case contains two integers n, k (1≤n≤500 and 1≤k≤500) — the number of traffic lights and the length of the period.
+
+The second line of each test case contains n integers p1,p2,…pn (1≤p1<p2<⋯<pn≤1015) — the positions of the traffic lights.
+The third line of each test case contains n integers d1,d2,…dn (0≤di<k) — the delays of the traffic lights.
+The fourth line of each test case contains one integer q (1≤q≤500) — the number of queries.
+The fifth line of each test case contains q integers a1,a2,…,aq (1≤ai≤1015) — the starting positions.
+It is guaranteed that the sum of n and q over all test cases does not exceed 500.
+
+Output:
+For each test case, output q lines. Each line should contain "YES" if you will eventually leave the strip and "NO" otherwise. You can output the answer in any case (upper or lower). For example, the strings "yEs", "yes", "Yes", and "YES" will be recognized as positive responses.
+
+Strategy:
+The main idea is that we jump around the red lights and when the timings don't make any lights on our route red until the end of the board we escape. The idea to prove that we will never escape is getting to the same light at the same time mod k, for example if we get to light 3 at t=5 and t=15 and k=5 and it was red both times we are in a cycle and the answer is no. This can be tracked by the invariant which is time-pos mod k when moving right and time+pos mod k when moving left. This is because of the equation t-x=t_start-x_start for going right and t+x=t_start+x_start. This is just rearranging the equation for position which is x=x_start+(t-t_start) for going to positives and x=x_start-(t-t_start) for going left. We can use this invariant to calculate the next light that will actually turn red when we arrive at it when going in a certain direction. Since the constraints are very generous we can do this separately for every q and inside have a for loop that just goes through all the lights for the current position, searches for a one that has a position bigger (or smaller depending on direction) than current and is the closest and then we just check at what time will we be at a light through which we can check if its red. This can be done because the light is red only when the delay D=t mod k and we also know that inv=x-t (or x+t) therefore D=x-inv or (inv-x) where x is the position of the light our loop is at now. If this comes out equal the light will be red when we get there and we bounce, this means calculating a new invariant and updating the time and other state variables and continuing to the other direction with the new invariant checking the light there. As explained before we can do this until we either exit or we prove there is a loop because of the constraints being small for each q. We find the cycle just by keeping a 3D vector tracking pos_idx, invariant and direction. We track invariant and light position because it needs to be the same light and it needs to actually be red and we track direction because it matters where we depart to from the light if we want to prove a cycle. We mark vis[idx][inv][dir] as true when visiting a red light and when marking we check if it wasn't already marked, if it was we output no. If we manage to go through all of the lights (finish the for loop without changing direction) in one go from the current position meaning there was no red lights we have escaped and output yes.
