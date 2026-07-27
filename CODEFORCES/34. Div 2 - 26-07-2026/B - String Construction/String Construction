@@ -1,0 +1,22 @@
+time limit per test: 1 second
+memory limit per test: 256 megabytes
+
+You are given two integers n and k.
+Construct a binary string* s of length n, such that both of the following conditions hold:
+The absolute difference between the number of characters 0 and the number of characters 1 in s is at most 1.
+There are exactly k pairs of adjacent equal characters in s. Formally, there are exactly k indices i (1 <= i <= n - 1) satisfying si = si+1.
+
+Or determine that no such string exists.
+    A binary string is a string where each character is either 0 or 1.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 1000). The description of the test cases follows.
+The only line of each test case contains two integers n and k (2 <= n <= 2 * 10^5, 0 <= k <= n - 1).
+It is guaranteed that the sum of n over all test cases does not exceed 2 * 10^5.
+
+Output:
+For each test case, output a binary string s of length n — the string you constructed. Print -1 if such a string does not exist.
+If there are multiple answers, you may output any of them.
+
+Strategy:
+This is an edge case one. Lets first define the filler loop which prints 1 at an even i and 0 at an odd i indefinitely until reaching the desired length. If k==0, we just let the filler loop run from 0 to n and return. The main idea for me was that we can have at most n-2 adjacent pairs while we satisfy the conditions since any number of consecutive ones c and any number of consecutive zeroes d created (c-1)+(d-1) pairs which makes c+d-2 total pairs. Therefore is n-2<k we output a -1. Then, if k is odd and we are not in the edge case where n-2==k (where we cannot pad and are not at a risk of breaking the difference condition) we output a 0. This is because we will have one more 1 than 0 to have an odd number of pairs and we need to use the 0 to match the counts without making a pair. Then, if k is odd we print a 1, this is to break the symmetry of the subsequent loops. For any k we then look from 0 to k/2 (inclusive) and print a 1 for each element. This creates k/2+1 1s (which creates k/2 pairs). We do the same for 0. Then we fill the rest with the filler loop. We start the count at k+2-k%2 to account for the parity of k and go until n. (the -k%2 is there since we do n-- when printing the 1 before the loops and therefore we can't count it. the k/2s floor the division and we would be missing an element). Then we just print the remaining 0s and 1s (we use the parity of i-(k+2-k%2) to determine which one).
