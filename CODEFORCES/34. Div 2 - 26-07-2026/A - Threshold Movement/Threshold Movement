@@ -1,0 +1,22 @@
+time limit per test: 1 second
+memory limit per test: 256 megabytes
+
+There are n + 2 positions numbered from 0 to n + 1. Initially, position i contains an element of weight wi for every 1 <= i <= n, while positions 0 and n + 1 are empty.
+You choose an integer k. Then every element moves exactly once, simultaneously:
+If wi < k, the element at position i moves to position i - 1;
+If wi > k, the element at position i moves to position i + 1;
+If wi = k, the entire movement process fails immediately.
+An integer k is perfect if the movement does not fail and, upon completion, every position from 1 to n contains exactly one element.
+Determine whether a perfect integer k exists.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 500). The description of the test cases follows.
+The first line of each test case contains one integer n (1 <= n <= 100).
+The second line of each test case contains n integers w1, w2, ..., wn (1 <= wi <= 10^9).
+
+Output:
+For each test case, print "YES" if a perfect integer k exists, and "NO" otherwise.
+You can output the answer in any case (upper or lower). For example, the strings "yEs", "yes", "Yes", and "YES" will be recognized as positive responses.
+
+Strategy:
+Since we have elements moving by 1 position and we need to have the same distribution of them as before we need pairs to swap. This makes all even indexed elements go left and odd indexed go right. It also gives us the trivial "no" which is when n is odd since one element will have no pair. We just instantiate an upper and lower bound number and adjust them while sweeping the array. When at an even index we adjust the bottom index since we need the number to be at least the current one +1. At odd indices we need the number to be at most this number -1. If our final range made by [min,max] has any number in it. We output yes, else no.
