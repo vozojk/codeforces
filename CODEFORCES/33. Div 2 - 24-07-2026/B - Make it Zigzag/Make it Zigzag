@@ -1,0 +1,25 @@
+time limit per test: 1.5 seconds
+memory limit per test: 256 megabytes
+
+An arbitrary array of integers b of length m is considered awesome if for all i (1 <= i < m):
+if i is odd then bi < bi+1 holds.
+if i is even then bi > bi+1 holds.
+In other words, the following inequality is true: b1 < b2 > b3 < b4 ...
+You are given an array of positive integers a of length n. You may do either of the following operations any number of times, in any order:
+
+operation 1: select an integer i (1 <= i <= n) and do: ai := max(a1, ..., ai), that is, replace ai with the prefix max up to i.
+operation 2: select an integer i (1 <= i <= n) and then decrease ai by 1.
+
+Determine the minimum number of times you need to do operation 2 to make a awesome. Note that you do not need to minimise the number of times you perform operation 1.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains an integer n (2 <= n <= 2 * 10^5) — the length of the array a.
+The second line of each test case contains n integers a1, a2, ..., an (1 <= ai <= 10^9).
+The sum of n across all test cases does not exceed 2 * 10^5.
+
+Output:
+For each testcase, output the minimum cost to make a awesome.
+
+Strategy:
+Each odd index needs to be smaller than idx+1 and each even index bigger. This makes the problem local to the pairs. Making an even index larger will never break any other pair. Likewise, making an odd index smaller will never break any pair. Therefore the first thing we do is max out every even element with operation 1. Then, we can just check the pairs. We do this by sweeping the numbers, if idx is odd we check its rule and decrease idx, we idx is even we check and decrease idx+1. This enforces both rules. We count the number of times we decreased. Print that.
