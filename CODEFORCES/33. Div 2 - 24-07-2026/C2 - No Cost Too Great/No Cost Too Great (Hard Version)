@@ -1,0 +1,21 @@
+time limit per test: 3 seconds
+memory limit per test: 256 megabytes
+
+This is the hard version of the problem. The difference between the versions is that in this version, 1 <= bi <= 10^9 for all i (1 <= i <= n). You can hack only if you solved all versions of this problem.
+You find yourself with two arrays of positive integers a and b, both of length n. You will perform the following operation any number of times (possibly none):
+select an integer i (1 <= i <= n) and increase ai by 1. This has a cost of bi.
+Determine the minimum total cost to make it so that there exists two integers i, j where 1 <= i < j <= n and gcd(ai, aj)* > 1.
+^(*gcd(x, y) denotes the greatest common divisor (GCD) of integers x and y.)
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each testcase contains an integer n (2 <= n <= 2 * 10^5) — the length of the array a.
+The second line of each testcase contains n integers a1, a2, ..., an (1 <= ai <= 2 * 10^5).
+The third line of each testcase contains n integers b1, b2, ..., bn (1 <= bi <= 10^9).
+The sum of n across all testcases does not exceed 2 * 10^5.
+
+Output:
+For each testcase, output the minimum cost.
+
+Strategy:
+This is a direct extension of the easy version. The difference is that we can't rely on the max cost =2 rule as we did before since it differs per element. This does transfer to a new invariant which does makes the problem significantly easier though. We always have an upper bound for the cost which is to transfer the 2 cheapest elements to even. At worst this amount to the lowest 2 elements in b. At best, 0. This also creates a new rule. We might have a tendency to try to add multiple times to numbers since this could be cheaper than making things even but this is always false. That's because adding multiple times to any number except the cheapest one will always be suboptimal since the ceiling established by the even method is b0+b1 and if we added to anything but numbers with b0 (repeatedly costing b0) we would have the cost be at least b1+b1>2*b0. Therefore the strategy evolves to checking for evens, checking for same factors without changes, adding 1 and checking again for each number and then adding an arbitrary amount to the smallest cost number until we reach the ceiling established so far or find a new lower one. This can be optimized by going through all of the prime factors for all the numbers except the one with the smallest cost and checking the cost it would take to get the smallest cost number to have that factor. We output the minimum of all of these methods.

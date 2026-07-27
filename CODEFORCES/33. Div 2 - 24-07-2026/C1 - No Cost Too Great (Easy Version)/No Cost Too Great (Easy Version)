@@ -1,0 +1,21 @@
+time limit per test: 3 seconds
+memory limit per test: 256 megabytes
+
+This is the easy version of the problem. The difference between the versions is that in this version, bi = 1 for all i (1 <= i <= n). You can hack only if you solved all versions of this problem.
+You find yourself with two arrays of positive integers a and b, both of length n. You will perform the following operation any number of times (possibly none):
+select an integer i (1 <= i <= n) and increase ai by 1. This has a cost of bi.
+Determine the minimum total cost to make it so that there exists two integers i, j where 1 <= i < j <= n and gcd(ai, aj)* > 1.
+^(*gcd(x, y) denotes the greatest common divisor (GCD) of integers x and y.)
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains an integer n (2 <= n <= 2 * 10^5) — the length of the array a.
+The second line of each test case contains n integers a1, a2, ..., an (1 <= ai <= 2 * 10^5).
+The third line of each test case contains n integers b1, b2, ..., bn (bi = 1).
+The sum of n across all test cases does not exceed 2 * 10^5.
+
+Output:
+For each testcase, output the minimum cost.
+
+Strategy:
+This is an edge case problem. Since bi=1 for all i the problem is to find the minimum cost for any 2 numbers so the gcd is >1. This will be at most 2 since we can pick an 2 number and make them even (divisible by 2) in at most 2 moves. The 0 cases are when there are 2 identical numbers, when there are 2 even numbers or generally when there are 2 numbers which share a prime factor. This can be check by using a prime decomposition algorithm which runs in logN and then comparing the primes for matches. If there is a match we print a 0. If there is exactly 1 even number we print a 1. Then we generalize, we do the prime decomposition but now we add 1 to each number in the array before decomposing adjusting our aggregate prime factor vector before (we have a vector which tracks the counts of primes for all the numbers combined, we remove the counts for the current number), then we check with the +1 factorization, if there is any match we print a 1. We revert the vector back. If we don't find a match we print 2.
