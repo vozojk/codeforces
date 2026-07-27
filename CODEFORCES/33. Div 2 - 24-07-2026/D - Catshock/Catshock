@@ -1,0 +1,21 @@
+A cat lives on a tree with n nodes. The cat starts on node 1, and you live on node n. You are going to leave the cat a note written in the parkour language to help it reach you.
+The parkour language has two types of instructions:
+    1 — This means that the cat should move to any adjacent node to it, if there are multiple options, it will pick one of them arbitrarily. If there are no adjacent nodes to it, then it will not move.
+    2u — This means to destroy node u and all adjacent edges to it. If the cat is currently on node u, it will die, so this should be avoided. If node u was already destroyed, then nothing will happen.
+Additionally, there cannot be two consecutive instances of the second instruction.
+Unfortunately, the parkour language is ambiguous because the cat may have multiple options for each instance of the first instruction. So you should construct a sequence of instructions of length at most 3n so that if the cat follows them, it will end at node n, no matter what choices it makes. It can be proven that such a sequence exists for any tree.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1≤t≤104). The description of the test cases follows.
+The first line of each testcase contains an integer n (2≤n≤2⋅105) — the size of the tree.
+Then n−1 lines follow, each of them contains two integers u and v (1≤u,v≤n,u≠v) which describe a pair of vertices connected by an edge. It is guaranteed that the given graph is a tree and has no loops or multiple edges.
+The sum of n across all testcases does not exceed 2⋅105.
+
+Output:
+For each testcase, output a single integer k (0≤k≤3n) — the number of operations you will perform.
+Then output k lines of either of the following formats:
+    1 — make the cat move to an adjacent node if there are nodes adjacent to it.
+    2u (1≤u≤n) — delete node u along with all adjacent edges
+
+Strategy:
+The idea is just always deleting the furthest node from node n until we have only the path from 1 to n left and then we delete all the remaining nodes so only n is left. The only issue is that we might delete a node that we are on right now, this can be fixed with a parity invariant. Since we move by 1 edge and it is a tree we will always move 1 edge closer or further from n. Both of these switch the parity of our distance from n. Therefore, before removing the furthest node (this can be found easily by using a priority queue and a bfs for the distances) we check the parity of our distance (which can be tracked just by reversing it each time we move, starting at dist[1]%2) and compare it to the parity of the node being deleted. If they are the same we move one more time. We do this until no nodes are left in the queue and then repeat for the nodes on the path until there is only node n. This is will always be under 3n moves since in the worst case deleting each node will cost 2 operation 1s and 1 operation 2 which is 3 operations in total, since there are n-1 nodes to delete we will always do at most (n-1)*3=3n-3 moves. This idea stems from the fact that we need to issue operation 1 to match the parities (if needed), the proceed with a deletion and then immediatelly do another operation 1 to ensure we don't do 2 deletions in a row. To not have any other redundant data structures we can just print 3n for the number of messages, count the actual messages and then fill the end with operations 1s until we are at 3n.
