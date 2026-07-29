@@ -1,0 +1,20 @@
+time limit per test: 1.5 seconds
+memory limit per test: 256 megabytes
+
+Abraham is a brave explorer who goes where no other programmer has gone before. For his next expedition, he plans to investigate a peculiar maze. He knows that the maze is an n x n grid with an arrow in each cell that points in one of four directions: up, down, left and right. Abraham also knows that if he stands on an arrow, he will be forced to follow the arrows starting from that cell. Each arrow moves Abraham exactly 1 cell in the direction that it is pointing. If he reaches an arrow that points towards the outside of the maze, Abraham will escape the maze.
+Abraham doesn't know how the arrows are arranged, so he wants to plan for multiple scenarios. He tasks you with finding an arrangement of arrows in the grid such that there are exactly k starting cells from which he can escape the maze.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 1000). The description of the test cases follows.
+The only line of each test case contains two integers n, k (2 <= n <= 100, 0 <= k <= n^2) — the size of the grid and the number of cells from which Abraham should be able to escape.
+It is guaranteed that the sum of n^2 over all test cases does not exceed 10^5.
+
+Output:
+For each test case, do one of the following:
+If there exists a grid satisfying the requirement, print YES and then print n lines with n characters in each line indicating the direction of the arrows. Each character should be one of U (up), R (right), L (left), or D (down).
+Otherwise, declare that the task is impossible by printing NO.
+If there are multiple solutions, print any of them.
+You can output the answer in any case (upper or lower). For example, the strings "yEs", "yes", "Yes", and "YES" will be recognized as positive responses.
+
+Strategy:
+There's no answer if n^2==k+1, this is because if every single tile would lead to the outside except one, the one will either lead to the outside or inside and since all the other tiles inside lead outside we cannot have a single tile be a dead end. For any other configuration we can connect the tiles so they Abraham never escapes, for any row we can have any number of Ls and then one R. If there is multiple rows we can just lead them into this dead row or repeat this process. We can just initialize a 2D char vector with all 'R'. The we set the right wall of the square to 'L', then we loop through it and set things to 'L' sequentially (line by line) until we set k tiles. Then, the configuration will be k set tiles which all point left meaning they all escape. For the rest of the tiles they point right except for the right wall which points left which makes them stuck. The only edge case of this approach is if there would be only one element where we're supposed to get stuck left in a line. Here we cannot leave it because it would go right and then to the left k elements which escape. We check for this and set it to D if this is the case. This will always work since this can never happen in the last line because then n^2==k+1 would be true. We output yes and the 2D vector if n^2!=k+1, otherwise no.
