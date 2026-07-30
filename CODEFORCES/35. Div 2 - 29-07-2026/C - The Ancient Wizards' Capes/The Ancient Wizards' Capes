@@ -1,0 +1,22 @@
+time limit per test: 2 seconds
+memory limit per test: 256 megabytes
+
+There are n wizards in a row numbered 1 to n from left to right. Each wizard has an invisibility cape which can be worn either on his left side or on his right side. Harry walks from the position of wizard 1 until the position of wizard n (1 <= n <= 10^5), and registers how many wizards he sees from each wizard's position. A wizard in position j is visible from position i if:
+Wizard j wears his cape on his left side and i >= j.
+Wizard j wears his cape on his right side and i <= j.
+
+In particular, note that wizard i is visible from position i.
+Harry's list is very old but, after much work, you managed to decipher it. The list is an array a of n elements, where the i-th element a_i (1 <= a_i <= n) is the number of wizards that Harry saw from the position of wizard i.
+Your task is to determine how many of all the possible cape arrangements that Harry could have seen are consistent with the data recorded by the list, modulo 676 767 677.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains a single integer n (1 <= n <= 10^5) — the length of a.
+The second line contains n integers a_1, a_2, ..., a_n (1 <= a_i <= n) — the elements of a.
+It is guaranteed that the sum of n over all test cases does not exceed 10^5.
+
+Output:
+For each test case, print one integer — the number of arrangements for the wizards' capes that satisfy the condition, modulo 676 767 677.
+
+Strategy:
+The main idea revolves around a simple principle. From the changes of the numbers in what the wizards see we can almost in all cases determine the full state of all wizards. When the number for wizard i and wizard i+1 stays the same, it means they must have capes on opposite sides, this is because if wi has a cape to the left and sees 5 wizards, then if we move to i+1 he will also see 5 wizards and since he sees everybody on the left of wi and everybody on the right of wi (including himself) to make the count the same i+1 must have a cape to the right since otherwise i would see him making him see 1 more than i+1 because i would also be able to see i+1 while i+1 couldn't see i. The reverse scenario is the same. In short, they must have opposite capes because they either both see each other or i doesn't see i+1 and vice versa. In the cases where we have c,c+1 the states must be LL since wizard with c cannot see one with c+1 but one with c+1 can see c. By the same logic, c+1,c is RR. The establishes the full state of the board, therefore making the answer 1 except in a few edge cases. We can achieve this by doing sweeps allocating the cases with {c,c+1} and {c+1,c} and then doing a forward and backward sweep to fill the portions where values are the same. If n==1 the answer is either 2 or 0, this depends on if a[0]==1 or not. Since one wizard can only see himself, if a[0]==1 the answer is 2 because he can have both a right and left cape. If a[0]!=1 the array is impossible and we print 0. The same check needs to be applied to the scenario where we build the full state array. This is because sometimes our method would generate an array but it would be invalid because of the numbers in a not matching. We can check this be keeping a prefix_left and postfix_right (including current) and then doing a sweep and checking if pref[i]+post[i]==a[i], if it does the position is valid. The only other case where we won't be able to build the state array is when we have array a where a[i]=a[i+1] for all 0<=i<n. Here, the answer can range from 0 to 2. This depends on the validity of the resulting arrays. Since same values make the directions of the capes alternate, we can generate an array with LRLRLR... and RLRLRL.... We can then check the same as with the normal array we built if the state matches array a. If it does we increase a counter. We print the result of this counter in this case.
