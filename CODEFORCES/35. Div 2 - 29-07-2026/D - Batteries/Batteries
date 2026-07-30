@@ -1,0 +1,28 @@
+time limit per test: 2 seconds
+memory limit per test: 256 megabytes
+
+This is an interactive problem. Refer to the Interaction section below for better understanding.
+
+There are n (2 <= n <= 40) batteries numbered 1, 2, ..., n. Some of them work while the others don't. Let a be the number of batteries that work. It is guaranteed that a >= 2.
+You are given n but not a.
+There is a flashlight which can hold two batteries and it only turns on when both batteries work. The batteries have been shuffled and you don't know which ones work and which ones don't. You can choose two batteries and try them in the flashlight.
+You want to find a pair of batteries that work. However, you are worried about breaking the flashlight, so you want to limit the amount of trials you attempt.
+Therefore, you should find a pair of working batteries using at most floor(n^2 / a) trials.
+The interactor is adaptive. This means that whether battery i (1 <= i <= n) works is not fixed and may change during the interaction. However, it is guaranteed that there exists a configuration of a working batteries that is consistent with the information that you have received so far.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 50). The description of the test cases follows.
+The first line of each test case contains a single integer n (2 <= n <= 40) — the number of batteries.
+It is guaranteed that the sum of n over all test cases does not exceed 200.
+
+Interaction:
+The interaction for each test case begins with reading the integer n.
+To make a query, print a single line with two integers in the following format:
+u v (1 <= u, v <= n and u != v) — the indices of the batteries you want to test.
+After that, read a single integer x — indicating whether the flashlight turned on after inserting those 2 batteries. If x = 1, the flashlight turned on. Otherwise, if x = 0, the flashlight did not turn on.
+After finding a pair of batteries that turns the flashlight on, the interaction of the test case is considered successful, and it will terminate. After that, the interaction continues with the next test case.
+After printing each query do not forget to output the end of line and flush* the output. Otherwise, you will get Idleness limit exceeded verdict.
+If, at any interaction step, you read -1 instead of valid data, your solution must exit immediately. This means that your solution will receive Wrong answer because of an invalid query or any other mistake. Failing to exit can result in an arbitrary verdict because your solution will continue to read from a closed stream.
+
+Strategy:
+We need to eliminate not groups which contain a lot of non-working batteries at the cost of few working batteries. That is the key. This can be done by grouping the batteries. Since the cost for checking all pairs in a group of size c scales with c^2 we need to make the groups as small as possible and make them larger only when needed. The idea is that if we check all pairs in a group, there must be at most one working battery since otherwise we would've identified a working pair. We can starts with groups of size 1 and go up using a priority queue to make finding the smallest groups easy. Since for each group we create we know the number of working batteries is <=1, we can combine groups by creating possible pairs {A,B} where A is from group 1 and B is from group 2. If this does not find a valid pair, we know this combined group also <=1 working batteries. We continue like this until we find a pair.
