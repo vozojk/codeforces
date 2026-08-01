@@ -1,0 +1,22 @@
+time limit per test: 1 second
+memory limit per test: 256 megabytes
+
+A permutation p of length n is given.
+You must perform exactly one operation for each integer k from 1 up to n in increasing order:
+Select a contiguous subarray of p having length exactly k, and subtract 1 from every element in that subarray.
+After completing all n operations, your objective is to have all elements of the array equal to zero.
+Determine whether it is possible to achieve this goal.
+A permutation of length n is an array containing n distinct integers from 1 to n in arbitrary order.
+A subarray is a contiguous sequence of elements within an array.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 100). The description of the test cases follows.
+The first line of each test case contains an integer n (1 <= n <= 100) — the length of the permutation.
+The second line contains n integers p_1, p_2, ..., p_n (1 <= p_i <= n) — the elements of the permutation.
+
+Output:
+For each test case, output YES if it is possible to make all array elements equal to 0 after performing all operations; otherwise, output NO.
+You may output the response in any case (upper or lower).
+
+Strategy:
+Since all operations deduct a 1, there is n of them and there is n elements which we all need to get to 0, the largest element needs to be in all of them. This applies recursively for both subarrays on the sides of the biggest element for which their biggest element needs to be in all operations made on that side. The only way this can be done is when the array is non-increasing (decreasing since its a permutation) from the biggest element to both sides. If there was any place going from the biggest one where the numbers go up it is impossible since we need to include the biggest element and also the element that is bigger (and therefore further from the biggest one) which would make the smaller one (closer to the biggest one) go into the negatives. We check this property, output yes if true, otherwise no.
