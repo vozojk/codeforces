@@ -1,0 +1,22 @@
+time limit per test: 1 second
+memory limit per test: 256 megabytes
+
+You wish to purchase n items with prices a_1, a_2, ..., a_n.
+For each product, you can either buy it individually by paying a_i coins, or use a discount voucher to purchase it as part of a group.
+You have k discount vouchers with values b_1, b_2, ..., b_k.
+A voucher of value x allows you to select exactly x items and pay only for the x - 1 most expensive ones, meaning the cheapest item in the selected group is free.
+Each product can belong to at most one discount group, and each voucher can be used at most once.
+Determine the minimum total cost required to buy all n products.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains two integers n and k (1 <= n, k <= 2 * 10^5) — the number of products and the number of available discount vouchers.
+The second line contains n integers a_1, a_2, ..., a_n (1 <= a_i <= 10^9) — the prices of the products.
+The third line contains k integers b_1, b_2, ..., b_k (1 <= b_i <= n) — the values of the discount vouchers.
+It is guaranteed that the sum of n across all test cases does not exceed 2 * 10^5, and the sum of k across all test cases does not exceed 2 * 10^5.
+
+Output:
+Print t lines. The i-th line should contain the answer for the i-th test case — the minimum total cost required to purchase all products in that test case.
+
+Strategy:
+It is optimal to use the discounts with the smallest values on the most expensive products since the removes the most value. Since applying the discount to cheaper elements and some other one with bigger value to the more expensive one makes it more expensive and all products can be included in a group only once where the cheapest in each group is free, we can just sort the discounts from smallest value and then apply them for as long as we have products to buy or until we run out of discounts. We keep a total and output that. The only thing to check for the just the 2 cases where the number of products is bigger than the number the discounts will take which means we add all the other values to the total at the end and the other one is that the last discount group before we run out of elements will not get filled and therefore the discount will not get used. We use long long to make sure we don't overflow.
