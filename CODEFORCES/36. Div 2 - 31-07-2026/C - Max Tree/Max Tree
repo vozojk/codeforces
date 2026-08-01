@@ -1,0 +1,20 @@
+time limit per test: 2 seconds
+memory limit per test: 256 megabytes
+
+You are given a tree consisting of n vertices numbered from 1 to n. Each of the n - 1 edges is associated with two non-negative integers x and y.
+Consider a permutation p of the integers 1 through n, where p_i represents the value assigned to vertex i.
+For an edge (u, v) with u < v having associated values x and y, its contribution is defined as x if p_u > p_v, or y otherwise.
+The total value of the permutation is the sum of the contributions from all edges.
+Your task is to find any permutation p that maximizes this total value.
+
+Input:
+Each test contains multiple test cases. The first line contains the number of test cases t (1 <= t <= 10^4). The description of the test cases follows.
+The first line of each test case contains a single integer n (2 <= n <= 2 * 10^5) — the number of vertices in the tree.
+Each of the next n - 1 lines contains four integers u, v, x, and y (1 <= u < v <= n, 1 <= x, y <= 10^9) — describing an edge between vertices u and v with associated parameters x and y. It is guaranteed that the given edges form a tree.
+It is guaranteed that the sum of n over all test cases does not exceed 2 * 10^5.
+
+Output:
+For each test case, output a permutation p of the integers 1 through n that maximizes the total value. If there are multiple valid answers, you can print any of them.
+
+Strategy:
+Since a tree with directed edges is a DAG, it will always have a topological sort. Since a topological sort basically governs how the graph flows from start to end, this is exactly what we want for this problem. We can assign directional edges based on the rules. If we want the edge to be worth y we assign v->u and to achieve x we assign u->v. Then, in the topo sort, this will naturally all get assigned because it will flow from the sources to the sinks assigning a higher value always to the source. We just assign values from n to 1 based on how the topo sort sorted them and output that.
